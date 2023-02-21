@@ -47,5 +47,8 @@
     (blur)="renderer.removeClass(form, 'focus'); display = false"
   />
 
-  <app-search-suggestion *ngIf="display"></app-search-suggestion>
+  <app-search-suggestion
+    [@fade]="display"
+    *ngIf="display"
+  ></app-search-suggestion>
 </form>
