@@ -1,0 +1,175 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./app/shared/shared";
+
+@font-face {
+  font-family: "Satoshi";
+  src: local(Satoshi-Regular),
+    url("./assets/fonts/Satoshi-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Satoshi-Regular.woff") format("woff"),
+    url("./assets/fonts/Satoshi-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: block;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: local(Satoshi-Medium),
+    url("./assets/fonts/Satoshi-Medium.woff2") format("woff2"),
+    url("./assets/fonts/Satoshi-Medium.woff") format("woff"),
+    url("./assets/fonts/Satoshi-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: block;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: local(Satoshi-Bold),
+    url("./assets/fonts/Satoshi-Bold.woff2") format("woff2"),
+    url("./assets/fonts/Satoshi-Bold.woff") format("woff"),
+    url("./assets/fonts/Satoshi-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: block;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: local(Satoshi-Black),
+    url("./assets/fonts/Satoshi-Black.woff2") format("woff2"),
+    url("./assets/fonts/Satoshi-Black.woff") format("woff"),
+    url("./assets/fonts/Satoshi-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  // scroll-behavior: smooth;
+
+  &:focus {
+    outline: none;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  button {
+    font-family: var(--main-font);
+    cursor: pointer;
+    border: none;
+  }
+}
+
+:root {
+  --main-font: "Satoshi", sans-serif;
+  --main-color: #fff;
+  --main-grey: #222527;
+  --main-blue: #3341ff;
+  --blue-10: #00065c;
+  --blue-20: #00098f;
+  --blue-30: #000cb8;
+  --blue-40: #000fe5;
+  --blue-50: #0011ff;
+  --blue-60: #3341ff;
+  --blue-70: #6671ff;
+  --blue-80: #99a0ff;
+  --blue-90: #ccd0ff;
+  --blue-100: #ffffff;
+  // --caution-orange: #f07a25;
+  --grey-10: #191c1f;
+  --grey-20: #222527;
+  --grey-30: #353a40;
+  --grey-40: #484e56;
+  --grey-50: #5b626c;
+  --grey-60: #828b96;
+  --grey-70: #98a0a9;
+  --grey-80: #aeb5bc;
+  --grey-90: #dbdee1;
+  --grey-100: #fdfdfe;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-width: toRem(280);
+  background-color: var(--main-color);
+  font-family: var(--main-font);
+  font-weight: 400;
+  color: var(--main-color);
+  @include custom-scrollbar();
+}
+
+.noscroll {
+  overflow: hidden;
+}
+
+// main {
+//   padding-top: toRem(69);
+
+//   @media screen and (min-width: $lg) {
+//     padding-top: toRem(78);
+//   }
+//   @media screen and (min-width: $lg) {
+//     padding-top: toRem(110);
+//   }
+// }
+
+// section {3341ff
+//   width: 100%;
+//   padding: 0 toRem(16);
+
+//   @media screen and (min-width: $lg) {
+//     padding: 0 toRem(80);
+//   }
+//   @media screen and (min-width: $two-xl) {
+//     padding: 0 toRem(131);
+//   }
+// }
+
+img[alt] {
+  position: relative;
+
+  &::after {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: inherit;
+    font-family: var(--main-font);
+    content: "";
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(540deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

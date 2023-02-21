@@ -1,0 +1,127 @@
+@import "../shared/shared";
+
+:host {
+  @include centered();
+  position: absolute;
+  top: toRem(56 + 12);
+  width: 100%;
+  left: 0;
+  right: 0;
+
+  @media screen and (min-width: $lg) {
+    top: toRem(72 + 16);
+  }
+}
+
+.suggestion-list {
+  @include column-flex();
+  list-style: none;
+  width: 100%;
+  background-color: var(--main-color);
+  border-radius: toRem(8);
+  box-shadow: toRem(0) toRem(4) toRem(14) toRem(0) #00000026;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-out;
+  flex-shrink: 0;
+
+  @media screen and (min-width: $two-xl) {
+    width: toRem(496);
+    border-radius: toRem(16);
+  }
+}
+
+.suggestion-list__item {
+  @include display-flex();
+  gap: toRem(8);
+  border-bottom: 1px solid #b8b8b8;
+  padding: toRem(12) toRem(18);
+
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(18);
+    padding: toRem(12) toRem(28);
+  }
+
+  &.title {
+    font-size: toRem(18);
+    font-weight: 500;
+    line-height: toRem(18);
+    padding: toRem(12) toRem(24);
+    color: #333333;
+
+    @media screen and (min-width: $two-xl) {
+      font-size: toRem(22);
+      line-height: toRem(32);
+      padding: toRem(24) toRem(28);
+    }
+  }
+}
+
+.suggestion-icon {
+  width: toRem(24);
+  height: toRem(24);
+
+  @media screen and (min-width: $two-xl) {
+    width: toRem(32);
+    height: toRem(32);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.suggestion-title {
+  font-size: toRem(18);
+  font-weight: 500;
+  line-height: toRem(18);
+  color: var(--main-blue);
+  margin-bottom: toRem(8);
+
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(22);
+    line-height: toRem(32);
+    margin-bottom: 0;
+  }
+}
+
+.suggestion-details {
+  font-size: toRem(14);
+  font-weight: 500;
+  line-height: toRem(18);
+  color: #868686;
+
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(18);
+    line-height: toRem(32);
+  }
+}
+
+.more-btn {
+  @include centered();
+  gap: toRem(6);
+  background-color: #0000;
+  border: none;
+  font-size: toRem(18);
+  font-weight: 500;
+  line-height: toRem(22);
+  color: #474343;
+  padding: toRem(12) toRem(24);
+
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(22);
+    line-height: toRem(32);
+    gap: toRem(8);
+    padding: toRem(24) toRem(28);
+  }
+
+  .icon {
+    width: toRem(24);
+    height: toRem(24);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

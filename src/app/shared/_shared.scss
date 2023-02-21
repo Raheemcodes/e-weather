@@ -1,0 +1,111 @@
+@mixin display-flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin column-flex() {
+  @include display-flex();
+  flex-direction: column;
+}
+
+@mixin between() {
+  @include display-flex();
+  justify-content: space-between;
+}
+
+@mixin column-between() {
+  @include display-flex();
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@mixin centered() {
+  @include display-flex();
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin between-centered() {
+  @include display-flex();
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin column-centered() {
+  @include centered();
+  flex-direction: column;
+}
+
+@mixin column-between-centered() {
+  @include display-flex();
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin centered-start() {
+  @include display-flex();
+  justify-content: center;
+}
+
+@mixin column-centered-start() {
+  @include display-flex();
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin transition($property, $duration) {
+  -webkit-transition: $property $duration ease-out;
+  -moz-trantransition: $property $duration ease-out;
+  -o-trantransition: $property $duration ease-out;
+  transition: $property $duration ease-out;
+}
+
+@mixin fade-hover($property, $duration, $opacity) {
+  @media (hover: hover) {
+    @include transition($property, $duration);
+
+    &:hover {
+      opacity: $opacity;
+    }
+  }
+}
+
+@function toRem($value) {
+  $remValue: calc($value / 16) + rem;
+  @return $remValue;
+}
+
+@mixin custom-scrollbar() {
+  @media (pointer: fine) and (hover: hover) {
+    scrollbar-color: var(--black-30) #0000;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: toRem(8); /* width of the entire scrollbar */
+      height: toRem(8); /* width of the entire scrollbar */
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent; /* color of the tracking area */
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--black-30);
+      border-radius: 14px; /* creates padding around scroll thumb */
+
+      &:hover {
+        background: var(--black-40);
+      }
+    }
+  }
+}
+
+$sm: toRem(640);
+$md: toRem(768);
+$lg: toRem(1024);
+$xl: toRem(1280);
+$two-xl: toRem(1536);
+$three-xl: toRem(1728);

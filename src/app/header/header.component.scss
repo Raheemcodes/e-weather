@@ -1,0 +1,144 @@
+@import "../shared/shared";
+
+:host {
+  width: 100%;
+  position: relative;
+  @include column-centered();
+  gap: toRem(32);
+  padding: toRem(32) toRem(16) 0;
+
+  @media screen and (min-width: $lg) {
+    padding: toRem(64) toRem(64) 0;
+  }
+  @media screen and (min-width: $two-xl) {
+    padding: toRem(52) toRem(96) 0;
+  }
+}
+
+.logo-location__container {
+  width: 100%;
+  @include between-centered();
+}
+
+.logo {
+  font-size: toRem(24);
+  font-weight: 700;
+  line-height: toRem(28);
+  letter-spacing: 0em;
+  color: #1e1e1e;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(32);
+    line-height: toRem(32);
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(40);
+    line-height: toRem(32);
+  }
+
+  span {
+    color: var(--main-blue);
+  }
+}
+
+.location-degree__container {
+  @include centered();
+  gap: toRem(8);
+
+  @media screen and (min-width: $lg) {
+    gap: toRem(18);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(24);
+  }
+}
+
+.location-icon {
+  width: toRem(18);
+  height: toRem(18);
+
+  @media screen and (min-width: $lg) {
+    width: toRem(32);
+    height: toRem(32);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.location-degree {
+  font-size: toRem(16);
+  font-weight: 700;
+  line-height: toRem(18);
+  text-align: left;
+  color: #7c7c7c;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(18);
+    line-height: toRem(32);
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(22);
+    line-height: toRem(32);
+  }
+}
+
+.search-form {
+  position: relative;
+  @include centered();
+  gap: toRem(16);
+  width: 100%;
+  height: toRem(56);
+  border-radius: toRem(8);
+  padding: toRem(16) toRem(24);
+  margin: 0 auto;
+  background-color: #f1f1f1;
+  border: 2px solid #f1f1f1;
+  transition: all 0.3s ease-out;
+
+  @media screen and (min-width: $lg) {
+    position: absolute;
+    top: toRem(48);
+    width: toRem(388);
+    height: toRem(72);
+    border-radius: toRem(16);
+    padding: toRem(20) toRem(68) toRem(20) toRem(22);
+  }
+  @media screen and (min-width: $two-xl) {
+    top: toRem(48);
+    width: toRem(496);
+    top: toRem(32);
+    border-radius: toRem(16);
+    padding: toRem(20) toRem(68) toRem(20) toRem(22);
+  }
+
+  &.focus {
+    border: 2px solid #6165f8;
+  }
+
+  .search-icon {
+    width: toRem(24);
+    height: toRem(24);
+    flex-shrink: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    font-family: var(--main-font);
+    font-size: toRem(16);
+    font-weight: 500;
+    line-height: toRem(24);
+    text-align: left;
+    background-color: #0000;
+    border: none;
+    color: #7c7c7c;
+  }
+}
