@@ -3,6 +3,7 @@
 :host {
   @include centered();
   position: absolute;
+  z-index: 1;
   top: toRem(56 + 12);
   width: 100%;
   left: 0;

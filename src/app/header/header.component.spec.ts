@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
 import { DebugElement, ElementRef, NgZone } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,11 +10,11 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let de: DebugElement;
-  let zone: NgZone;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, SearchSuggestionComponent],
+      imports: [BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

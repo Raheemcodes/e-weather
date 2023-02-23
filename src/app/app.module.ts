@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -20,6 +21,7 @@ import { SearchSuggestionComponent } from './search-suggestion/search-suggestion
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    NgOptimizedImage,
     FormsModule,
   ],
   providers: [],
