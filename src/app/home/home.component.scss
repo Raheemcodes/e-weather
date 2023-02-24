@@ -1,7 +1,6 @@
 @import "../shared/shared";
 
 :host {
-  // @include column-flex();
   width: 100%;
 }
 
@@ -12,17 +11,34 @@ h1.title {
   color: #474343;
   margin: toRem(40) toRem(16) toRem(32);
 
-  // @media screen and (min-width: $lg) {
-  //   padding: toRem(64) toRem(64) 0;
-  // }
-  // @media screen and (min-width: $two-xl) {
-  //   padding: toRem(52) toRem(96) 0;
-  // }
+  @media screen and (min-width: $md) {
+    margin: toRem(72) toRem(16) toRem(40);
+  }
+  @media screen and (min-width: $lg) {
+    font-size: toRem(28);
+    line-height: toRem(28);
+    margin: toRem(72) toRem(64) toRem(40);
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(32);
+    line-height: toRem(32);
+    margin: toRem(99) toRem(96) toRem(48);
+  }
 }
 
 .featured-list__container {
   width: 100%;
   overflow: hidden;
+
+  @media screen and (min-width: $md) {
+    padding: 0 toRem(16);
+  }
+  @media screen and (min-width: $lg) {
+    padding: 0 toRem(64);
+  }
+  @media screen and (min-width: $two-xl) {
+    padding: 0 toRem(96);
+  }
 }
 
 .featured-list {
@@ -31,6 +47,11 @@ h1.title {
   @include display-flex();
   gap: toRem(16);
   transform: translateX(toRem(16));
+
+  @media screen and (min-width: $md) {
+    gap: toRem(24);
+    transform: translateX(0);
+  }
 }
 
 .featured {
@@ -38,15 +59,53 @@ h1.title {
   gap: toRem(8);
   width: calc(50% - 24px);
   flex-shrink: 0;
+
+  @media screen and (min-width: $md) {
+    width: 100%;
+    gap: toRem(12);
+    flex-shrink: 1;
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(22);
+  }
 }
 
 .featured-img__container {
-  display: flex;
+  position: relative;
+  @include display-flex();
   width: 100%;
+  height: calc(15000vw / 375);
+  border-radius: toRem(8);
+  overflow: hidden;
+  background-color: #dbcfa9;
+  box-shadow: 0px 4px 14px 0px #00000026;
+
+  @media screen and (min-width: $md) {
+    height: calc(24500vw / 1194);
+  }
+  @media screen and (min-width: $two-xl) {
+    height: calc(31300vw / 1728);
+  }
+
+  @supports (aspect-ratio: 163 / 150) {
+    aspect-ratio: 163 / 150;
+    height: auto;
+
+    @media screen and (min-width: $md) {
+      aspect-ratio: 339 / 245;
+      height: auto;
+    }
+    @media screen and (min-width: $two-xl) {
+      aspect-ratio: 496 / 313;
+      height: auto;
+    }
+  }
 
   img {
     width: 100%;
     height: auto;
+    object-position: center;
+    object-fit: cover;
   }
 }
 
@@ -55,12 +114,25 @@ h3.title {
   font-weight: 700;
   line-height: toRem(24);
   color: #474343;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(24);
+    line-height: toRem(28);
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(28);
+    line-height: toRem(32);
+  }
 }
 
 .pagination-list {
   list-style: none;
   @include centered();
   gap: toRem(4);
+
+  @media screen and (min-width: $md) {
+    display: none;
+  }
 }
 
 .pagination {
@@ -88,18 +160,28 @@ h3.title {
 .second-sect {
   @include column-flex();
   gap: toRem(40);
-  padding: toRem(40) toRem(16) 0;
+  width: 100%;
+  padding: toRem(40) 0;
 
-  // @media screen and (min-width: $lg) {
-  //   padding: toRem(64) toRem(64) 0;
-  // }
-  // @media screen and (min-width: $two-xl) {
-  //   padding: toRem(52) toRem(96) 0;
-  // }
+  @media screen and (min-width: $md) {
+    padding: toRem(64) 0;
+    gap: toRem(64);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(56);
+  }
 }
 
 .first-row {
   @include between-centered();
+  padding: 0 toRem(16) 0;
+
+  @media screen and (min-width: $lg) {
+    padding: 0 toRem(64) 0;
+  }
+  @media screen and (min-width: $two-xl) {
+    padding: 0 toRem(96) 0;
+  }
 }
 
 h1.location {
@@ -107,6 +189,15 @@ h1.location {
   font-weight: 700;
   line-height: toRem(24);
   color: #474343;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(28);
+    line-height: toRem(32);
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(32);
+    line-height: toRem(32);
+  }
 }
 
 .more {
@@ -115,28 +206,57 @@ h1.location {
   line-height: toRem(16);
   color: var(--main-blue);
   background-color: #0000;
+  padding: toRem(4) 0;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(18);
+    line-height: toRem(22);
+    padding: toRem(8) 0;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(24);
+    line-height: toRem(32);
+  }
 }
 
 .second-row {
-  // @include display-flex();
   width: 100%;
 }
 
 .forecast-list {
   list-style: none;
-  @include display-flex();
+  @include between();
   gap: toRem(16);
   width: 100%;
+  overflow-x: auto;
+  @include custom-scrollbar();
+  padding: 0 toRem(16) toRem(8);
+
+  @media screen and (min-width: $lg) {
+    gap: toRem(40);
+    padding: 0 toRem(64) toRem(8);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(52);
+    padding: 0 toRem(96) toRem(8);
+  }
 }
 
 .forecast {
-  width: 25%;
+  width: 100%;
+  max-width: toRem(74);
   @include column-centered();
   gap: toRem(13.5);
-  padding: toRem(8) 0;
   background: #f8f8f8;
   border: 1px solid #d0d0d0;
   border-radius: toRem(18);
+  padding: toRem(8) toRem(15);
+
+  @media screen and (min-width: $lg) {
+    max-width: toRem(106);
+    gap: toRem(12);
+    padding: toRem(14) toRem(23.5);
+  }
 }
 
 .degree,
@@ -145,11 +265,21 @@ h1.location {
   font-weight: 500;
   line-height: toRem(32);
   color: #474343;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(22);
+    line-height: toRem(32);
+  }
 }
 
 .featured-img__icon {
-  height: toRem(24);
   width: toRem(24);
+  height: toRem(24);
+
+  @media screen and (min-width: $lg) {
+    width: toRem(32);
+    height: toRem(32);
+  }
 
   img {
     width: 100%;

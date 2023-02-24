@@ -22,10 +22,9 @@
   border-radius: toRem(8);
   box-shadow: toRem(0) toRem(4) toRem(14) toRem(0) #00000026;
   overflow: hidden;
-  // animation: fadeIn 0.5s ease-out;
   flex-shrink: 0;
 
-  @media screen and (min-width: $two-xl) {
+  @media screen and (min-width: $lg) {
     width: toRem(496);
     border-radius: toRem(16);
   }
@@ -49,6 +48,9 @@
     padding: toRem(12) toRem(24);
     color: #333333;
 
+    @media screen and (min-width: $md) {
+      padding: toRem(20) toRem(24);
+    }
     @media screen and (min-width: $two-xl) {
       font-size: toRem(22);
       line-height: toRem(32);
@@ -109,6 +111,9 @@
   color: #474343;
   padding: toRem(12) toRem(24);
 
+  @media screen and (min-width: $md) {
+    padding: toRem(20) toRem(24);
+  }
   @media screen and (min-width: $two-xl) {
     font-size: toRem(22);
     line-height: toRem(32);

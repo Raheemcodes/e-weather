@@ -82,7 +82,7 @@
 
 @mixin custom-scrollbar() {
   @media (pointer: fine) and (hover: hover) {
-    scrollbar-color: var(--black-30) #0000;
+    scrollbar-color: #b1afaf #0000;
     scrollbar-width: thin;
 
     &::-webkit-scrollbar {
@@ -93,11 +93,11 @@
       background: transparent; /* color of the tracking area */
     }
     &::-webkit-scrollbar-thumb {
-      background: var(--black-30);
+      background: #b1afaf;
       border-radius: 14px; /* creates padding around scroll thumb */
 
       &:hover {
-        background: var(--black-40);
+        background: #858181;
       }
     }
   }

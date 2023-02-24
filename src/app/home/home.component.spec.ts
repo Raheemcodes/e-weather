@@ -58,4 +58,12 @@ describe('HomeComponent', () => {
 
     expect(pagination.length).toBe(2);
   });
+
+  it('should have .fore-list of 8 .forecast children', () => {
+    const forecast: DebugElement[] = de.queryAll(
+      By.css('.forecast-list > .forecast')
+    );
+
+    expect(forecast.length).toBe(8);
+  });
 });
