@@ -1,11 +1,17 @@
 <h1 class="title">Featured city</h1>
 
 <section>
-  <div class="featured-list__container">
-    <ul class="featured-list">
+  <div
+    class="featured-list__container"
+    slider
+    [pagination]="pagination"
+    [gap]="16"
+    [maxWidth]="768"
+  >
+    <ul class="featured-list" #slideWrapper>
       <li class="featured">
         <div class="featured-img__container">
-          <img ngSrc="../../assets/featured/lagos.png" fill alt priority />
+          <img ngSrc="../../assets/featured/lagos.png" fill alt />
         </div>
 
         <h3 class="title">Lagos</h3>
@@ -29,9 +35,9 @@
     </ul>
   </div>
 
-  <ul class="pagination-list">
-    <li class="pagination active"></li>
-    <li class="pagination"></li>
+  <ul class="pagination-list" #pagination>
+    <!-- <li class="pagination active"></li>
+    <li class="pagination"></li> -->
   </ul>
 </section>
 

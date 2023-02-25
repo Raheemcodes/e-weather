@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { SearchSuggestionComponent } from './search-suggestion/search-suggestion.component';
+import { SliderDirective } from './silder/slider.directive';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SearchSuggestionComponent } from './search-suggestion/search-suggestion
     HeaderComponent,
     HomeComponent,
     SearchSuggestionComponent,
+    SliderDirective,
   ],
   imports: [
     BrowserModule,
