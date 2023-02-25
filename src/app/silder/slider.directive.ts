@@ -54,11 +54,19 @@ export class SliderDirective implements OnInit {
     featured.forEach((el, idx) => {
       if (idx < featured.length - 1) {
         const li: HTMLLIElement = this.render.createElement('li');
+
         li.className = idx == 0 ? 'pagination active' : 'pagination';
+        li.addEventListener('click', this.paginationClick.bind(this, idx));
 
         this.render.appendChild(this.paginationList, li);
       }
     });
+  }
+
+  paginationClick(idx: number) {
+    this.curIdx = idx;
+
+    this.setPositionByIndex();
   }
 
   updatePagination() {
