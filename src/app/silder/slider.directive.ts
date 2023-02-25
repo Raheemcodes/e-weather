@@ -5,6 +5,7 @@ import {
   ElementRef,
   Renderer2,
   HostBinding,
+  HostListener,
 } from '@angular/core';
 
 @Directive({
@@ -69,6 +70,63 @@ export class SliderDirective implements OnInit {
     return event.type.includes('mouse')
       ? (event as MouseEvent).pageY
       : (event as TouchEvent).touches[0].clientY;
+  }
+
+  @HostListener('window:resize') resize() {
+    this.innitial();
+    this.screenWidth = innerWidth;
+    this.setPositionByIndex();
+  }
+
+  @HostListener('dragstart', ['$event']) dragStart(event: Event) {
+    event.preventDefault();
+  }
+  @HostListener('touchstart', ['$event'])
+  @HostListener('mousedown', ['$event'])
+  touchstart(event: MouseEvent | TouchEvent) {
+    if (this.screenWidth > this.maxWidth) return;
+    this.startPos = this.getPositionX(event);
+    this.startPosY = this.getPositionY(event);
+    this.isDragging = true;
+    this.cursor = 'grabbing';
+  }
+
+  @HostListener('touchmove', ['$event'])
+  @HostListener('mousemove', ['$event'])
+  touchmove(event: MouseEvent | TouchEvent) {
+    if (this.isDragging) {
+      const currentPosition = this.getPositionX(event);
+      const currentTranslateX = this.getPositionX(event) - this.startPos;
+      const currentTranslateY = this.getPositionY(event) - this.startPosY;
+
+      if (Math.abs(currentTranslateY) < Math.abs(currentTranslateX)) {
+        if (event.cancelable) event.preventDefault();
+        this.currentTranslate =
+          this.prevTranslate + currentPosition - this.startPos;
+        this.setSliderPosition();
+      }
+    }
+  }
+
+  @HostListener('touchend', ['$event'])
+  @HostListener('mouseup', ['$event'])
+  @HostListener('mouseleave', ['$event'])
+  touchend() {
+    this.isDragging = false;
+
+    const movedBy = this.currentTranslate - this.prevTranslate;
+    // if moved enough negative then snap to next slide if there is one
+
+    if (movedBy < -this.threshold && this.curIdx < this.lastSlide) {
+      this.curIdx++;
+    }
+
+    // if moved enough positive then snap to previous slide if there is one
+    if (movedBy > this.threshold && this.curIdx > 0) this.curIdx--;
+
+    this.setPositionByIndex();
+
+    this.cursor = '';
   }
 
   setPositionByIndex() {
