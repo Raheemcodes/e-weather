@@ -26,6 +26,11 @@ h1.title {
   }
 }
 
+.featured-sect {
+  @include column-flex();
+  gap: toRem(24);
+}
+
 .featured-list__container {
   width: 100%;
   overflow: hidden;
@@ -47,6 +52,7 @@ h1.title {
   @include display-flex();
   gap: toRem(16);
   transform: translateX(toRem(16));
+  // margin-left: toRem(16);
 
   @media screen and (min-width: $md) {
     gap: toRem(24);
