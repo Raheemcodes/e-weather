@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostBinding,
   HostListener,
+  Inject,
   Input,
   OnInit,
   Renderer2,
@@ -10,6 +11,7 @@ import {
 
 @Directive({
   selector: '[slider]',
+  providers: [{ provide: 'Window', useValue: window }],
 })
 export class SliderDirective implements OnInit {
   @HostBinding('style.cursor') cursor!: string;
@@ -17,7 +19,6 @@ export class SliderDirective implements OnInit {
   @Input() pad!: number;
   @Input() maxWidth!: number;
 
-  screenWidth: number = innerWidth;
   isDragging: boolean = false;
   startPos: number = 0;
   startPosY: number = 0;
@@ -32,7 +33,8 @@ export class SliderDirective implements OnInit {
 
   constructor(
     private elRef: ElementRef<HTMLElement>,
-    private render: Renderer2
+    private render: Renderer2,
+    @Inject('Window') private window: Window
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class SliderDirective implements OnInit {
     this.slideWidth = this.slider.firstElementChild!.clientWidth;
     this.threshold = this.slideWidth / 4;
     this.lastSlide = this.slider.children.length - 2;
-    this.render.setStyle(this.slider, 'transition', '0.3s transform ease-out');
+    this.render.setStyle(this.slider, 'transition', '0.3s all ease-out');
   }
 
   initializePagination() {
@@ -89,18 +91,17 @@ export class SliderDirective implements OnInit {
   }
 
   @HostListener('window:resize') resize() {
-    this.innitial();
-    this.screenWidth = innerWidth;
     this.setPositionByIndex();
   }
 
   @HostListener('dragstart', ['$event']) dragStart(event: Event) {
     event.preventDefault();
   }
+
   @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
   touchstart(event: MouseEvent | TouchEvent) {
-    if (this.screenWidth > this.maxWidth) return;
+    if (this.window.innerWidth > this.maxWidth) return;
     this.startPos = this.getPositionX(event);
     this.startPosY = this.getPositionY(event);
     this.isDragging = true;
@@ -146,9 +147,8 @@ export class SliderDirective implements OnInit {
   }
 
   setPositionByIndex() {
-    if (this.screenWidth > this.maxWidth) {
-      this.currentTranslate = 0;
-    } else {
+    if (this.window.innerWidth > this.maxWidth) this.currentTranslate = 0;
+    else {
       if (this.curIdx == 0) {
         this.currentTranslate = this.pad + this.curIdx * -this.slideWidth;
       }

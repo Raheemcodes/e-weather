@@ -16,7 +16,6 @@ describe('SliderDirective', () => {
 
     fixture.detectChanges(); // initial binding
 
-    // all elements with an attached HighlightDirective
     de = fixture.debugElement.query(By.directive(SliderDirective));
     pagination = fixture.debugElement.queryAll(By.css('.pagination'));
   });
@@ -35,5 +34,25 @@ describe('SliderDirective', () => {
     expect(pagination.length).toBe(featured.length - 1);
   });
 
-  it('should have called setPagination()');
+  it('should add style of cursor: pointer to attached element on mousedown', () => {
+    window.innerWidth = 767;
+
+    de.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+
+    fixture.detectChanges();
+
+    expect(de.styles['cursor']).toBe('grabbing');
+  });
+
+  it('should add style of cursor: pointer to attached element on touchstart', () => {
+    window.innerWidth = 767;
+
+    de.triggerEventHandler('touchstart', new TouchEvent('touchstart'));
+
+    fixture.detectChanges();
+
+    expect(de.styles['cursor']).toBe('grabbing');
+  });
+
+  // it('should have called setPagination()', () => {});
 });

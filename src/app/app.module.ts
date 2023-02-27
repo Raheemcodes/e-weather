@@ -26,7 +26,7 @@ import { SliderDirective } from './silder/slider.directive';
     NgOptimizedImage,
     FormsModule,
   ],
-  providers: [],
+  providers: [{ provide: 'Window', useValue: window }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
