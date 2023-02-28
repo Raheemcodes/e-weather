@@ -102,6 +102,7 @@ export class SliderDirective implements OnInit {
   @HostListener('mousedown', ['$event'])
   touchstart(event: MouseEvent | TouchEvent) {
     if (this.window.innerWidth > this.maxWidth) return;
+
     this.startPos = this.getPositionX(event);
     this.startPosY = this.getPositionY(event);
     this.isDragging = true;

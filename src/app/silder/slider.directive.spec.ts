@@ -4,6 +4,18 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { HomeComponent } from '../home/home.component';
 import { SliderDirective } from './slider.directive';
 
+const mockMouse = {
+  preventDefault() {},
+  type: 'mouse',
+  pageX: 130,
+} as MouseEvent;
+
+const mockTouch = {
+  preventDefault() {},
+  type: 'touch',
+  touches: [{ clientX: 140 }],
+} as any;
+
 describe('SliderDirective', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let de: DebugElement;
@@ -34,25 +46,39 @@ describe('SliderDirective', () => {
     expect(pagination.length).toBe(featured.length - 1);
   });
 
-  it('should add style of cursor: pointer to attached element on mousedown', () => {
+  it('should add style of cursor: pointer to attached element on mousedown if innerWidth is < 768', () => {
     window.innerWidth = 767;
-
-    de.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-
+    de.triggerEventHandler('mousedown', mockTouch);
     fixture.detectChanges();
+    expect(de.styles['cursor']).withContext('< 768').toBe('grabbing');
 
-    expect(de.styles['cursor']).toBe('grabbing');
+    window.innerWidth = 768;
+    fixture.detectChanges();
+    expect(de.styles['cursor']).withContext('>= 768').toBe('grabbing');
   });
 
-  it('should add style of cursor: pointer to attached element on touchstart', () => {
+  it('should add style of cursor: pointer to attached element on touchstart if innerWidth < 768', () => {
     window.innerWidth = 767;
-
-    de.triggerEventHandler('touchstart', new TouchEvent('touchstart'));
-
+    de.triggerEventHandler('touchstart', mockTouch);
     fixture.detectChanges();
-
     expect(de.styles['cursor']).toBe('grabbing');
+
+    window.innerWidth = 768;
+    fixture.detectChanges();
+    expect(de.styles['cursor']).withContext('>= 768').toBe('grabbing');
   });
 
-  // it('should have called setPagination()', () => {});
+  // it('should translate relative to movement only if it`s on the x-axis', () => {
+  //   window.innerWidth = 767;
+  //   mockTouch.touches[0]['clientX'] = 100;
+
+  //   de.triggerEventHandler('touchstart', mockTouch);
+  //   fixture.detectChanges();
+  //   de.triggerEventHandler('touchmove', mockTouch);
+  //   fixture.detectChanges();
+
+  //   expect(de.children[0].styles['tranform'])
+  //     .withContext('< 768')
+  //     .toBe(`translateX(${100 / 16}rem)`);
+  // });
 });
