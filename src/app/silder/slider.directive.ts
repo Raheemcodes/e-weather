@@ -91,6 +91,7 @@ export class SliderDirective implements OnInit {
   }
 
   @HostListener('window:resize') resize() {
+    this.innitial();
     this.setPositionByIndex();
   }
 
