@@ -1,6 +1,8 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DebugElement, Renderer2 } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { HomeComponent } from '../home/home.component';
 import { SliderDirective } from './slider.directive';
 
@@ -13,7 +15,7 @@ const mockMouse = {
 const mockTouch = {
   preventDefault() {},
   type: 'touch',
-  touches: [{ clientX: 140 }],
+  touches: [{ clientX: -140 }],
 } as any;
 
 describe('SliderDirective', () => {
@@ -24,6 +26,7 @@ describe('SliderDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [SliderDirective, HomeComponent],
+      providers: [Renderer2, provideHttpClient(), provideHttpClientTesting()],
     }).createComponent(HomeComponent);
 
     fixture.detectChanges(); // initial binding
@@ -52,9 +55,11 @@ describe('SliderDirective', () => {
     fixture.detectChanges();
     expect(de.styles['cursor']).withContext('< 768').toBe('grabbing');
 
+    de.triggerEventHandler('mouseleave', mockTouch);
     window.innerWidth = 768;
+    de.triggerEventHandler('mousedown', mockTouch);
     fixture.detectChanges();
-    expect(de.styles['cursor']).withContext('>= 768').toBe('grabbing');
+    expect(de.styles['cursor']).withContext('>= 768').toBe('');
   });
 
   it('should add style of cursor: pointer to attached element on touchstart if innerWidth < 768', () => {
@@ -63,9 +68,11 @@ describe('SliderDirective', () => {
     fixture.detectChanges();
     expect(de.styles['cursor']).toBe('grabbing');
 
+    de.triggerEventHandler('touchend', mockTouch);
     window.innerWidth = 768;
+    de.triggerEventHandler('touchstart', mockTouch);
     fixture.detectChanges();
-    expect(de.styles['cursor']).withContext('>= 768').toBe('grabbing');
+    expect(de.styles['cursor']).withContext('>= 768').toBe('');
   });
 
   // it('should translate relative to movement only if it`s on the x-axis', () => {

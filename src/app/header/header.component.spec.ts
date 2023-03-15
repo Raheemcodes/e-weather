@@ -1,8 +1,16 @@
 import { DebugElement, ElementRef } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
+import { IPRes } from '../shared/shared.model';
 
 import { HeaderComponent } from './header.component';
 
@@ -10,17 +18,33 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let de: DebugElement;
+  let sharedService: SharedService;
+  let params = new Subject<IPRes>();
+
+  class SharedServiceSpy {
+    ip$ = new Subject<IPRes>();
+    constructor() {}
+
+    fetchIPData() {
+      params.subscribe({
+        next: (res) => {
+          this.ip$.next(res);
+        },
+      });
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, SearchSuggestionComponent],
       imports: [BrowserAnimationsModule],
+      providers: [{ provide: SharedService, useClass: SharedServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-
+    sharedService = TestBed.inject(SharedService);
     fixture.detectChanges();
   });
 
@@ -65,6 +89,29 @@ describe('HeaderComponent', () => {
 
     const form: DebugElement = de.query(By.css('form.search-form'));
     expect(form.classes['focus']).toBeFalsy();
+  });
+
+  it('should set country_code property based on ip fetch result', fakeAsync(() => {
+    const country_code: string = 'NG';
+    sharedService.fetchIPData();
+
+    params.next(<IPRes>{ country_code });
+    fixture.detectChanges();
+
+    tick();
+    expect(component.country_code).toBe(country_code);
+  }));
+
+  it('should have child .location-degree contain country_code value', () => {
+    const country_code: string = 'US';
+    component.country_code = country_code;
+    fixture.detectChanges();
+
+    const location_degree_el = <HTMLElement>(
+      de.query(By.css('.location-degree')).nativeElement
+    );
+
+    expect(location_degree_el.textContent).toContain(country_code);
   });
 
   // it('should have search suggestion component', () => {

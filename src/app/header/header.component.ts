@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -18,10 +19,29 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   display: boolean = false; // to be removed
+  country_code!: string;
 
-  constructor(public renderer: Renderer2) {}
+  constructor(
+    public renderer: Renderer2,
+    private sharedService: SharedService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getIPData();
+  }
+
+  getIPData() {
+    this.sharedService.ip$.subscribe({
+      next: (res) => {
+        const { country_code } = res;
+
+        this.country_code = country_code;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 
   onSubmit() {
     console.log('me');

@@ -102,7 +102,7 @@ export class SliderDirective implements OnInit {
   @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
   touchstart(event: MouseEvent | TouchEvent) {
-    if (this.window.innerWidth > this.maxWidth) return;
+    if (this.window.innerWidth >= this.maxWidth) return;
 
     this.startPos = this.getPositionX(event);
     this.startPosY = this.getPositionY(event);
@@ -149,7 +149,7 @@ export class SliderDirective implements OnInit {
   }
 
   setPositionByIndex() {
-    if (this.window.innerWidth > this.maxWidth) this.currentTranslate = 0;
+    if (this.window.innerWidth >= this.maxWidth) this.currentTranslate = 0;
     else {
       if (this.curIdx == 0) {
         this.currentTranslate = this.pad + this.curIdx * -this.slideWidth;

@@ -1,23 +1,48 @@
-import { SliderDirective } from './../silder/slider.directive';
-import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { SliderDirective } from './../silder/slider.directive';
 
+import { IPRes } from '../shared/shared.model';
+import { SharedService } from '../shared/shared.service';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let de: DebugElement;
+  let params = new Subject<IPRes>();
+  let sharedService: SharedService;
+
+  class SharedServiceSpy {
+    ip$ = new Subject<IPRes>();
+    constructor() {}
+
+    fetchIPData() {
+      params.subscribe({
+        next: (res) => {
+          this.ip$.next(res);
+        },
+      });
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomeComponent, SliderDirective],
+      providers: [{ provide: SharedService, useClass: SharedServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
+    sharedService = TestBed.inject(SharedService);
     fixture.detectChanges();
   });
 
@@ -66,5 +91,26 @@ describe('HomeComponent', () => {
     );
 
     expect(forecast.length).toBe(8);
+  });
+
+  it('should set city property based on ip fetch result', fakeAsync(() => {
+    const city: string = 'NG';
+    sharedService.fetchIPData();
+
+    params.next(<IPRes>{ city });
+    fixture.detectChanges();
+
+    tick();
+    expect(component.city).toBe(city);
+  }));
+
+  it('should have child .title contain city value', () => {
+    const city: string = 'Lagos';
+    component.city = city;
+    fixture.detectChanges();
+
+    const title_de = <HTMLElement>de.query(By.css('h1.location')).nativeElement;
+
+    expect(title_de.textContent).toContain(city);
   });
 });
