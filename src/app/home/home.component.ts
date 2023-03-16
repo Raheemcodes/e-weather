@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HourlyRes, RestructuredHourlyForecast } from '../shared/shared.model';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { SharedService } from '../shared/shared.service';
 })
 export class HomeComponent implements OnInit {
   city!: string;
+  hourlyData!: RestructuredHourlyForecast[];
 
   constructor(private sharedService: SharedService) {}
 
@@ -21,11 +23,23 @@ export class HomeComponent implements OnInit {
         const { city } = res;
 
         this.city = city;
+        this.getHourlyData();
       },
       error: (err) => {
         console.error(err);
       },
     });
+  }
+
+  getHourlyData() {
+    this.sharedService
+      .fetchHourlyForecast(8, 'temperature_2m', 'weathercode')
+      .subscribe({
+        next: (res) => {
+          this.hourlyData = res;
+          console.log(this.hourlyData);
+        },
+      });
   }
 }
 // Translate on slide by the width of  the featured element
