@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
     this.sharedService.ip$.subscribe({
       next: (res) => {
         const { city } = res;
+
         this.city = city;
         this.getHourlyData();
       },

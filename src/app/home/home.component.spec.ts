@@ -14,7 +14,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject, of } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
-import { IPRes } from './../shared/shared.model';
+import { IPRes, HourlyRes, HourlyForcast } from './../shared/shared.model';
 import { SliderDirective } from './../silder/slider.directive';
 import { HomeComponent } from './home.component';
 
@@ -28,6 +28,9 @@ describe('HomeComponent', () => {
     latitude: 6.54,
     longitude: 3.39,
   } as IPRes;
+  let httpClient: HttpClient = {
+    get: (url: string) => of(),
+  } as any as HttpClient;
 
   // class SharedServiceSpy {
   //   ip$ = new Subject<IPRes>();
@@ -56,10 +59,6 @@ describe('HomeComponent', () => {
   // }
 
   beforeEach(async () => {
-    const httpClient = {
-      get: () => of(),
-    } as any as HttpClient;
-
     sharedServiceSpy = new SharedService(httpClient);
 
     await TestBed.configureTestingModule({
@@ -147,8 +146,6 @@ describe('HomeComponent', () => {
     it('should have child .title contain city value', () => {
       const city: string = 'Lagos';
 
-      jasmine.createSpyObj(SharedService, ['fetchIPData']);
-
       component.city = city;
       fixture.detectChanges();
 
@@ -184,6 +181,71 @@ describe('HomeComponent', () => {
         const temperature: number = 32.1;
 
         expect(component.roundup(temperature)).toBe(`${32}°C`);
+      });
+    });
+
+    describe('fetchHourlyForecast()', () => {
+      it('should return value of restructured hourly data', (done: DoneFn) => {
+        fixture.detectChanges();
+
+        const httpSpy = spyOn(httpClient, 'get').and.returnValue(
+          of({
+            current_weather: {
+              temperature: 32.4,
+              time: '2023-03-17T11:00',
+              weathercode: 2,
+              winddirection: 187,
+              windspeed: 8.4,
+            },
+
+            hourly: {
+              temperature_2m: [23, 22, 34, 32, 22, 55, 55, 32, 99, 10],
+              time: [
+                '2023-03-17T00:00',
+                '2023-03-17T01:00',
+                '2023-03-17T02:00',
+                '2023-03-17T03:00',
+                '2023-03-17T04:00',
+                '2023-03-17T05:00',
+                '2023-03-17T06:00',
+                '2023-03-17T07:00',
+                '2023-03-17T08:00',
+                '2023-03-17T09:00',
+                '2023-03-17T10:00',
+                '2023-03-17T11:00',
+                '2023-03-17T12:00',
+                '2023-03-17T13:00',
+                '2023-03-17T14:00',
+                '2023-03-17T15:00',
+                '2023-03-17T16:00',
+                '2023-03-17T17:00',
+                '2023-03-17T18:00',
+                '2023-03-17T19:00',
+                '2023-03-17T20:00',
+                '2023-03-17T21:00',
+                '2023-03-17T22:00',
+                '2023-03-17T23:00',
+              ],
+              weathercode: [23, 22, 34, 32, 22, 55, 55, 32, 99, 10],
+            } as HourlyForcast,
+          } as HourlyRes)
+        );
+
+        sharedServiceSpy.ip = ipData;
+        sharedServiceSpy.ip$.next(ipData);
+
+        sharedServiceSpy.fetchHourlyForecast(8, '', '').subscribe({
+          next: (res) => {
+            expect(res.length).withContext('length').toEqual(8);
+            expect(component.hourlyData)
+              .withContext('match hourlyData property')
+              .toEqual(res);
+            done();
+          },
+          error: done.fail,
+        });
+
+        expect(httpSpy).withContext('httpClient call').toHaveBeenCalledTimes(2);
       });
     });
   });
