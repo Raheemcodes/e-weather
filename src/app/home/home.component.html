@@ -53,11 +53,11 @@
           <img
             width="24"
             height="24"
-            ngSrc="../../assets/icons/white/{{
-              convertWMOtoImage(item.weathercode)
+            src="../../assets/icons/white/{{
+              convertWMOtoImage(item.weathercode, item.day)
             }}.svg"
             alt
-            priority
+            [title]="convertWMOCodes(item.weathercode)"
           />
         </div>
         <div class="time">{{ padHour(item.time) }}</div>

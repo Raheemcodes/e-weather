@@ -41,8 +41,12 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  convertWMOtoImage(code: number): string {
-    return this.sharedService.convertWMOCodestoSVG(code, 'sunny');
+  convertWMOCodes(code: number): string {
+    return this.sharedService.convertWMOCodes(code);
+  }
+
+  convertWMOtoImage(code: number, time: 'sunny' | 'night'): string {
+    return this.sharedService.convertWMOCodestoSVG(code, time);
   }
 
   padHour(hour: number): string {

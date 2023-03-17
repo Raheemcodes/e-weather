@@ -56,6 +56,12 @@ export interface CurrentWeatherRes {
   time: string;
 }
 
+export interface DailyWeatherRes {
+  time: string[];
+  sunset: string[];
+  sunrise: string[];
+}
+
 export interface HourlyRes {
   latitude: number;
   longitude: number;
@@ -71,6 +77,7 @@ export interface HourlyRes {
     weathercode: string;
   };
   hourly: HourlyForcast;
+  daily: DailyWeatherRes;
 }
 
 export interface HourlyForcast {
@@ -83,4 +90,5 @@ export interface RestructuredHourlyForecast {
   time: number;
   temperature_2m: number;
   weathercode: number;
+  day: 'sunny' | 'night';
 }

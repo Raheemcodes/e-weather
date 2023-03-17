@@ -50,7 +50,9 @@ export class SharedService {
         environment.METEO_WEATHER_API +
           `?forecast_days=8&latitude=${this.ip.latitude}&longitude=${
             this.ip.longitude
-          }&timezone=auto&current_weather=true&hourly=${arg.join(',')}`
+          }&timezone=auto&current_weather=true&hourly=${arg.join(
+            ','
+          )}&daily=sunset,sunrise`
       )
       .pipe(
         map((res) => {
@@ -60,7 +62,6 @@ export class SharedService {
   }
 
   mapHourlyData(res: HourlyRes, limit: number): RestructuredHourlyForecast[] {
-    console.log(res);
     const hourlyForecast: RestructuredHourlyForecast[] = [];
     const currentHour: number = new Date(res.current_weather.time).getTime();
     const timeLimit: number = limit * 60 * 60 * 1000;
@@ -71,10 +72,20 @@ export class SharedService {
         milliseconds >= currentHour &&
         milliseconds < currentHour + timeLimit
       ) {
+        const date: Date = new Date(time);
+        const sunrise: Date = new Date(
+          res.daily.sunrise[Math.floor(index / 24)]
+        );
+        const sunset: Date = new Date(res.daily.sunset[Math.floor(index / 24)]);
+
+        const day: 'sunny' | 'night' =
+          date < sunset && date >= sunrise ? 'sunny' : 'night';
+
         hourlyForecast.push({
           time: new Date(time).getHours(),
           temperature_2m: res.hourly.temperature_2m[index],
           weathercode: res.hourly.weathercode[index],
+          day,
         });
       }
     });
@@ -204,7 +215,7 @@ export class SharedService {
     return weatherCondition;
   }
 
-  convertWMOCodestoSVG(code: number, time: 'sunny' | 'night') {
+  convertWMOCodestoSVG(code: number, time: 'sunny' | 'night'): string {
     let image: string;
 
     switch (code) {
@@ -214,7 +225,7 @@ export class SharedService {
 
       case 1:
       case 2:
-        image = 'partly-cloudy';
+        image = `partly-cloudy-${time}`;
         break;
 
       case 3:
