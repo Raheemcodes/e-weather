@@ -60,6 +60,7 @@ export class SharedService {
   }
 
   mapHourlyData(res: HourlyRes, limit: number): RestructuredHourlyForecast[] {
+    console.log(res);
     const hourlyForecast: RestructuredHourlyForecast[] = [];
     const currentHour: number = new Date(res.current_weather.time).getTime();
     const timeLimit: number = limit * 60 * 60 * 1000;
@@ -79,5 +80,213 @@ export class SharedService {
     });
 
     return hourlyForecast;
+  }
+
+  convertWMOCodes(code: number): string {
+    let weatherCondition: string;
+
+    switch (code) {
+      case 0:
+        weatherCondition = 'Sunny';
+        break;
+
+      case 1:
+        weatherCondition = 'Mainly clear';
+        break;
+
+      case 2:
+        weatherCondition = 'Partly Cloudy';
+        break;
+
+      case 3:
+        weatherCondition = 'Overcast';
+        break;
+
+      case 45:
+        weatherCondition = 'Fog';
+        break;
+
+      case 48:
+        weatherCondition = 'Depositing rime fog';
+        break;
+
+      case 51:
+        weatherCondition = 'Light Drizzle';
+        break;
+
+      case 53:
+        weatherCondition = 'Moderate Drizzle';
+        break;
+
+      case 55:
+        weatherCondition = 'Intense Drizzle';
+        break;
+
+      case 56:
+        weatherCondition = 'Light Freezing Drizzle';
+        break;
+
+      case 57:
+        weatherCondition = 'Dense Freezing Drizzle';
+        break;
+
+      case 61:
+        weatherCondition = 'Slight Rain';
+        break;
+
+      case 63:
+        weatherCondition = 'Moderate Rain';
+        break;
+
+      case 65:
+        weatherCondition = 'Heavy rain';
+        break;
+
+      case 66:
+        weatherCondition = 'Light Freezing rain';
+        break;
+
+      case 67:
+        weatherCondition = 'Heavy Freezing rain';
+        break;
+
+      case 71:
+        weatherCondition = 'Slight Snow Fall';
+        break;
+
+      case 73:
+        weatherCondition = 'Moderate Snow Fall';
+        break;
+
+      case 75:
+        weatherCondition = 'Intense Snow Fall';
+        break;
+
+      case 77:
+        weatherCondition = 'Snow Grains';
+        break;
+
+      case 80:
+        weatherCondition = 'Slight Rain Showers';
+        break;
+
+      case 81:
+        weatherCondition = 'moderate Rain Showers';
+        break;
+
+      case 82:
+        weatherCondition = 'violent Rain Showers';
+        break;
+
+      case 85:
+        weatherCondition = 'Slight Snow Showers';
+        break;
+
+      case 86:
+        weatherCondition = 'Heavy Snow Showers';
+        break;
+
+      case 95:
+        weatherCondition = 'Slight or Moderate Thunderstorm';
+        break;
+
+      case 96:
+      case 97:
+      case 98:
+      case 99:
+        weatherCondition = 'Thunderstorm with Hail';
+        break;
+
+      default:
+        weatherCondition = 'Unknown Weather';
+    }
+
+    return weatherCondition;
+  }
+
+  convertWMOCodestoSVG(code: number, time: 'sunny' | 'night') {
+    let image: string;
+
+    switch (code) {
+      case 0:
+        image = 'sunny';
+        break;
+
+      case 1:
+      case 2:
+        image = 'partly-cloudy';
+        break;
+
+      case 3:
+        image = 'overcast';
+        break;
+
+      case 45:
+      case 48:
+        image = 'fog';
+        break;
+
+      case 51:
+      case 53:
+      case 56:
+        image = `drizzle-${time}`;
+        break;
+
+      case 55:
+      case 57:
+        image = 'drizzle';
+        break;
+
+      case 61:
+        image = `rain-${time}`;
+        break;
+
+      case 63:
+        image = 'rain';
+        break;
+
+      case 65:
+        image = 'heavy-rain';
+        break;
+
+      case 66:
+      case 67:
+        image = 'freezing-rain';
+        break;
+
+      case 71:
+      case 73:
+      case 75:
+        image = 'snow-fall';
+        break;
+
+      case 77:
+      case 85:
+      case 86:
+        image = 'snow-shower';
+        break;
+
+      case 80:
+      case 81:
+      case 82:
+        image = `rain-showers-${time}`;
+        break;
+
+      case 95:
+        image = 'thunderstorm';
+        break;
+
+      case 96:
+      case 97:
+      case 98:
+      case 99:
+        image = 'thunderstorm-hail';
+        break;
+
+      default:
+        image = 'Unknown Weather';
+    }
+
+    return image;
   }
 }
