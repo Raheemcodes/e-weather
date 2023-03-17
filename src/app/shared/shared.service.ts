@@ -71,7 +71,7 @@ export class SharedService {
         milliseconds < currentHour + timeLimit
       ) {
         hourlyForecast.push({
-          time,
+          time: new Date(time).getHours(),
           temperature_2m: res.hourly.temperature_2m[index],
           weathercode: res.hourly.weathercode[index],
         });

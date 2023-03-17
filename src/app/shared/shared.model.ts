@@ -80,7 +80,7 @@ export interface HourlyForcast {
 }
 
 export interface RestructuredHourlyForecast {
-  time: string;
+  time: number;
   temperature_2m: number;
   weathercode: number;
 }

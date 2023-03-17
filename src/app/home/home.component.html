@@ -47,8 +47,8 @@
 
   <div class="second-row">
     <ul class="forecast-list">
-      <li class="forecast">
-        <div class="degree">20°C</div>
+      <li class="forecast" *ngFor="let item of hourlyData">
+        <div class="degree">{{ roundup(item.temperature_2m) }}</div>
         <div class="weather-img__container">
           <img
             width="24"
@@ -58,105 +58,7 @@
             priority
           />
         </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
-      </li>
-
-      <li class="forecast">
-        <div class="degree">20°C</div>
-        <div class="weather-img__container">
-          <img
-            width="24"
-            height="24"
-            ngSrc="../../assets/icons/sunny.svg"
-            alt
-            priority
-          />
-        </div>
-        <div class="time">01.00</div>
+        <div class="time">{{ padHour(item.time) }}</div>
       </li>
     </ul>
   </div>
