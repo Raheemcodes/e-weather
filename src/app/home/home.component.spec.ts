@@ -1,9 +1,4 @@
-import {
-  HttpClient,
-  HttpContext,
-  HttpHeaders,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
@@ -14,7 +9,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject, of } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
-import { IPRes, HourlyRes, HourlyForcast } from './../shared/shared.model';
+import { HourlyForcast, HourlyRes, IPRes } from './../shared/shared.model';
 import { SliderDirective } from './../silder/slider.directive';
 import { HomeComponent } from './home.component';
 
@@ -117,9 +112,9 @@ describe('HomeComponent', () => {
 
     it('should have .forecast children of same length with hourlyData property', () => {
       component.hourlyData = [
-        { time: 1, weathercode: 5, temperature_2m: 20 },
-        { time: 2, weathercode: 5, temperature_2m: 20 },
-        { time: 2, weathercode: 5, temperature_2m: 20 },
+        { time: 1, weathercode: 5, temperature_2m: 20, day: 'sunny' },
+        { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
+        { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
       ];
 
       fixture.detectChanges();
@@ -198,6 +193,39 @@ describe('HomeComponent', () => {
               windspeed: 8.4,
             },
 
+            daily: {
+              time: [
+                '2023-03-18',
+                '2023-03-19',
+                '2023-03-20',
+                '2023-03-21',
+                '2023-03-22',
+                '2023-03-23',
+                '2023-03-24',
+                '2023-03-25',
+              ],
+              sunset: [
+                '2023-03-18T19:14',
+                '2023-03-19T19:15',
+                '2023-03-20T19:16',
+                '2023-03-21T19:17',
+                '2023-03-22T19:18',
+                '2023-03-23T19:19',
+                '2023-03-24T19:20',
+                '2023-03-25T19:21',
+              ],
+              sunrise: [
+                '2023-03-18T07:09',
+                '2023-03-19T07:08',
+                '2023-03-20T07:06',
+                '2023-03-21T07:04',
+                '2023-03-22T07:03',
+                '2023-03-23T07:01',
+                '2023-03-24T06:59',
+                '2023-03-25T06:58',
+              ],
+            },
+
             hourly: {
               temperature_2m: [23, 22, 34, 32, 22, 55, 55, 32, 99, 10],
               time: [
@@ -270,6 +298,19 @@ describe('HomeComponent', () => {
       tick();
       expect(spyFn).toHaveBeenCalledTimes(1);
     }));
+  });
+
+  describe('convertWMOCodes()', () => {
+    let spyFn: jasmine.Spy<(code: number) => string>;
+
+    beforeEach(() => {
+      spyFn = spyOn(component, 'convertWMOCodes');
+      fixture.detectChanges();
+    });
+
+    it('should have been called once', () => {
+      expect(spyFn).toHaveBeenCalledTimes(1);
+    });
   });
 
   // it('', () => {})
