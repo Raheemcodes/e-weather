@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
+import { timer, Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
@@ -17,9 +18,11 @@ import { SharedService } from '../shared/shared.service';
     ]),
   ],
 })
-export class HeaderComponent implements OnInit {
-  display: boolean = false; // to be removed
+export class HeaderComponent implements OnInit, OnDestroy {
+  display: boolean = false;
   country_code!: string;
+  timeout!: Subscription;
+  subs: Subscription[] = [];
 
   constructor(
     public renderer: Renderer2,
@@ -28,10 +31,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIPData();
+    this.getSearchRes();
   }
 
   getIPData() {
-    this.sharedService.ip$.subscribe({
+    this.subs[0] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { country_code } = res;
 
@@ -43,7 +47,31 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    console.log('me');
+  getSearchRes() {
+    this.subs[1] = this.sharedService.searchRes$.subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+    });
+  }
+
+  oninput({ value }: HTMLInputElement) {
+    if (this.timeout) this.timeout.unsubscribe();
+
+    this.timeout = timer(500).subscribe(() => {
+      this.sharedService.fetchLocation(value, 5);
+    });
+  }
+
+  onSubmit({ value }: HTMLInputElement) {
+    this.sharedService.fetchLocation(value, 5);
+  }
+
+  ngOnDestroy(): void {
+    if (this.timeout) this.timeout.unsubscribe();
+
+    this.subs.forEach((sub) => {
+      if (sub) sub.unsubscribe();
+    });
   }
 }

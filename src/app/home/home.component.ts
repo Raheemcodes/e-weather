@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { RestructuredHourlyForecast } from '../shared/shared.model';
 import { SharedService } from '../shared/shared.service';
 
@@ -7,9 +8,10 @@ import { SharedService } from '../shared/shared.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   city!: string;
   hourlyData!: RestructuredHourlyForecast[];
+  subs: Subscription[] = [];
 
   constructor(private sharedService: SharedService) {}
 
@@ -18,7 +20,7 @@ export class HomeComponent implements OnInit {
   }
 
   getIPData() {
-    this.sharedService.ip$.subscribe({
+    this.subs[0] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { city } = res;
 
@@ -32,7 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   getHourlyData() {
-    this.sharedService
+    this.subs[1] = this.sharedService
       .fetchHourlyForecast(8, 'temperature_2m', 'weathercode')
       .subscribe({
         next: (res) => {
@@ -55,5 +57,11 @@ export class HomeComponent implements OnInit {
 
   roundup(temperature: number): string {
     return Math.round(temperature) + '°C';
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => {
+      if (sub) sub.unsubscribe();
+    });
   }
 }

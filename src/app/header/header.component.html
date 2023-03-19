@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<form class="search-form" (ngSubmit)="onSubmit()" #form>
+<form class="search-form" (ngSubmit)="onSubmit(search)" #form>
   <div class="search-icon">
     <svg
       width="24"
@@ -41,10 +41,13 @@
   </div>
 
   <input
+    #search
     type="text"
     placeholder="Search City here"
     (focus)="renderer.addClass(form, 'focus'); display = true"
     (blur)="renderer.removeClass(form, 'focus'); display = false"
+    (input)="oninput(search)"
+    maxlength="100"
   />
 
   <app-search-suggestion

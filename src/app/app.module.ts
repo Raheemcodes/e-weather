@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { SearchSuggestionComponent } from './search-suggestion/search-suggestion.component';
 import { SliderDirective } from './silder/slider.directive';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { SliderDirective } from './silder/slider.directive';
     HomeComponent,
     SearchSuggestionComponent,
     SliderDirective,
+    SearchResultComponent,
   ],
   imports: [
     BrowserModule,

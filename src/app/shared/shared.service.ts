@@ -1,21 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject, tap } from 'rxjs';
+import { map, Observable, of, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
-  HourlyForcast,
+  CurrentWeatherRes,
   HourlyRes,
   IPRes,
   RestructuredHourlyForecast,
+  RestructureSearchRes,
+  SearchRes,
 } from './shared.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
-  test: string = 'Test';
   ip!: IPRes;
   ip$ = new Subject<IPRes>();
+  searchRes: RestructureSearchRes[] = [];
+  searchRes$ = new Subject<RestructureSearchRes[]>();
+  searchResLength!: number;
+  searchCount: number = 0;
 
   constructor(private http: HttpClient) {
     this.fetchIPData();
@@ -299,5 +304,54 @@ export class SharedService {
     }
 
     return image;
+  }
+
+  setSearchRes() {
+    const search = this.searchRes.slice(0, this.searchResLength);
+    this.searchRes$.next(search);
+    this.searchCount = 0;
+    this.searchRes.length = 0;
+  }
+
+  fetchCurrentWeather(location: SearchRes, idx: number) {
+    this.http
+      .get<CurrentWeatherRes>(
+        environment.METEO_WEATHER_API +
+          `?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`
+      )
+      .subscribe({
+        next: (res) => {
+          this.searchRes[idx] = { location, current_weather: res };
+
+          this.searchCount++;
+          if (this.searchResLength == this.searchCount) this.setSearchRes();
+        },
+      });
+  }
+
+  fetchLocation(key: string, length?: number): void {
+    this.http
+      .get<SearchRes[]>(
+        `${environment.SEARCH_API}?key=${environment.SEARCH_API_KEY}&q=${key}`
+      )
+      .pipe(
+        map((res) => {
+          if (length) return res.slice(0, length);
+          return res;
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          this.searchResLength = res.length;
+          if (!res.length) this.setSearchRes();
+
+          res.forEach((val, idx) => {
+            this.fetchCurrentWeather(val, idx);
+          });
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
   }
 }

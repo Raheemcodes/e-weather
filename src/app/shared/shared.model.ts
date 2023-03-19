@@ -92,3 +92,18 @@ export interface RestructuredHourlyForecast {
   weathercode: number;
   day: 'sunny' | 'night';
 }
+
+export interface SearchRes {
+  id: number;
+  name: string;
+  region: string;
+  country: string;
+  lat: number;
+  lon: number;
+  url: string;
+}
+
+export interface RestructureSearchRes {
+  location: SearchRes;
+  current_weather: CurrentWeatherRes;
+}

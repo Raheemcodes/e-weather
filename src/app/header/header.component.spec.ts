@@ -7,44 +7,34 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
 import { IPRes } from '../shared/shared.model';
 
 import { HeaderComponent } from './header.component';
+import { HttpClient } from '@angular/common/http';
+import { httpClientMock, ipDataMock } from '../shared/shared.mock';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let de: DebugElement;
-  let sharedService: SharedService;
-  let params = new Subject<IPRes>();
-
-  class SharedServiceSpy {
-    ip$ = new Subject<IPRes>();
-    constructor() {}
-
-    fetchIPData() {
-      params.subscribe({
-        next: (res) => {
-          this.ip$.next(res);
-        },
-      });
-    }
-  }
+  let sharedServiceSpy: SharedService;
 
   beforeEach(async () => {
+    sharedServiceSpy = new SharedService(httpClientMock);
+
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, SearchSuggestionComponent],
       imports: [BrowserAnimationsModule],
-      providers: [{ provide: SharedService, useClass: SharedServiceSpy }],
+      providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    sharedService = TestBed.inject(SharedService);
+
     fixture.detectChanges();
   });
 
@@ -93,9 +83,9 @@ describe('HeaderComponent', () => {
 
   it('should set country_code property based on ip fetch result', fakeAsync(() => {
     const country_code: string = 'NG';
-    sharedService.fetchIPData();
+    ipDataMock.country_code = country_code;
+    sharedServiceSpy.ip$.next(ipDataMock);
 
-    params.next(<IPRes>{ country_code });
     fixture.detectChanges();
 
     tick();
@@ -114,7 +104,48 @@ describe('HeaderComponent', () => {
     expect(location_degree_el.textContent).toContain(country_code);
   });
 
-  // it('should have search suggestion component', () => {
-  //   expect(de.query(By.css('app-search-suggestion'))).toBeTruthy();
-  // });
+  it('should have search suggestion component ', fakeAsync(() => {
+    component.display = true;
+    fixture.detectChanges();
+
+    expect(de.query(By.css('app-search-suggestion')))
+      .withContext('display is true')
+      .toBeTruthy();
+  }));
+
+  it('should not have search suggestion component when', fakeAsync(() => {
+    component.display = false;
+    fixture.detectChanges();
+
+    tick(300);
+    expect(de.query(By.css('app-search-suggestion')))
+      .withContext('display is false')
+      .toBeFalsy();
+  }));
+
+  it('should set display property to true on search input focus event trigger', () => {
+    const input: DebugElement = de.query(By.css('form.search-form input'));
+    input.triggerEventHandler('focus');
+
+    fixture.detectChanges();
+
+    expect(component.display).toBeTrue();
+  });
+
+  it('should set display property to false on search input blur event trigger', () => {
+    const input: DebugElement = de.query(By.css('form.search-form input'));
+    input.triggerEventHandler('blur');
+
+    fixture.detectChanges();
+
+    expect(component.display).toBeFalse();
+  });
+
+  it('should have called getSearchRes()', () => {
+    const spyFn = spyOn(component, 'getSearchRes');
+    component.ngOnInit();
+
+    fixture.detectChanges();
+    expect(spyFn).toHaveBeenCalled();
+  });
 });
