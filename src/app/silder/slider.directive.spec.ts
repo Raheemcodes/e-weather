@@ -26,7 +26,7 @@ describe('SliderDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [SliderDirective, HomeComponent],
-      providers: [Renderer2, provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).createComponent(HomeComponent);
 
     fixture.detectChanges(); // initial binding

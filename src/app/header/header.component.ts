@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   display: boolean = false;
   country_code!: string;
   timeout!: Subscription;
-  subs: Subscription[] = [];
+  sub!: Subscription;
 
   constructor(
     public renderer: Renderer2,
@@ -31,11 +31,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getIPData();
-    this.getSearchRes();
   }
 
   getIPData() {
-    this.subs[0] = this.sharedService.ip$.subscribe({
+    this.sub = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { country_code } = res;
 
@@ -47,16 +46,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSearchRes() {
-    this.subs[1] = this.sharedService.searchRes$.subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-    });
-  }
-
   oninput({ value }: HTMLInputElement) {
     if (this.timeout) this.timeout.unsubscribe();
+
+    if (!this.display && value) this.display = true;
+    if (this.display && !value) this.display = false;
 
     this.timeout = timer(500).subscribe(() => {
       this.sharedService.fetchLocation(value, 5);
@@ -69,9 +63,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.timeout) this.timeout.unsubscribe();
-
-    this.subs.forEach((sub) => {
-      if (sub) sub.unsubscribe();
-    });
+    if (this.sub) this.sub.unsubscribe();
   }
 }

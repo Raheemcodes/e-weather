@@ -7,14 +7,11 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Subject } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
-import { IPRes } from '../shared/shared.model';
 
-import { HeaderComponent } from './header.component';
-import { HttpClient } from '@angular/common/http';
 import { httpClientMock, ipDataMock } from '../shared/shared.mock';
+import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -139,13 +136,5 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     expect(component.display).toBeFalse();
-  });
-
-  it('should have called getSearchRes()', () => {
-    const spyFn = spyOn(component, 'getSearchRes');
-    component.ngOnInit();
-
-    fixture.detectChanges();
-    expect(spyFn).toHaveBeenCalled();
   });
 });

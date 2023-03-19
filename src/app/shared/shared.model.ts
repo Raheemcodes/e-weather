@@ -48,12 +48,23 @@ export interface IPRes {
   version: string;
 }
 
-export interface CurrentWeatherRes {
+export interface CurrentWeather {
   temperature: number;
   windspeed: number;
   winddirection: number;
   weathercode: number;
   time: string;
+}
+
+export interface CurrentWeatherRes {
+  current_weather: CurrentWeather;
+  elevation: number;
+  generationtime_ms: number;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  utc_offset_seconds: number;
 }
 
 export interface DailyWeatherRes {
@@ -70,7 +81,7 @@ export interface HourlyRes {
   timezone: string;
   timezone_abbreviation: string;
   elevation: number;
-  current_weather: CurrentWeatherRes;
+  current_weather: CurrentWeather;
   hourly_units: {
     time: string;
     temperature_2m: string;
@@ -105,5 +116,5 @@ export interface SearchRes {
 
 export interface RestructureSearchRes {
   location: SearchRes;
-  current_weather: CurrentWeatherRes;
+  current_weather: CurrentWeather;
 }

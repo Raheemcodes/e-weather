@@ -26,14 +26,6 @@ export class SharedService {
     this.fetchIPData();
   }
 
-  // navigate(page: string, fragment?: string) {
-  //   return of('navigate')
-  //     .pipe(delay(300))
-  //     .subscribe(() => {
-  //       this.router.navigate([page], { fragment });
-  //     });
-  // }
-
   setIp(data: IPRes) {
     this.ip = data;
     this.ip$.next(data);
@@ -306,11 +298,19 @@ export class SharedService {
     return image;
   }
 
+  convertTime(ISO: string): string {
+    return new Date(ISO).toLocaleTimeString('en-US', {
+      hour12: true,
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+  }
+
   setSearchRes() {
     const search = this.searchRes.slice(0, this.searchResLength);
     this.searchRes$.next(search);
+    this.searchRes = search;
     this.searchCount = 0;
-    this.searchRes.length = 0;
   }
 
   fetchCurrentWeather(location: SearchRes, idx: number) {
@@ -319,9 +319,23 @@ export class SharedService {
         environment.METEO_WEATHER_API +
           `?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`
       )
+      .pipe(
+        map((res) => {
+          return {
+            ...res,
+            current_weather: {
+              ...res.current_weather,
+              time: this.convertTime(res.current_weather.time),
+            },
+          };
+        })
+      )
       .subscribe({
         next: (res) => {
-          this.searchRes[idx] = { location, current_weather: res };
+          this.searchRes[idx] = {
+            location,
+            current_weather: res.current_weather,
+          };
 
           this.searchCount++;
           if (this.searchResLength == this.searchCount) this.setSearchRes();
@@ -330,6 +344,8 @@ export class SharedService {
   }
 
   fetchLocation(key: string, length?: number): void {
+    if (!key.length) return;
+
     this.http
       .get<SearchRes[]>(
         `${environment.SEARCH_API}?key=${environment.SEARCH_API_KEY}&q=${key}`
@@ -342,7 +358,9 @@ export class SharedService {
       )
       .subscribe({
         next: (res) => {
+          this.searchRes = [];
           this.searchResLength = res.length;
+
           if (!res.length) this.setSearchRes();
 
           res.forEach((val, idx) => {

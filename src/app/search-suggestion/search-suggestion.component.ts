@@ -1,10 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { RestructureSearchRes } from '../shared/shared.model';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-search-suggestion',
   templateUrl: './search-suggestion.component.html',
-  styleUrls: ['./search-suggestion.component.scss']
+  styleUrls: ['./search-suggestion.component.scss'],
 })
-export class SearchSuggestionComponent {
+export class SearchSuggestionComponent implements OnInit, OnDestroy {
+  sub!: Subscription;
+  result!: RestructureSearchRes[];
 
+  constructor(private sharedService: SharedService) {}
+
+  ngOnInit(): void {
+    this.getSearchRes();
+  }
+
+  getSearchRes() {
+    this.result = this.sharedService.searchRes;
+
+    if (!this.result.length) {
+      this.sub = this.sharedService.searchRes$.subscribe({
+        next: (res) => {
+          this.result = res;
+          console.log(res);
+        },
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) this.sub.unsubscribe();
+  }
 }

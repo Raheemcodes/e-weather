@@ -44,7 +44,7 @@
     #search
     type="text"
     placeholder="Search City here"
-    (focus)="renderer.addClass(form, 'focus'); display = true"
+    (focus)="renderer.addClass(form, 'focus'); display = true && !!search.value"
     (blur)="renderer.removeClass(form, 'focus'); display = false"
     (input)="oninput(search)"
     maxlength="100"

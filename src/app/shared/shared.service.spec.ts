@@ -1,9 +1,9 @@
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RestructuredHourlyForecast } from './shared.model';
+import { RestructuredHourlyForecast, IPRes } from './shared.model';
 
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   generateRestructuredForecast,
   hourlyRes,
@@ -65,5 +65,32 @@ describe('SharedService', () => {
     });
   });
 
-  // it('should have have propery ipres$ with value relative to fetchIPLocaion() res', () => {});
+  describe('fetchIPData()', () => {
+    it('should have property ip with value relative to fetchIPData() res', (done: DoneFn) => {
+      const httpSpy = spyOn(http, 'get').and.returnValue(of(ipDataMock));
+      service.fetchIPData();
+
+      httpSpy('').subscribe({
+        next: (res: any) => {
+          done();
+          expect(service.ip).withContext('main').toEqual(res);
+        },
+        error: done.fail,
+      });
+    });
+
+    it('should call setIp method when invoked', (done: DoneFn) => {
+      const httpSpy = spyOn(http, 'get').and.returnValue(of(ipDataMock));
+      const setIpSpy = spyOn(service, 'setIp');
+      service.fetchIPData();
+
+      httpSpy('').subscribe({
+        next: () => {
+          done();
+          expect(setIpSpy).toHaveBeenCalledTimes(1);
+        },
+        error: done.fail,
+      });
+    });
+  });
 });
