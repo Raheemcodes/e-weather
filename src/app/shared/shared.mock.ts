@@ -15,19 +15,19 @@ export const MockHoulyData: RestructuredHourlyForecast[] = [
 ];
 
 export const current_weather_mock = {
-  latitude: 40.875,
-  longitude: 74.125,
-  generationtime_ms: 6.796002388000488,
-  utc_offset_seconds: 21600,
-  timezone: 'Asia/Bishkek',
-  timezone_abbreviation: '+06',
-  elevation: 3825.0,
+  elevation: 5,
+  generationtime_ms: 0.5630254745483398,
+  latitude: 6.5,
+  longitude: 3.375,
+  timezone: 'Africa/Lagos',
+  timezone_abbreviation: 'WAT',
+  utc_offset_seconds: 3600,
   current_weather: {
-    temperature: -7.4,
-    windspeed: 19.8,
-    winddirection: 243.0,
-    weathercode: 0,
-    time: '2023-03-18T20:00',
+    temperature: 30.4,
+    weathercode: 80,
+    winddirection: 197,
+    windspeed: 9.8,
+    time: '2023-03-18T13:00',
   },
 };
 
@@ -37,8 +37,8 @@ export const locationResMock = [
     name: 'Lagos',
     region: 'Lagos',
     country: 'Nigeria',
-    lat: 6.45,
-    lon: 3.4,
+    lat: 6.5,
+    lon: 3.375,
     url: 'lagos-lagos-nigeria',
   },
   {
@@ -80,11 +80,20 @@ export const locationResMock = [
 ];
 
 export const restructured_current_weather_mock = {
-  temperature: -7.4,
-  windspeed: 19.8,
-  winddirection: 243.0,
-  weathercode: 0,
-  time: '2023-03-18T20:00',
+  elevation: 5,
+  generationtime_ms: 0.5630254745483398,
+  latitude: 6.5,
+  longitude: 3.375,
+  timezone: 'Africa/Lagos',
+  timezone_abbreviation: 'WAT',
+  utc_offset_seconds: 3600,
+  current_weather: {
+    temperature: 30.4,
+    weathercode: 80,
+    winddirection: 197,
+    windspeed: 9.8,
+    time: '1:00 PM',
+  },
 };
 
 export const restructuredLocationMock = {
@@ -92,14 +101,14 @@ export const restructuredLocationMock = {
   name: 'Lagos',
   region: 'Lagos',
   country: 'Nigeria',
-  lat: 6.45,
-  lon: 3.4,
+  lat: 6.5,
+  lon: 3.375,
   url: 'lagos-lagos-nigeria',
 };
 
 export const restructuredSearchResMock = [
   {
-    current_weather: restructured_current_weather_mock,
+    current_weather: restructured_current_weather_mock.current_weather,
     location: restructuredLocationMock,
   },
 ];

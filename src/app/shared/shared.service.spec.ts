@@ -1,16 +1,16 @@
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RestructuredHourlyForecast, IPRes } from './shared.model';
-
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
+  current_weather_mock,
   generateRestructuredForecast,
   hourlyRes,
   ipDataMock,
   locationResMock,
   restructuredSearchResMock,
 } from './shared.mock';
+import { RestructuredHourlyForecast } from './shared.model';
 import { SharedService } from './shared.service';
 
 describe('SharedService', () => {
@@ -150,6 +150,71 @@ describe('SharedService', () => {
   });
 
   describe('fetchCurrentWeather()', () => {
-    it('should restructure current_weather response', () => {});
+    it('should restructure current_weather response', () => {
+      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+
+      service.fetchCurrentWeather(locationResMock[0]);
+
+      expect(service.searchRes).toEqual(restructuredSearchResMock);
+    });
+
+    it('should called setSearchRes() when invoked', () => {
+      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+      const setSearchResSpy = spyOn(service, 'setSearchRes');
+      service.fetchCurrentWeather(locationResMock[0]);
+
+      expect(setSearchResSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should called convertTime() when invoked', () => {
+      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+      const convertTimeSpy = spyOn(service, 'convertTime');
+      service.fetchCurrentWeather(locationResMock[0]);
+
+      expect(convertTimeSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('convertTime()', () => {
+    it('should convert Date from ISO string to recent hour', () => {
+      const value: string = service.convertTime('2023-03-18T13:00');
+      const result = '1:00 PM';
+
+      expect(value).toBe(result);
+    });
+  });
+
+  describe('setSearchRes()', () => {
+    it('should set argument passed as the value of searchRes & searchRes$ when invoked', (done: DoneFn) => {
+      service.setSearchRes(restructuredSearchResMock[0]);
+
+      service.searchRes$.subscribe({
+        next: (res) => {
+          done();
+          expect(res).withContext('subject').toEqual(restructuredSearchResMock);
+        },
+        error: done.fail,
+      });
+      expect(service.searchRes)
+        .withContext('main')
+        .toEqual(restructuredSearchResMock);
+    });
+  });
+
+  describe('resetSearchRes()', () => {
+    it('should reset searchRes & searchRes$ when invoked', (done: DoneFn) => {
+      service.searchRes = restructuredSearchResMock;
+      service.searchRes$.next(restructuredSearchResMock);
+      service.resetSearchRes();
+
+      service.searchRes$.subscribe({
+        next: (res) => {
+          done();
+          expect(res).withContext('subject').toEqual([]);
+        },
+        error: done.fail,
+      });
+      expect(service.searchRes).withContext('main').toEqual([]);
+    });
   });
 });

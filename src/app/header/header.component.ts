@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { timer, Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     public renderer: Renderer2,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,8 +59,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit({ value }: HTMLInputElement) {
-    this.sharedService.fetchLocation(value, 5);
+  onSubmit(search: HTMLInputElement) {
+    this.router.navigate(['search', search.value]);
+    search.value = '';
+    search.blur();
+    // this.sharedService.fetchLocation(value, 5);
   }
 
   ngOnDestroy(): void {

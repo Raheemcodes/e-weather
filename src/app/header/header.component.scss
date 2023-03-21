@@ -26,6 +26,7 @@
   line-height: toRem(28);
   letter-spacing: 0em;
   color: #1e1e1e;
+  cursor: pointer;
 
   @media screen and (min-width: $lg) {
     font-size: toRem(32);

@@ -1,3 +1,4 @@
+import { RestructureSearchRes } from './../shared/shared.model';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -107,6 +108,21 @@ describe('SearchSuggestionComponent', () => {
 
       fixture.detectChanges();
       expect(spyFn).toHaveBeenCalled();
+    });
+
+    it('should call sharedService.searchRes$ property after being invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy.searchRes$, 'subscribe');
+      component.getSearchRes();
+
+      expect(spyFn).toHaveBeenCalled();
+    });
+
+    it('should set result property as value of sharedService.searchRes$ subject when invoked', () => {
+      const value: RestructureSearchRes[] = restructuredSearchResMock;
+      sharedServiceSpy.searchRes$.next(value);
+      component.getSearchRes();
+
+      expect(component.result).toEqual(value);
     });
   });
 });
