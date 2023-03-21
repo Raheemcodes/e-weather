@@ -347,8 +347,8 @@ export class SharedService {
       });
   }
 
-  fetchLocation(key: string, length?: number): void {
-    if (!key.length) return this.resetSearchRes();
+  fetchLocation(key: string, limit?: number): void {
+    if (!key) return this.resetSearchRes();
 
     this.http
       .get<SearchRes[]>(
@@ -356,13 +356,12 @@ export class SharedService {
       )
       .pipe(
         map((res) => {
-          if (length) return res.slice(0, length);
+          if (limit) return res.slice(0, limit);
           return res;
         })
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
           if (!res.length) return this.resetSearchRes();
           this.searchRes = [];
 

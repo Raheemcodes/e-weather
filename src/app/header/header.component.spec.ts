@@ -143,4 +143,12 @@ describe('HeaderComponent', () => {
 
     expect(component.display).toBeFalse();
   });
+
+  describe('getIPData', () => {
+    it('should ');
+  });
+
+  describe('fetchLocation', () => {
+    it('should ');
+  });
 });

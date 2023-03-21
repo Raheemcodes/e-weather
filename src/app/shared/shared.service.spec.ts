@@ -8,6 +8,8 @@ import {
   generateRestructuredForecast,
   hourlyRes,
   ipDataMock,
+  locationResMock,
+  restructuredSearchResMock,
 } from './shared.mock';
 import { SharedService } from './shared.service';
 
@@ -91,6 +93,59 @@ describe('SharedService', () => {
         },
         error: done.fail,
       });
+    });
+  });
+
+  describe('fetchLocation()', () => {
+    it('should call fetchCurrentWeather() and empty searchRes property by the length of the http response', () => {
+      service.searchRes = restructuredSearchResMock;
+      spyOn(http, 'get').and.returnValue(of(locationResMock));
+      const spyFn = spyOn(service, 'fetchCurrentWeather');
+
+      service.fetchLocation('lag', locationResMock.length);
+      expect(service.searchRes.length).withContext('searchRes').toBe(0);
+      expect(spyFn)
+        .withContext('fetchCurrentWeather')
+        .toHaveBeenCalledTimes(locationResMock.length);
+    });
+
+    it('should call fetchCurrentWeather() by the number of limit if it is passed', () => {
+      let limit: number = 5;
+      spyOn(http, 'get').and.returnValue(of(locationResMock));
+      const spyFn = spyOn(service, 'fetchCurrentWeather');
+
+      service.fetchLocation('lag', limit);
+      expect(spyFn).toHaveBeenCalledTimes(limit);
+    });
+
+    it('should not call fetchCurrentWeather() if the key string is empty rather call resetSearchRes()', () => {
+      let limit: number = 5;
+      const fetchCurrentWeatherSpy = spyOn(service, 'fetchCurrentWeather');
+      const resetSearchResSpy = spyOn(service, 'resetSearchRes');
+      spyOn(http, 'get').and.returnValue(of(locationResMock));
+
+      service.fetchLocation('', limit);
+      expect(resetSearchResSpy)
+        .withContext('resetSearchRes()')
+        .toHaveBeenCalledTimes(1);
+      expect(fetchCurrentWeatherSpy)
+        .withContext('fetchCurrentWeather()')
+        .not.toHaveBeenCalled();
+    });
+
+    it('should not call fetchCurrentWeather() if the http response is empty rather call resetSearchRes()', () => {
+      let limit: number = 5;
+      const fetchCurrentWeatherSpy = spyOn(service, 'fetchCurrentWeather');
+      const resetSearchResSpy = spyOn(service, 'resetSearchRes');
+      spyOn(http, 'get').and.returnValue(of([]));
+
+      service.fetchLocation('lag', limit);
+      expect(resetSearchResSpy)
+        .withContext('resetSearchRes()')
+        .toHaveBeenCalledTimes(1);
+      expect(fetchCurrentWeatherSpy)
+        .withContext('fetchCurrentWeather()')
+        .not.toHaveBeenCalled();
     });
   });
 });

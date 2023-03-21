@@ -15,6 +15,71 @@ export const MockHoulyData: RestructuredHourlyForecast[] = [
 ];
 
 export const current_weather_mock = {
+  latitude: 40.875,
+  longitude: 74.125,
+  generationtime_ms: 6.796002388000488,
+  utc_offset_seconds: 21600,
+  timezone: 'Asia/Bishkek',
+  timezone_abbreviation: '+06',
+  elevation: 3825.0,
+  current_weather: {
+    temperature: -7.4,
+    windspeed: 19.8,
+    winddirection: 243.0,
+    weathercode: 0,
+    time: '2023-03-18T20:00',
+  },
+};
+
+export const locationResMock = [
+  {
+    id: 1734598,
+    name: 'Lagos',
+    region: 'Lagos',
+    country: 'Nigeria',
+    lat: 6.45,
+    lon: 3.4,
+    url: 'lagos-lagos-nigeria',
+  },
+  {
+    id: 3256200,
+    name: 'Lagos De Moreno',
+    region: 'Jalisco',
+    country: 'Mexico',
+    lat: 21.36,
+    lon: -101.93,
+    url: 'lagos-de-moreno-jalisco-mexico',
+  },
+  {
+    id: 2003368,
+    name: 'Lagos',
+    region: 'Faro',
+    country: 'Portugal',
+    lat: 37.1,
+    lon: -8.67,
+    url: 'lagos-faro-portugal',
+  },
+  {
+    id: 784036,
+    name: 'Lagos',
+    region: 'Aquitaine',
+    country: 'France',
+    lat: 43.22,
+    lon: -0.22,
+    url: 'lagos-aquitaine-france',
+  },
+  {
+    id: 3246691,
+    name: 'Lagos Del Sol',
+    region: 'Quintana Roo',
+    country: 'Mexico',
+    lat: 21.05,
+    lon: -86.85,
+    url: 'lagos-del-sol-quintana-roo-mexico',
+  },
+];
+
+export const restructured_current_weather_mock = {
   temperature: -7.4,
   windspeed: 19.8,
   winddirection: 243.0,
@@ -34,7 +99,7 @@ export const restructuredLocationMock = {
 
 export const restructuredSearchResMock = [
   {
-    current_weather: current_weather_mock,
+    current_weather: restructured_current_weather_mock,
     location: restructuredLocationMock,
   },
 ];
