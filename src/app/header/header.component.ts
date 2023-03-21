@@ -59,11 +59,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit(search: HTMLInputElement) {
+  onsubmit(search: HTMLInputElement) {
     this.router.navigate(['search', search.value]);
     search.value = '';
     search.blur();
-    // this.sharedService.fetchLocation(value, 5);
   }
 
   ngOnDestroy(): void {
