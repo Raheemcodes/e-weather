@@ -65,6 +65,7 @@ export interface CurrentWeatherRes {
   timezone: string;
   timezone_abbreviation: string;
   utc_offset_seconds: number;
+  error: boolean;
 }
 
 export interface DailyWeatherRes {

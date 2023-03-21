@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   CurrentWeatherRes,
@@ -17,10 +17,9 @@ import {
 export class SharedService {
   ip!: IPRes;
   ip$ = new Subject<IPRes>();
+  fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
-  searchRes$ = new Subject<RestructureSearchRes[]>();
-  searchResLength!: number;
-  searchCount: number = 0;
+  searchRes$ = new BehaviorSubject<RestructureSearchRes[]>(this.searchRes);
 
   constructor(private http: HttpClient) {
     this.fetchIPData();
@@ -306,11 +305,14 @@ export class SharedService {
     });
   }
 
-  setSearchRes() {
-    const search = this.searchRes.slice(0, this.searchResLength);
-    this.searchRes$.next(search);
-    this.searchRes = search;
-    this.searchCount = 0;
+  setSearchRes(val: RestructureSearchRes) {
+    this.searchRes.push(val);
+    this.searchRes$.next(this.searchRes);
+  }
+
+  resetSearchRes() {
+    this.searchRes = [];
+    this.searchRes$.next(this.searchRes);
   }
 
   fetchCurrentWeather(location: SearchRes, idx: number) {
@@ -332,19 +334,21 @@ export class SharedService {
       )
       .subscribe({
         next: (res) => {
-          this.searchRes[idx] = {
+          const record = {
             location,
             current_weather: res.current_weather,
           };
 
-          this.searchCount++;
-          if (this.searchResLength == this.searchCount) this.setSearchRes();
+          this.setSearchRes(record);
+        },
+        error: (err) => {
+          console.error(err);
         },
       });
   }
 
   fetchLocation(key: string, length?: number): void {
-    if (!key.length) return;
+    if (!key.length) return this.resetSearchRes();
 
     this.http
       .get<SearchRes[]>(
@@ -358,10 +362,9 @@ export class SharedService {
       )
       .subscribe({
         next: (res) => {
+          console.log(res);
+          if (!res.length) return this.resetSearchRes();
           this.searchRes = [];
-          this.searchResLength = res.length;
-
-          if (!res.length) this.setSearchRes();
 
           res.forEach((val, idx) => {
             this.fetchCurrentWeather(val, idx);

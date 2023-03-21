@@ -62,6 +62,7 @@
 .suggestion-icon {
   width: toRem(24);
   height: toRem(24);
+  flex-shrink: 0;
 
   @media screen and (min-width: $two-xl) {
     width: toRem(32);

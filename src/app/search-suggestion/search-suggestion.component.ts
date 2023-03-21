@@ -19,16 +19,11 @@ export class SearchSuggestionComponent implements OnInit, OnDestroy {
   }
 
   getSearchRes() {
-    this.result = this.sharedService.searchRes;
-
-    if (!this.result.length) {
-      this.sub = this.sharedService.searchRes$.subscribe({
-        next: (res) => {
-          this.result = res;
-          console.log(res);
-        },
-      });
-    }
+    this.sub = this.sharedService.searchRes$.subscribe({
+      next: (res) => {
+        this.result = res;
+      },
+    });
   }
 
   ngOnDestroy(): void {

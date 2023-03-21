@@ -103,6 +103,7 @@ describe('HeaderComponent', () => {
 
   it('should have search suggestion component ', fakeAsync(() => {
     component.display = true;
+
     fixture.detectChanges();
 
     expect(de.query(By.css('app-search-suggestion')))
@@ -120,13 +121,18 @@ describe('HeaderComponent', () => {
       .toBeFalsy();
   }));
 
-  it('should set display property to true on search input focus event trigger', () => {
+  it('should set display property to true on search input focus event trigger and if input has value', () => {
     const input: DebugElement = de.query(By.css('form.search-form input'));
+
+    input.nativeElement.value = 'dkk';
     input.triggerEventHandler('focus');
-
     fixture.detectChanges();
+    expect(component.display).withContext('with value').toBeTrue();
 
-    expect(component.display).toBeTrue();
+    input.nativeElement.value = '';
+    input.triggerEventHandler('focus');
+    fixture.detectChanges();
+    expect(component.display).withContext('with no value').toBeFalse();
   });
 
   it('should set display property to false on search input blur event trigger', () => {
