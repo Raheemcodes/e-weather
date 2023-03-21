@@ -14,6 +14,31 @@ export const MockHoulyData: RestructuredHourlyForecast[] = [
   { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
 ];
 
+export const current_weather_mock = {
+  temperature: -7.4,
+  windspeed: 19.8,
+  winddirection: 243.0,
+  weathercode: 0,
+  time: '2023-03-18T20:00',
+};
+
+export const restructuredLocationMock = {
+  id: 1734598,
+  name: 'Lagos',
+  region: 'Lagos',
+  country: 'Nigeria',
+  lat: 6.45,
+  lon: 3.4,
+  url: 'lagos-lagos-nigeria',
+};
+
+export const restructuredSearchResMock = [
+  {
+    current_weather: current_weather_mock,
+    location: restructuredLocationMock,
+  },
+];
+
 export let httpClientMock: HttpClient = {
   get: (url: string) => of(),
 } as any as HttpClient;

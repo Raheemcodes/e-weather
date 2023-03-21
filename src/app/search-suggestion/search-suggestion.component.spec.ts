@@ -1,10 +1,13 @@
-import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
-import { SearchSuggestionComponent } from './search-suggestion.component';
+import {
+  httpClientMock,
+  restructuredSearchResMock,
+} from '../shared/shared.mock';
 import { SharedService } from '../shared/shared.service';
-import { httpClientMock } from '../shared/shared.mock';
+import { SearchSuggestionComponent } from './search-suggestion.component';
 
 describe('SearchSuggestionComponent', () => {
   let component: SearchSuggestionComponent;
@@ -55,15 +58,45 @@ describe('SearchSuggestionComponent', () => {
 
   describe('suggestion-list__item', () => {
     it('should have icon', () => {
-      expect(de.query(By.css('.suggestion-icon'))).toBeTruthy();
+      component.result = restructuredSearchResMock;
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-icon')))
+        .withContext('has value')
+        .toBeTruthy();
+
+      component.result = [];
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-icon')))
+        .withContext('has no value')
+        .toBeFalsy();
     });
 
-    it('should have title', () => {
-      expect(de.query(By.css('.suggestion-title'))).toBeTruthy();
+    it('should have title only if result proper has value', () => {
+      component.result = restructuredSearchResMock;
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-title')))
+        .withContext('has value')
+        .toBeTruthy();
+
+      component.result = [];
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-title')))
+        .withContext('has no value')
+        .toBeFalsy();
     });
 
     it('should have details', () => {
-      expect(de.query(By.css('.suggestion-details'))).toBeTruthy();
+      component.result = restructuredSearchResMock;
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-details')))
+        .withContext('has value')
+        .toBeTruthy();
+
+      component.result = [];
+      fixture.detectChanges();
+      expect(de.query(By.css('.suggestion-details')))
+        .withContext('has no value')
+        .toBeFalsy();
     });
   });
 
