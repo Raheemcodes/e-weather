@@ -315,7 +315,7 @@ export class SharedService {
     this.searchRes$.next(this.searchRes);
   }
 
-  fetchCurrentWeather(location: SearchRes, idx: number) {
+  fetchCurrentWeather(location: SearchRes) {
     this.http
       .get<CurrentWeatherRes>(
         environment.METEO_WEATHER_API +
@@ -366,7 +366,7 @@ export class SharedService {
           this.searchRes = [];
 
           res.forEach((val, idx) => {
-            this.fetchCurrentWeather(val, idx);
+            this.fetchCurrentWeather(val);
           });
         },
         error: (err) => {

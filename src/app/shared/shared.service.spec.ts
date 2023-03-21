@@ -148,4 +148,8 @@ describe('SharedService', () => {
         .not.toHaveBeenCalled();
     });
   });
+
+  describe('fetchCurrentWeather()', () => {
+    it('should restructure current_weather response', () => {});
+  });
 });
