@@ -19,7 +19,7 @@ export class SharedService {
   ip$ = new Subject<IPRes>();
   fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
-  searchRes$ = new BehaviorSubject<RestructureSearchRes[]>(this.searchRes);
+  searchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
 
   constructor(private http: HttpClient) {
