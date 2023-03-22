@@ -8,7 +8,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
 
@@ -166,12 +166,16 @@ describe('HeaderComponent', () => {
 
   describe('onInput()', () => {
     it('should unsubscribe from timeout if timeout contains an observable property', () => {
-      component.timeout = of().subscribe();
-      const spyFn = spyOn(component.timeout, 'unsubscribe');
+      component.subs = [of().subscribe(), of().subscribe(), of().subscribe()];
+      let spyFn: jasmine.Spy[] = [];
+
+      component.subs.forEach((sub, idx) => {
+        spyFn[idx] = spyOn(sub, 'unsubscribe');
+      });
       const input: HTMLInputElement = de.query(By.css('input')).nativeElement;
       component.oninput(input);
 
-      expect(spyFn).toHaveBeenCalled();
+      expect(spyFn[2]).toHaveBeenCalled();
     });
 
     it('should set display property to true if display is false and value is true', () => {
