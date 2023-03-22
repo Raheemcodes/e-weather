@@ -21,9 +21,22 @@ import { SharedService } from '../shared/shared.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   display: boolean = false;
+  _isLoading: boolean = false;
   country_code!: string;
-  timeout!: Subscription;
-  sub!: Subscription;
+  subs: Subscription[] = [];
+
+  set isLoading(val: boolean) {
+    if (val) this._isLoading = val;
+    else {
+      this.subs[0] = timer(3000).subscribe(() => {
+        this._isLoading = val;
+      });
+    }
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
 
   constructor(
     public renderer: Renderer2,
@@ -36,25 +49,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getIPData() {
-    this.sub = this.sharedService.ip$.subscribe({
+    this.isLoading = true;
+    this.subs[1] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { country_code } = res;
 
         this.country_code = country_code;
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error(err);
       },
     });
   }
 
   oninput({ value }: HTMLInputElement) {
-    if (this.timeout) this.timeout.unsubscribe();
+    if (this.subs[2]) this.subs[2].unsubscribe();
 
     if (!this.display && value) this.display = true;
     if (this.display && !value) this.display = false;
 
-    this.timeout = timer(500).subscribe(() => {
+    this.subs[2] = timer(500).subscribe(() => {
       this.sharedService.fetchLocation(value, 5);
     });
   }
@@ -66,7 +82,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.timeout) this.timeout.unsubscribe();
-    if (this.sub) this.sub.unsubscribe();
+    this.subs.forEach((sub) => {
+      if (sub) sub.unsubscribe();
+    });
   }
 }

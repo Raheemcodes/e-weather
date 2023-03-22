@@ -81,6 +81,7 @@
   line-height: toRem(18);
   color: var(--main-blue);
   margin-bottom: toRem(8);
+  border-radius: toRem(4);
 
   @media screen and (min-width: $two-xl) {
     font-size: toRem(22);
@@ -94,6 +95,7 @@
   font-weight: 500;
   line-height: toRem(18);
   color: #868686;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $two-xl) {
     font-size: toRem(18);

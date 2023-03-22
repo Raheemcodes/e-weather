@@ -75,6 +75,7 @@
   line-height: toRem(18);
   text-align: left;
   color: #7c7c7c;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $lg) {
     font-size: toRem(18);

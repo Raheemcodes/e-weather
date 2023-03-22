@@ -20,6 +20,7 @@ export class SharedService {
   fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
   searchRes$ = new BehaviorSubject<RestructureSearchRes[]>(this.searchRes);
+  isLoading$ = new BehaviorSubject<boolean>(true);
 
   constructor(private http: HttpClient) {
     this.fetchIPData();
@@ -348,6 +349,7 @@ export class SharedService {
   }
 
   fetchLocation(key: string, limit?: number): void {
+    this.isLoading$.next(true);
     if (!key) return this.resetSearchRes();
 
     this.http
@@ -356,8 +358,8 @@ export class SharedService {
       )
       .pipe(
         map((res) => {
-          if (limit) return res.slice(0, limit);
-          return res;
+          if (limit) return [...res].slice(0, limit);
+          else return res;
         })
       )
       .subscribe({

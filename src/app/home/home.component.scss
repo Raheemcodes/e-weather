@@ -195,6 +195,7 @@ h1.location {
   font-weight: 700;
   line-height: toRem(24);
   color: #474343;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $lg) {
     font-size: toRem(28);
@@ -213,6 +214,7 @@ h1.location {
   color: var(--main-blue);
   background-color: #0000;
   padding: toRem(4) 0;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $lg) {
     font-size: toRem(18);
@@ -257,6 +259,7 @@ h1.location {
   border: 1px solid #d0d0d0;
   border-radius: toRem(18);
   padding: toRem(8) toRem(15);
+  flex-shrink: 0;
 
   @media screen and (min-width: $lg) {
     max-width: toRem(106);

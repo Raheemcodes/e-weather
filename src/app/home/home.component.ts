@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { RestructuredHourlyForecast } from '../shared/shared.model';
 import { SharedService } from '../shared/shared.service';
 
@@ -12,6 +12,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   city!: string;
   hourlyData!: RestructuredHourlyForecast[];
   subs: Subscription[] = [];
+  _isLoading: boolean = false;
+
+  set isLoading(val: boolean) {
+    if (val) this._isLoading = val;
+    else {
+      this.subs[0] = timer(3000).subscribe(() => {
+        this._isLoading = val;
+      });
+    }
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
 
   constructor(private sharedService: SharedService) {}
 
@@ -20,7 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getIPData() {
-    this.subs[0] = this.sharedService.ip$.subscribe({
+    this.isLoading = true;
+    this.subs[1] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { city } = res;
 
@@ -28,17 +43,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getHourlyData();
       },
       error: (err) => {
+        this.isLoading = false;
         console.error(err);
       },
     });
   }
 
   getHourlyData() {
-    this.subs[1] = this.sharedService
+    this.subs[2] = this.sharedService
       .fetchHourlyForecast(8, 'temperature_2m', 'weathercode')
       .subscribe({
         next: (res) => {
           this.hourlyData = res;
+          this.isLoading = false;
         },
       });
   }
