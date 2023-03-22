@@ -71,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.display && !value) this.display = false;
 
     this.subs[2] = timer(500).subscribe(() => {
+      this.sharedService.isLoading$.next(true);
       this.sharedService.fetchLocation(value, 5);
     });
   }

@@ -20,7 +20,7 @@ export class SharedService {
   fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
   searchRes$ = new BehaviorSubject<RestructureSearchRes[]>(this.searchRes);
-  isLoading$ = new BehaviorSubject<boolean>(true);
+  isLoading$ = new Subject<boolean>();
 
   constructor(private http: HttpClient) {
     this.fetchIPData();
@@ -309,11 +309,13 @@ export class SharedService {
   setSearchRes(val: RestructureSearchRes) {
     this.searchRes.push(val);
     this.searchRes$.next(this.searchRes);
+    this.isLoading$.next(false);
   }
 
   resetSearchRes() {
     this.searchRes = [];
     this.searchRes$.next(this.searchRes);
+    this.isLoading$.next(false);
   }
 
   fetchCurrentWeather(location: SearchRes) {
