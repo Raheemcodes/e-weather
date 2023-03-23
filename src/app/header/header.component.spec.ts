@@ -96,21 +96,22 @@ describe('HeaderComponent', () => {
 
     fixture.detectChanges();
 
-    tick();
+    tick(3000);
     expect(component.country_code).toBe(country_code);
   }));
 
-  it('should have child .location-degree contain country_code value', () => {
+  it('should have child .location-degree contain country_code value', fakeAsync(() => {
     const country_code: string = 'US';
     component.country_code = country_code;
+    component.isLoading = false;
+    tick(3000);
+
     fixture.detectChanges();
-
     const location_degree_el = <HTMLElement>(
-      de.query(By.css('.location-degree')).nativeElement
+      de.query(By.css('.location-degree:not(.skeleton)')).nativeElement
     );
-
     expect(location_degree_el.textContent).toContain(country_code);
-  });
+  }));
 
   it('should have search suggestion component ', fakeAsync(() => {
     component.display = true;

@@ -34,7 +34,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getIPData() {
+    if (this.sharedService.ip) return this.getHourlyData();
     this.isLoading = true;
+
     this.subs[1] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { city } = res;
@@ -50,6 +52,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getHourlyData() {
+    if (this.sharedService.hourlyForecast?.length) {
+      this.hourlyData = this.sharedService.hourlyForecast;
+      this.isLoading = false;
+    }
+
     this.subs[2] = this.sharedService
       .fetchHourlyForecast(8, 'temperature_2m', 'weathercode')
       .subscribe({

@@ -83,10 +83,14 @@
   margin-bottom: toRem(8);
   border-radius: toRem(4);
 
+  @supports (width: fit-content) {
+    width: fit-content;
+  }
+
   @media screen and (min-width: $two-xl) {
     font-size: toRem(22);
     line-height: toRem(32);
-    margin-bottom: 0;
+    margin-bottom: toRem(1);
   }
 }
 

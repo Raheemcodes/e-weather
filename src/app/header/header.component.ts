@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getIPData() {
     this.isLoading = true;
+
     this.subs[1] = this.sharedService.ip$.subscribe({
       next: (res) => {
         const { country_code } = res;

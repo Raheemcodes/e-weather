@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   CurrentWeatherRes,
@@ -21,6 +21,7 @@ export class SharedService {
   searchRes: RestructureSearchRes[] = [];
   searchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
+  hourlyForecast!: RestructuredHourlyForecast[];
 
   constructor(private http: HttpClient) {
     this.fetchIPData();
@@ -54,7 +55,8 @@ export class SharedService {
       .pipe(
         map((res) => {
           return this.mapHourlyData(res, limit);
-        })
+        }),
+        tap((res) => (this.hourlyForecast = res))
       );
   }
 

@@ -1,7 +1,7 @@
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import {
   current_weather_mock,
   generateRestructuredForecast,
@@ -186,6 +186,7 @@ describe('SharedService', () => {
 
   describe('setSearchRes()', () => {
     it('should set argument passed as the value of searchRes & searchRes$ when invoked', (done: DoneFn) => {
+      service.searchRes$ = new BehaviorSubject(restructuredSearchResMock);
       service.setSearchRes(restructuredSearchResMock[0]);
 
       service.searchRes$.subscribe({
@@ -204,7 +205,7 @@ describe('SharedService', () => {
   describe('resetSearchRes()', () => {
     it('should reset searchRes & searchRes$ when invoked', (done: DoneFn) => {
       service.searchRes = restructuredSearchResMock;
-      service.searchRes$.next(restructuredSearchResMock);
+      service.searchRes$ = new BehaviorSubject(restructuredSearchResMock);
       service.resetSearchRes();
 
       service.searchRes$.subscribe({

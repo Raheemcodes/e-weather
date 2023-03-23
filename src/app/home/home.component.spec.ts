@@ -75,8 +75,10 @@ describe('HomeComponent', () => {
     expect(pagination.length).toBe(2);
   });
 
-  it('should have .forecast children of same length with hourlyData property', () => {
+  it('should have .forecast children of same length with hourlyData property', fakeAsync(() => {
     component.hourlyData = MockHoulyData;
+    component.isLoading = false;
+    tick(3000);
 
     fixture.detectChanges();
 
@@ -85,7 +87,7 @@ describe('HomeComponent', () => {
     );
 
     expect(forecast.length).toEqual(component.hourlyData.length);
-  });
+  }));
 
   it('should set city property based on ip fetch result', fakeAsync(() => {
     const city: string = 'Ogun';
@@ -99,8 +101,10 @@ describe('HomeComponent', () => {
     expect(component.city).toBe(city);
   }));
 
-  it('should have child .title contain city value', () => {
+  it('should have child .title contain city value', fakeAsync(() => {
     const city: string = 'Lagos';
+    component.isLoading = false;
+    tick(3000);
 
     component.city = city;
     fixture.detectChanges();
@@ -108,7 +112,7 @@ describe('HomeComponent', () => {
     const title_de = <HTMLElement>de.query(By.css('h1.location')).nativeElement;
 
     expect(title_de.textContent).toContain(city);
-  });
+  }));
 
   describe('padHour()', () => {
     it('should convert hours to this format `00:00`', () => {
@@ -171,10 +175,9 @@ describe('HomeComponent', () => {
     });
 
     it('should set hourlyData field as result of sharedService fetchHourlyForecast method', (done: DoneFn) => {
-      const spyFn = spyOn(
-        sharedServiceSpy,
-        'fetchHourlyForecast'
-      ).and.returnValue(of(MockHoulyData));
+      spyOn(sharedServiceSpy, 'fetchHourlyForecast').and.returnValue(
+        of(MockHoulyData)
+      );
       component.getHourlyData();
 
       sharedServiceSpy.fetchHourlyForecast(3, '', '').subscribe({
@@ -192,11 +195,14 @@ describe('HomeComponent', () => {
       component.hourlyData = MockHoulyData;
     });
 
-    it('should have been called once', () => {
+    it('should have been called once', fakeAsync(() => {
       const spyFn = spyOn(component, 'convertWMOCodes');
+      component.isLoading = false;
+      tick(3000);
+
       fixture.detectChanges();
       expect(spyFn).toHaveBeenCalled();
-    });
+    }));
 
     it('should call sharedService relative method after it has been invoked', () => {
       const spyFn = spyOn(sharedServiceSpy, 'convertWMOCodes');
