@@ -1,5 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NgZone } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -7,31 +6,39 @@ import {
   tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { httpClientMock } from '../shared/shared.mock';
 import { SharedService } from '../shared/shared.service';
 
+import { routes } from '../app-routing.module';
 import { SearchResultComponent } from './search-result.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('SearchResultComponent', () => {
   let component: SearchResultComponent;
   let fixture: ComponentFixture<SearchResultComponent>;
   let de: DebugElement;
   let sharedServiceSpy: SharedService;
+  let zone: NgZone;
+  let router: Router;
+  let route: ActivatedRoute;
 
   beforeEach(async () => {
     sharedServiceSpy = new SharedService(httpClientMock);
 
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [SearchResultComponent],
-      providers: [
-        { provide: SharedService, useValue: sharedServiceSpy },
-        ActivatedRoute,
-      ],
+      providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchResultComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
+    zone = TestBed.inject(NgZone);
+    zone.run(() => (router = TestBed.inject(Router)));
+    zone.run(() => (route = TestBed.inject(ActivatedRoute)));
     fixture.detectChanges();
   });
 
@@ -88,6 +95,22 @@ describe('SearchResultComponent', () => {
       expect(de.query(By.css('.details:not(.skeleton)')))
         .withContext('details')
         .toBeTruthy();
+    });
+  });
+
+  describe('getParams()', () => {
+    it('should be called on initialization', () => {
+      const getParamsSpy = spyOn(component, 'getParams');
+      component.ngOnInit();
+
+      expect(getParamsSpy).toHaveBeenCalled();
+    });
+
+    it('should store response from route subscribtion in key property when invoked', () => {
+      route.params = of({ key: 'lag' });
+      component.getParams();
+
+      expect(component.key).toBe('lag');
     });
   });
 

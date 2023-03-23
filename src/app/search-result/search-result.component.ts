@@ -1,7 +1,7 @@
 import { timer, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedService } from '../shared/shared.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-search-result',
@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SearchResultComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
+  key!: string;
   _isLoading: boolean = false;
 
   set isLoading(val: boolean) {
@@ -31,7 +32,15 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getSearchRes();
+    this.getParams();
+  }
+
+  getParams() {
+    this.route.params.subscribe({
+      next: (res: Params) => {
+        this.key = res['key'];
+      },
+    });
   }
 
   getSearchRes() {

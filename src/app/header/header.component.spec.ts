@@ -8,7 +8,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of, Subscription } from 'rxjs';
+import { of } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './../search-suggestion/search-suggestion.component';
 
