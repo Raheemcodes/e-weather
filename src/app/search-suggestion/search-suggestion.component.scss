@@ -138,3 +138,38 @@
     }
   }
 }
+
+.no-result {
+  @include column-centered();
+  width: 100%;
+  gap: toRem(24);
+  padding: toRem(24);
+
+  @media screen and (min-width: $lg) {
+    padding: toRem(32);
+  }
+}
+
+.no-result__tile {
+  font-size: toRem(18);
+  font-weight: 500;
+  line-height: 1;
+  color: #333;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(24);
+    line-height: 1.33;
+  }
+}
+
+.no-result__msg {
+  font-size: toRem(14);
+  line-height: 1.29;
+  text-align: center;
+  color: #474343;
+
+  @media screen and (min-width: $lg) {
+    font-size: toRem(18);
+    line-height: 1;
+  }
+}

@@ -1,12 +1,7 @@
-import { RestructureSearchRes } from './../shared/shared.model';
 import { DebugElement } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RestructureSearchRes } from './../shared/shared.model';
 
 import {
   httpClientMock,
@@ -198,13 +193,67 @@ describe('SearchSuggestionComponent', () => {
       expect(spyFn).toHaveBeenCalled();
     });
 
-    it('should set result property as value of sharedService.searchRes$ subject when invoked', fakeAsync(() => {
+    it('should set result property as value of sharedService.searchRes$ subject when invoked', () => {
       const value: RestructureSearchRes[] = restructuredSearchResMock;
       sharedServiceSpy.searchRes = value;
       component.getSearchRes();
 
-      tick(500);
       expect(component.result).toEqual(value);
-    }));
+    });
+  });
+
+  describe('no-result element', () => {
+    it('should be truthy if result[] has no value & isLoading is false', () => {
+      component.result = [];
+      component.isLoading = false;
+
+      fixture.detectChanges();
+
+      expect(de.query(By.css('.no-result'))).toBeTruthy();
+    });
+
+    it('should be falsy if result[] has no value & isLoading is true', () => {
+      component.result = [];
+      component.isLoading = true;
+
+      fixture.detectChanges();
+
+      expect(de.query(By.css('.no-result'))).toBeFalsy();
+    });
+
+    it('should be falsy if result[] has value & isLoading is true', () => {
+      component.result = restructuredSearchResMock;
+      component.isLoading = true;
+
+      fixture.detectChanges();
+
+      expect(de.query(By.css('.no-result'))).toBeFalsy();
+    });
+  });
+
+  describe('isLoading', () => {
+    it('should have only skeleton loader elements when isLoading is true', () => {
+      component.isLoading = true;
+      fixture.detectChanges();
+
+      expect(de.query(By.css('.suggestion-title.skeleton')))
+        .withContext('title')
+        .toBeTruthy();
+      expect(de.query(By.css('.suggestion-details.skeleton')))
+        .withContext('details')
+        .toBeTruthy();
+    });
+
+    it('should have only skeleton loader elements when isLoading is true', () => {
+      component.isLoading = false;
+      fixture.detectChanges();
+
+      expect(de.query(By.css('.suggestion-title.skeleton')))
+        .withContext('title')
+        .toBeFalsy();
+      expect(de.query(By.css('.suggestion-details.skeleton')))
+        .withContext('details')
+        .toBeFalsy();
+    });
   });
 });
