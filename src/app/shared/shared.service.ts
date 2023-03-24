@@ -20,6 +20,7 @@ export class SharedService {
   fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
   searchRes$ = new Subject<RestructureSearchRes[]>();
+  fullSearchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
   hourlyForecast!: RestructuredHourlyForecast[];
 
@@ -308,19 +309,25 @@ export class SharedService {
     });
   }
 
-  setSearchRes(val: RestructureSearchRes) {
-    this.searchRes.push(val);
-    this.searchRes$.next(this.searchRes);
+  setSearchRes(val: RestructureSearchRes, limit?: number) {
+    this[limit ? 'searchRes' : 'fullSearchRes'].push(val);
+    this[limit ? 'searchRes$' : 'fullSearchRes$'].next(
+      this[limit ? 'searchRes' : 'fullSearchRes']
+    );
+
     this.isLoading$.next(false);
   }
 
-  resetSearchRes() {
+  resetSearchRes(limit?: number) {
     this.searchRes = [];
-    this.searchRes$.next(this.searchRes);
+    this.fullSearchRes = [];
+    this[limit ? 'searchRes$' : 'fullSearchRes$'].next(
+      this[!!limit ? 'searchRes' : 'fullSearchRes']
+    );
     this.isLoading$.next(false);
   }
 
-  fetchCurrentWeather(location: SearchRes) {
+  fetchCurrentWeather(location: SearchRes, limit?: number) {
     this.http
       .get<CurrentWeatherRes>(
         environment.METEO_WEATHER_API +
@@ -344,7 +351,7 @@ export class SharedService {
             current_weather: res.current_weather,
           };
 
-          this.setSearchRes(record);
+          this.setSearchRes(record, limit);
         },
         error: (err) => {
           console.error(err);
@@ -354,7 +361,7 @@ export class SharedService {
 
   fetchLocation(key: string, limit?: number): void {
     this.isLoading$.next(true);
-    if (!key) return this.resetSearchRes();
+    if (!key) return this.resetSearchRes(limit);
 
     this.http
       .get<SearchRes[]>(
@@ -368,11 +375,12 @@ export class SharedService {
       )
       .subscribe({
         next: (res) => {
-          if (!res.length) return this.resetSearchRes();
+          if (!res.length) return this.resetSearchRes(limit);
           this.searchRes = [];
+          this.fullSearchRes = [];
 
-          res.forEach((val, idx) => {
-            this.fetchCurrentWeather(val);
+          res.forEach((val) => {
+            this.fetchCurrentWeather(val, limit);
           });
         },
         error: (err) => {

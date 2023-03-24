@@ -131,6 +131,7 @@ describe('SearchResultComponent', () => {
     });
 
     it('should contain only the original of loaded content if isLoading is false', fakeAsync(() => {
+      component.result = restructuredSearchResMock;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();

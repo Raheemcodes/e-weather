@@ -51,7 +51,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getSearchRes() {
-    this.subs[1] = this.sharedService.searchRes$.subscribe({
+    this.subs[1] = this.sharedService.fullSearchRes$.subscribe({
       next: (res) => {
         this.result = res;
         this.isLoading = false;
