@@ -17,8 +17,8 @@ import {
 export class SharedService {
   ip!: IPRes;
   ip$ = new Subject<IPRes>();
-  fullSearchRes!: RestructureSearchRes[];
   searchRes: RestructureSearchRes[] = [];
+  fullSearchRes!: RestructureSearchRes[];
   searchRes$ = new Subject<RestructureSearchRes[]>();
   fullSearchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
@@ -310,21 +310,18 @@ export class SharedService {
   }
 
   setSearchRes(val: RestructureSearchRes, limit?: number) {
-    this[limit ? 'searchRes' : 'fullSearchRes'].push(val);
-    this[limit ? 'searchRes$' : 'fullSearchRes$'].next(
-      this[limit ? 'searchRes' : 'fullSearchRes']
-    );
+    const field = limit ? 'searchRes' : 'fullSearchRes';
 
-    this.isLoading$.next(false);
+    if (this[field].some((el) => el.location.id == val.location.id)) return;
+
+    this[field].push(val);
+    this[`${field}$`].next(this[field]);
   }
 
   resetSearchRes(limit?: number) {
-    this.searchRes = [];
-    this.fullSearchRes = [];
-    this[limit ? 'searchRes$' : 'fullSearchRes$'].next(
-      this[!!limit ? 'searchRes' : 'fullSearchRes']
-    );
-    this.isLoading$.next(false);
+    const field = limit ? 'searchRes' : 'fullSearchRes';
+    this[field] = [];
+    this[`${field}$`].next(this[field]);
   }
 
   fetchCurrentWeather(location: SearchRes, limit?: number) {
@@ -360,6 +357,8 @@ export class SharedService {
   }
 
   fetchLocation(key: string, limit?: number): void {
+    const field = limit ? 'searchRes' : 'fullSearchRes';
+
     this.isLoading$.next(true);
     if (!key) return this.resetSearchRes(limit);
 
@@ -376,8 +375,7 @@ export class SharedService {
       .subscribe({
         next: (res) => {
           if (!res.length) return this.resetSearchRes(limit);
-          this.searchRes = [];
-          this.fullSearchRes = [];
+          this[field] = [];
 
           res.forEach((val) => {
             this.fetchCurrentWeather(val, limit);

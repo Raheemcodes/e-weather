@@ -38,6 +38,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getParams() {
+    this.sharedService.resetSearchRes(5);
     this.subs[0] = this.route.params.subscribe({
       next: ({ key }: Params) => {
         this.postSearchRes(key);
