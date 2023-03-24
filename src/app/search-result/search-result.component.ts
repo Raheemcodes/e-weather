@@ -1,7 +1,8 @@
-import { timer, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SharedService } from '../shared/shared.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Subscription, timer } from 'rxjs';
+import { RestructureSearchRes } from '../shared/shared.model';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-search-result',
@@ -10,7 +11,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class SearchResultComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
-  key!: string;
+  result!: RestructureSearchRes[];
   _isLoading: boolean = false;
 
   set isLoading(val: boolean) {
@@ -33,19 +34,35 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getParams();
+    this.getSearchRes();
   }
 
   getParams() {
-    this.route.params.subscribe({
-      next: (res: Params) => {
-        this.key = res['key'];
+    this.subs[0] = this.route.params.subscribe({
+      next: ({ key }: Params) => {
+        this.postSearchRes(key);
       },
     });
   }
 
-  getSearchRes() {
-    console.log(this.route.snapshot.params);
+  postSearchRes(key: string) {
+    this.isLoading = true;
+    this.sharedService.fetchLocation(key);
   }
 
-  ngOnDestroy(): void {}
+  getSearchRes() {
+    this.subs[1] = this.sharedService.searchRes$.subscribe({
+      next: (res) => {
+        this.result = res;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub.unsubscribe());
+  }
 }

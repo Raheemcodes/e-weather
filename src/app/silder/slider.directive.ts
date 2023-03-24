@@ -45,7 +45,7 @@ export class SliderDirective implements OnInit {
   innitial() {
     this.slider = <HTMLElement>this.elRef.nativeElement.firstElementChild;
     this.slideWidth = this.slider.firstElementChild!.clientWidth;
-    this.threshold = this.slideWidth / 4;
+    this.threshold = this.slideWidth / 3;
     this.lastSlide = this.slider.children.length - 2;
     this.render.setStyle(this.slider, 'transition', '0.3s all ease-out');
   }
