@@ -153,7 +153,7 @@ describe('SharedService', () => {
     it('should restructure current_weather response', () => {
       spyOn(http, 'get').and.returnValue(of(current_weather_mock));
 
-      service.fetchCurrentWeather(locationResMock[0], 5);
+      service.fetchCurrentWeather(locationResMock[0]);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
