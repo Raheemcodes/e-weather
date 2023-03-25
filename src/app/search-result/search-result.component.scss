@@ -21,6 +21,11 @@
   font-weight: bold;
   line-height: 1.33;
   color: #474343;
+  border-radius: toRem(4);
+
+  @supports (width: fit-content) {
+    width: fit-content;
+  }
 
   @media screen and (min-width: $lg) {
     font-size: toRem(28);

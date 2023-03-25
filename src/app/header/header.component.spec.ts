@@ -14,6 +14,7 @@ import { SearchSuggestionComponent } from './../search-suggestion/search-suggest
 
 import { Location } from '@angular/common';
 import { routes } from '../app-routing.module';
+import { DataService } from '../shared/data.service';
 import { httpClientMock, ipDataMock } from '../shared/shared.mock';
 import { HeaderComponent } from './header.component';
 
@@ -26,7 +27,7 @@ describe('HeaderComponent', () => {
   let zone: NgZone;
 
   beforeEach(async () => {
-    sharedServiceSpy = new SharedService(httpClientMock);
+    sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, SearchSuggestionComponent],

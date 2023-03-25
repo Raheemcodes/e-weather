@@ -1,10 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { DataService } from './data.service';
 import {
-  CurrentWeatherRes,
-  HourlyRes,
   IPRes,
   RestructuredHourlyForecast,
   RestructureSearchRes,
@@ -18,13 +15,13 @@ export class SharedService {
   ip!: IPRes;
   ip$ = new Subject<IPRes>();
   searchRes: RestructureSearchRes[] = [];
-  fullSearchRes!: RestructureSearchRes[];
+  fullSearchRes: RestructureSearchRes[] = [];
   searchRes$ = new Subject<RestructureSearchRes[]>();
   fullSearchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
   hourlyForecast!: RestructuredHourlyForecast[];
 
-  constructor(private http: HttpClient) {
+  constructor(private dataService: DataService) {
     this.fetchIPData();
   }
 
@@ -34,7 +31,7 @@ export class SharedService {
   }
 
   fetchIPData(): void {
-    this.http.get<IPRes>(environment.IP_API).subscribe({
+    this.dataService.fetchIPData().subscribe({
       next: (res) => this.setIp(res),
       error: (err) => this.ip$.error(err),
     });
@@ -44,53 +41,9 @@ export class SharedService {
     limit: number,
     ...arg: string[]
   ): Observable<RestructuredHourlyForecast[]> {
-    return this.http
-      .get<HourlyRes>(
-        environment.METEO_WEATHER_API +
-          `?forecast_days=8&latitude=${this.ip.latitude}&longitude=${
-            this.ip.longitude
-          }&timezone=auto&current_weather=true&hourly=${arg.join(
-            ','
-          )}&daily=sunset,sunrise`
-      )
-      .pipe(
-        map((res) => {
-          return this.mapHourlyData(res, limit);
-        }),
-        tap((res) => (this.hourlyForecast = res))
-      );
-  }
-
-  mapHourlyData(res: HourlyRes, limit: number): RestructuredHourlyForecast[] {
-    const hourlyForecast: RestructuredHourlyForecast[] = [];
-    const currentHour: number = new Date(res.current_weather.time).getTime();
-    const timeLimit: number = limit * 60 * 60 * 1000;
-
-    res.hourly.time.forEach((time, index) => {
-      const milliseconds = new Date(time).getTime();
-      if (
-        milliseconds >= currentHour &&
-        milliseconds < currentHour + timeLimit
-      ) {
-        const date: Date = new Date(time);
-        const sunrise: Date = new Date(
-          res.daily.sunrise[Math.floor(index / 24)]
-        );
-        const sunset: Date = new Date(res.daily.sunset[Math.floor(index / 24)]);
-
-        const day: 'sunny' | 'night' =
-          date < sunset && date >= sunrise ? 'sunny' : 'night';
-
-        hourlyForecast.push({
-          time: new Date(time).getHours(),
-          temperature_2m: res.hourly.temperature_2m[index],
-          weathercode: res.hourly.weathercode[index],
-          day,
-        });
-      }
-    });
-
-    return hourlyForecast;
+    return this.dataService
+      .fetchHourlyForecast(limit, this.ip.latitude, this.ip.longitude, ...arg)
+      .pipe(tap((res) => (this.hourlyForecast = res)));
   }
 
   convertWMOCodes(code: number): string {
@@ -325,11 +278,8 @@ export class SharedService {
   }
 
   fetchCurrentWeather(location: SearchRes, limit?: number) {
-    this.http
-      .get<CurrentWeatherRes>(
-        environment.METEO_WEATHER_API +
-          `?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`
-      )
+    this.dataService
+      .fetchCurrentWeather(location)
       .pipe(
         map((res) => {
           return {
@@ -362,10 +312,8 @@ export class SharedService {
     this.isLoading$.next(true);
     if (!key) return this.resetSearchRes(limit);
 
-    this.http
-      .get<SearchRes[]>(
-        `${environment.SEARCH_API}?key=${environment.SEARCH_API_KEY}&q=${key}`
-      )
+    this.dataService
+      .fetchLocation(key)
       .pipe(
         map((res) => {
           if (limit) return [...res].slice(0, limit);

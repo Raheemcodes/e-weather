@@ -1,6 +1,12 @@
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { HourlyRes, IPRes, RestructuredHourlyForecast } from './shared.model';
+import {
+  CurrentWeatherRes,
+  HourlyRes,
+  IPRes,
+  RestructuredHourlyForecast,
+  SearchRes,
+} from './shared.model';
 
 export const ipDataMock = {
   city: 'Lagos',
@@ -14,7 +20,7 @@ export const MockHoulyData: RestructuredHourlyForecast[] = [
   { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
 ];
 
-export const current_weather_mock = {
+export const current_weather_mock: CurrentWeatherRes = {
   elevation: 5,
   generationtime_ms: 0.5630254745483398,
   latitude: 6.5,
@@ -31,7 +37,7 @@ export const current_weather_mock = {
   },
 };
 
-export const locationResMock = [
+export const locationResMock: SearchRes[] = [
   {
     id: 1734598,
     name: 'Lagos',

@@ -7,6 +7,7 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject, of } from 'rxjs';
+import { DataService } from '../shared/data.service';
 import {
   httpClientMock,
   ipDataMock,
@@ -23,7 +24,7 @@ describe('HomeComponent', () => {
   let sharedServiceSpy: SharedService;
 
   beforeEach(async () => {
-    sharedServiceSpy = new SharedService(httpClientMock);
+    sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
       declarations: [HomeComponent, SliderDirective],

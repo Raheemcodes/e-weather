@@ -9,6 +9,7 @@ import {
 } from '../shared/shared.mock';
 import { SharedService } from '../shared/shared.service';
 import { SearchSuggestionComponent } from './search-suggestion.component';
+import { DataService } from '../shared/data.service';
 
 describe('SearchSuggestionComponent', () => {
   let component: SearchSuggestionComponent;
@@ -17,7 +18,7 @@ describe('SearchSuggestionComponent', () => {
   let sharedServiceSpy: SharedService;
 
   beforeEach(async () => {
-    sharedServiceSpy = new SharedService(httpClientMock);
+    sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
       declarations: [SearchSuggestionComponent],

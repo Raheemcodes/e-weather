@@ -1,4 +1,3 @@
-import { restructuredSearchResMock } from './../shared/shared.mock';
 import { DebugElement, NgZone } from '@angular/core';
 import {
   ComponentFixture,
@@ -10,10 +9,12 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { httpClientMock } from '../shared/shared.mock';
 import { SharedService } from '../shared/shared.service';
+import { restructuredSearchResMock } from './../shared/shared.mock';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { routes } from '../app-routing.module';
+import { DataService } from '../shared/data.service';
 import { SearchResultComponent } from './search-result.component';
 
 describe('SearchResultComponent', () => {
@@ -26,7 +27,7 @@ describe('SearchResultComponent', () => {
   let route: ActivatedRoute;
 
   beforeEach(async () => {
-    sharedServiceSpy = new SharedService(httpClientMock);
+    sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(routes)],
@@ -45,6 +46,16 @@ describe('SearchResultComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have h2.desc contains value from length & key property', () => {
+    component.length = 5;
+    component.key = 'lag';
+
+    fixture.detectChanges();
+    const text: string = de.query(By.css('h2.desc')).nativeElement.textContent;
+    expect(text).withContext('length').toContain(component.length.toString());
+    expect(text).withContext('key').toContain(component.key);
   });
 
   it('should .search-record element same length with result[] property', fakeAsync(() => {
@@ -115,6 +126,9 @@ describe('SearchResultComponent', () => {
       component.isLoading = true;
       fixture.detectChanges();
 
+      expect(de.query(By.css('h2.desc.skeleton')))
+        .withContext('desc skeleton')
+        .toBeTruthy();
       expect(de.query(By.css('.title.skeleton')))
         .withContext('title skeleton')
         .toBeTruthy();
@@ -122,6 +136,9 @@ describe('SearchResultComponent', () => {
         .withContext('details skeleton')
         .toBeTruthy();
 
+      expect(de.query(By.css('h2.desc:not(.skeleton)')))
+        .withContext('desc skeleton')
+        .toBeFalsy();
       expect(de.query(By.css('.title:not(.skeleton)')))
         .withContext('title')
         .toBeFalsy();
@@ -136,6 +153,9 @@ describe('SearchResultComponent', () => {
       tick(3000);
       fixture.detectChanges();
 
+      expect(de.query(By.css('h2.desc.skeleton')))
+        .withContext('desc skeleton')
+        .toBeFalsy();
       expect(de.query(By.css('.title.skeleton')))
         .withContext('title skeleton')
         .toBeFalsy();
@@ -143,6 +163,9 @@ describe('SearchResultComponent', () => {
         .withContext('details skeleton')
         .toBeFalsy();
 
+      expect(de.query(By.css('h2.desc:not(.skeleton)')))
+        .withContext('desc skeleton')
+        .toBeTruthy();
       expect(de.query(By.css('.title:not(.skeleton)')))
         .withContext('title')
         .toBeTruthy();
@@ -160,7 +183,8 @@ describe('SearchResultComponent', () => {
       route.params.subscribe({
         next: ({ key }) => {
           done();
-          expect(key).toBe('lag');
+          expect(key).withContext('argumnet').toBe('lag');
+          expect(component.key).withContext('property').toEqual(key);
         },
       });
     });
@@ -195,30 +219,31 @@ describe('SearchResultComponent', () => {
   });
 
   describe('getSearchRes()', () => {
-    it('should subscribe to sharedService searchRes$ when invoked', (done: DoneFn) => {
-      sharedServiceSpy.searchRes$ = new BehaviorSubject(
+    it('should subscribe to sharedService fullSearchRes$ when invoked', (done: DoneFn) => {
+      sharedServiceSpy.fullSearchRes$ = new BehaviorSubject(
         restructuredSearchResMock
       );
       component.getSearchRes();
 
-      sharedServiceSpy.searchRes$.subscribe({
+      sharedServiceSpy.fullSearchRes$.subscribe({
         next: (res) => {
           done();
           expect(res).withContext('res').toEqual(restructuredSearchResMock);
+          expect(component.length).withContext('length').toEqual(res.length);
           expect(component.result).withContext('result').toEqual(res);
         },
       });
     });
 
-    it('should store sharedService searchRes$ as second element in the subs[] property', () => {
+    it('should store sharedService fullSearchRes$ as second element in the subs[] property', () => {
       component.getSearchRes();
 
       expect(component.subs[1]).toBeTruthy();
     });
 
-    it('should set isLoading to false when sharedService searchRes$ responds', fakeAsync(() => {
+    it('should set isLoading to false when sharedService fullSearchRes$ responds', fakeAsync(() => {
       component.isLoading = true;
-      sharedServiceSpy.searchRes$ = new BehaviorSubject(
+      sharedServiceSpy.fullSearchRes$ = new BehaviorSubject(
         restructuredSearchResMock
       );
       component.getSearchRes();

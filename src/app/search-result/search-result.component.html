@@ -1,4 +1,10 @@
-<h2 class="desc">Showing <span>35</span> locations for <span>“zLag”</span></h2>
+<h2 class="desc skeleton" *ngIf="isLoading">
+  Showing <span>35</span> locations for <span>“lagos”</span>
+</h2>
+
+<h2 class="desc" *ngIf="!isLoading">
+  Showing <span>{{ length }}</span> locations for <span>“{{ key }}”</span>
+</h2>
 
 <ul class="search-result">
   <ng-container *ngIf="isLoading">

@@ -13,6 +13,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
   result!: RestructureSearchRes[];
   _isLoading: boolean = false;
+  length!: number;
+  key!: string;
 
   set isLoading(val: boolean) {
     if (val) this._isLoading = val;
@@ -38,9 +40,9 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getParams() {
-    this.sharedService.resetSearchRes(5);
     this.subs[0] = this.route.params.subscribe({
       next: ({ key }: Params) => {
+        this.key = key;
         this.postSearchRes(key);
       },
     });
@@ -55,6 +57,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     this.subs[1] = this.sharedService.fullSearchRes$.subscribe({
       next: (res) => {
         this.result = res;
+        this.length = res.length;
         this.isLoading = false;
       },
       error: (err) => {

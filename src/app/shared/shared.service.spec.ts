@@ -1,11 +1,11 @@
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of } from 'rxjs';
+import { DataService } from './data.service';
 import {
   current_weather_mock,
   generateRestructuredForecast,
   hourlyRes,
+  httpClientMock,
   ipDataMock,
   locationResMock,
   restructuredSearchResMock,
@@ -15,40 +15,28 @@ import { SharedService } from './shared.service';
 
 describe('SharedService', () => {
   let service: SharedService;
-  let http: HttpClient;
+  let dataService: DataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [],
     });
 
-    http = TestBed.inject(HttpClient);
-    service = new SharedService(http);
+    dataService = new DataService(httpClientMock);
+    service = new SharedService(dataService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('mapHourly()', () => {
-    it('should return expected result', () => {
-      const expectedRes: RestructuredHourlyForecast[] =
-        generateRestructuredForecast(11, 8);
-
-      const res = service.mapHourlyData(hourlyRes, 8);
-
-      expect(expectedRes).toEqual(res);
-    });
-  });
-
   describe('fetchHourlyForecast()', () => {
     it('should return value of restructured hourly data', (done: DoneFn) => {
-      const httpSpy = spyOn(http, 'get').and.returnValue(of(hourlyRes));
       const limit: number = 8;
       const expectedRes: RestructuredHourlyForecast[] =
         generateRestructuredForecast(11, limit);
-      const mapSpy = spyOn(service, 'mapHourlyData').and.returnValue(
-        expectedRes
+      const dataSpy = spyOn(dataService, 'fetchHourlyForecast').and.returnValue(
+        of(expectedRes)
       );
 
       service.ip = ipDataMock;
@@ -57,22 +45,21 @@ describe('SharedService', () => {
         next: (res) => {
           done();
           expect(res.length).withContext('length').toEqual(limit);
-          expect(mapSpy).withContext('call map').toHaveBeenCalled();
           expect(res).withContext('equalily').toEqual(expectedRes);
         },
         error: done.fail,
       });
 
-      expect(httpSpy).withContext('httpClient call').toHaveBeenCalledTimes(1);
+      expect(dataSpy).withContext('httpClient call').toHaveBeenCalledTimes(1);
     });
   });
 
   describe('fetchIPData()', () => {
     it('should have property ip with value relative to fetchIPData() res', (done: DoneFn) => {
-      const httpSpy = spyOn(http, 'get').and.returnValue(of(ipDataMock));
+      spyOn(dataService, 'fetchIPData').and.returnValue(of(ipDataMock));
       service.fetchIPData();
 
-      httpSpy('').subscribe({
+      dataService.fetchIPData().subscribe({
         next: (res: any) => {
           done();
           expect(service.ip).withContext('main').toEqual(res);
@@ -82,14 +69,16 @@ describe('SharedService', () => {
     });
 
     it('should call setIp method when invoked', (done: DoneFn) => {
-      const httpSpy = spyOn(http, 'get').and.returnValue(of(ipDataMock));
+      const httpSpy = spyOn(dataService, 'fetchIPData').and.returnValue(
+        of(ipDataMock)
+      );
       const setIpSpy = spyOn(service, 'setIp');
       service.fetchIPData();
 
-      httpSpy('').subscribe({
-        next: () => {
+      dataService.fetchIPData().subscribe({
+        next: (res: any) => {
           done();
-          expect(setIpSpy).toHaveBeenCalledTimes(1);
+          expect(setIpSpy).toHaveBeenCalledOnceWith(res);
         },
         error: done.fail,
       });
@@ -99,7 +88,7 @@ describe('SharedService', () => {
   describe('fetchLocation()', () => {
     it('should call fetchCurrentWeather() and empty searchRes property by the length of the http response', () => {
       service.searchRes = restructuredSearchResMock;
-      spyOn(http, 'get').and.returnValue(of(locationResMock));
+      spyOn(dataService, 'fetchLocation').and.returnValue(of(locationResMock));
       const spyFn = spyOn(service, 'fetchCurrentWeather');
 
       service.fetchLocation('lag', locationResMock.length);
@@ -111,7 +100,7 @@ describe('SharedService', () => {
 
     it('should call fetchCurrentWeather() by the number of limit if it is passed', () => {
       let limit: number = 5;
-      spyOn(http, 'get').and.returnValue(of(locationResMock));
+      spyOn(dataService, 'fetchLocation').and.returnValue(of(locationResMock));
       const spyFn = spyOn(service, 'fetchCurrentWeather');
 
       service.fetchLocation('lag', limit);
@@ -122,7 +111,7 @@ describe('SharedService', () => {
       let limit: number = 5;
       const fetchCurrentWeatherSpy = spyOn(service, 'fetchCurrentWeather');
       const resetSearchResSpy = spyOn(service, 'resetSearchRes');
-      spyOn(http, 'get').and.returnValue(of(locationResMock));
+      spyOn(dataService, 'fetchLocation').and.returnValue(of(locationResMock));
 
       service.fetchLocation('', limit);
       expect(resetSearchResSpy)
@@ -137,7 +126,7 @@ describe('SharedService', () => {
       let limit: number = 5;
       const fetchCurrentWeatherSpy = spyOn(service, 'fetchCurrentWeather');
       const resetSearchResSpy = spyOn(service, 'resetSearchRes');
-      spyOn(http, 'get').and.returnValue(of([]));
+      spyOn(dataService, 'fetchLocation').and.returnValue(of([]));
 
       service.fetchLocation('lag', limit);
       expect(resetSearchResSpy)
@@ -150,16 +139,30 @@ describe('SharedService', () => {
   });
 
   describe('fetchCurrentWeather()', () => {
-    it('should restructure current_weather response', () => {
-      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+    it('should restructure current_weather response and store in searchRes', () => {
+      spyOn(dataService, 'fetchCurrentWeather').and.returnValue(
+        of(current_weather_mock)
+      );
 
-      service.fetchCurrentWeather(locationResMock[0]);
+      service.fetchCurrentWeather(locationResMock[0], 5);
+
+      expect(service.searchRes).toEqual(restructuredSearchResMock);
+    });
+
+    it('should restructure current_weather response and store in fullSearchRes', () => {
+      spyOn(dataService, 'fetchCurrentWeather').and.returnValue(
+        of(current_weather_mock)
+      );
+
+      service.fetchCurrentWeather(locationResMock[0], 5);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
 
     it('should called setSearchRes() when invoked', () => {
-      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+      spyOn(dataService, 'fetchCurrentWeather').and.returnValue(
+        of(current_weather_mock)
+      );
       const setSearchResSpy = spyOn(service, 'setSearchRes');
       service.fetchCurrentWeather(locationResMock[0]);
 
@@ -167,7 +170,9 @@ describe('SharedService', () => {
     });
 
     it('should called convertTime() when invoked', () => {
-      spyOn(http, 'get').and.returnValue(of(current_weather_mock));
+      spyOn(dataService, 'fetchCurrentWeather').and.returnValue(
+        of(current_weather_mock)
+      );
       const convertTimeSpy = spyOn(service, 'convertTime');
       service.fetchCurrentWeather(locationResMock[0]);
 
@@ -187,7 +192,7 @@ describe('SharedService', () => {
   describe('setSearchRes()', () => {
     it('should set argument passed as the value of searchRes & searchRes$ when invoked', (done: DoneFn) => {
       service.searchRes$ = new BehaviorSubject(restructuredSearchResMock);
-      service.setSearchRes(restructuredSearchResMock[0]);
+      service.setSearchRes(restructuredSearchResMock[0], 5);
 
       service.searchRes$.subscribe({
         next: (res) => {
@@ -200,13 +205,29 @@ describe('SharedService', () => {
         .withContext('main')
         .toEqual(restructuredSearchResMock);
     });
+
+    it('should set argument passed as the value of fullSearchRes & fullSearchRes$ when invoked', (done: DoneFn) => {
+      service.fullSearchRes$ = new BehaviorSubject(restructuredSearchResMock);
+      service.setSearchRes(restructuredSearchResMock[0]);
+
+      service.fullSearchRes$.subscribe({
+        next: (res) => {
+          done();
+          expect(res).withContext('subject').toEqual(restructuredSearchResMock);
+        },
+        error: done.fail,
+      });
+      expect(service.fullSearchRes)
+        .withContext('main')
+        .toEqual(restructuredSearchResMock);
+    });
   });
 
   describe('resetSearchRes()', () => {
-    it('should reset searchRes & searchRes$ when invoked', (done: DoneFn) => {
+    it('should reset searchRes & searchRes$ when invoked with an argument', (done: DoneFn) => {
       service.searchRes = restructuredSearchResMock;
       service.searchRes$ = new BehaviorSubject(restructuredSearchResMock);
-      service.resetSearchRes();
+      service.resetSearchRes(5);
 
       service.searchRes$.subscribe({
         next: (res) => {
@@ -216,6 +237,21 @@ describe('SharedService', () => {
         error: done.fail,
       });
       expect(service.searchRes).withContext('main').toEqual([]);
+    });
+
+    it('should reset fullSearchRes & fullSearchRes$ when invoked witout an argument', (done: DoneFn) => {
+      service.fullSearchRes = restructuredSearchResMock;
+      service.fullSearchRes$ = new BehaviorSubject(restructuredSearchResMock);
+      service.resetSearchRes();
+
+      service.fullSearchRes$.subscribe({
+        next: (res) => {
+          done();
+          expect(res).withContext('subject').toEqual([]);
+        },
+        error: done.fail,
+      });
+      expect(service.fullSearchRes).withContext('main').toEqual([]);
     });
   });
 });
