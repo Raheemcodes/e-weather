@@ -11,7 +11,7 @@ import { httpClientMock } from '../shared/shared.mock';
 import { SharedService } from '../shared/shared.service';
 import { restructuredSearchResMock } from './../shared/shared.mock';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { routes } from '../app-routing.module';
 import { DataService } from '../shared/data.service';
@@ -23,7 +23,6 @@ describe('SearchResultComponent', () => {
   let de: DebugElement;
   let sharedServiceSpy: SharedService;
   let zone: NgZone;
-  let router: Router;
   let route: ActivatedRoute;
 
   beforeEach(async () => {
@@ -32,14 +31,16 @@ describe('SearchResultComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [SearchResultComponent],
-      providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
+      providers: [
+        { provide: SharedService, useValue: sharedServiceSpy },
+        { provide: 'Window', useValue: window },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchResultComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     zone = TestBed.inject(NgZone);
-    zone.run(() => (router = TestBed.inject(Router)));
     zone.run(() => (route = TestBed.inject(ActivatedRoute)));
     fixture.detectChanges();
   });
@@ -250,6 +251,35 @@ describe('SearchResultComponent', () => {
 
       tick(3000);
       expect(component.isLoading).toBeFalse();
+    }));
+  });
+
+  describe('.no-result__container', () => {
+    it('should be truthy if result[] is empty and isLoading is false', fakeAsync(() => {
+      component.result = [];
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(de.query(By.css('.no-result__container'))).toBeTruthy();
+    }));
+
+    it('should be falsy if result[] is not empty and isLoading is false', fakeAsync(() => {
+      component.result = restructuredSearchResMock;
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(de.query(By.css('.no-result__container'))).toBeFalsy();
+    }));
+
+    it('should be falsy if result[] is empty and isLoading is true', fakeAsync(() => {
+      component.result = [];
+      component.isLoading = true;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(de.query(By.css('.no-result__container'))).toBeFalsy();
     }));
   });
 

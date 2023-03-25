@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { RestructureSearchRes } from '../shared/shared.model';
@@ -31,7 +31,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   constructor(
     private sharedService: SharedService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    @Inject('Window') private window: Window
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +65,10 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
     });
+  }
+
+  goBack() {
+    this.window.history.back();
   }
 
   ngOnDestroy(): void {
