@@ -1,0 +1,216 @@
+@import "../shared/shared";
+
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--main-blue);
+  display: none;
+  gap: toRem(64);
+  z-index: 1;
+  width: toRem(403);
+  height: 100%;
+  overflow-y: auto;
+  @include custom-scrollbar();
+  padding: toRem(88 - 24) toRem(32) toRem(24);
+
+  @media screen and (min-width: $xl) {
+    @include column-flex();
+  }
+  @media screen and (min-width: $three-xl) {
+    width: toRem(592);
+    gap: toRem(84);
+    padding: toRem(96 - 24) toRem(44) toRem(24);
+  }
+}
+
+.weather-details__container {
+  @include column-flex();
+  width: 100%;
+  gap: toRem(72);
+  padding-bottom: toRem(72);
+  border-bottom: toRem(2) solid #fefefe;
+
+  @media screen and (min-width: $three-xl) {
+    gap: toRem(96);
+    padding-bottom: toRem(94);
+  }
+}
+
+.location-time {
+  @include between-centered();
+  width: 100%;
+
+  .location,
+  .time {
+    font-size: toRem(22);
+    font-weight: 500;
+    line-height: 1.09;
+    color: #fff;
+
+    @media screen and (min-width: $three-xl) {
+      font-size: toRem(32);
+      line-height: 1;
+    }
+  }
+}
+
+.weather-details {
+  @include column-flex();
+  width: 100%;
+  gap: toRem(32);
+
+  @media screen and (min-width: $three-xl) {
+    gap: toRem(42);
+  }
+}
+
+.weather-deatils__icon {
+  width: toRem(72);
+  height: toRem(72);
+
+  @media screen and (min-width: $three-xl) {
+    width: toRem(88);
+    height: toRem(88);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.weather-details__desc {
+  @include between();
+  align-items: flex-end;
+  width: 100%;
+}
+
+.weather-details__value {
+  font-size: toRem(64);
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+
+  @media screen and (min-width: $three-xl) {
+    font-size: toRem(80);
+    line-height: 0.6;
+  }
+}
+
+.weather-details__name {
+  font-size: toRem(22);
+  font-weight: 500;
+  line-height: 1.09;
+  color: #fff;
+  margin-bottom: toRem(10);
+
+  @media screen and (min-width: $three-xl) {
+    font-size: toRem(32);
+    line-height: 1;
+    margin: 0;
+  }
+}
+
+.sun-detaials__container {
+  @include column-flex();
+  width: 100%;
+  gap: toRem(42);
+}
+
+.title {
+  font-size: toRem(22);
+  font-weight: 500;
+  line-height: 1.09;
+  color: #fff;
+
+  @media screen and (min-width: $three-xl) {
+    font-size: toRem(32);
+    line-height: 1;
+  }
+}
+
+.sun-details__list {
+  @include column-flex();
+  list-style: none;
+  width: 100%;
+  gap: toRem(32);
+
+  @media screen and (min-width: $three-xl) {
+    gap: toRem(42);
+  }
+}
+
+.sun-details {
+  @include display-flex();
+  align-items: center;
+  gap: toRem(26);
+  width: 100%;
+  border-radius: toRem(12);
+  border: solid toRem(1) #c0c0c0;
+  background-color: #787bfc;
+  padding: toRem(14) toRem(24);
+
+  @media screen and (min-width: $three-xl) {
+    gap: toRem(22);
+    padding: toRem(16) toRem(32);
+  }
+}
+
+.sun-details__icon {
+  width: toRem(32);
+  height: toRem(32);
+
+  @media screen and (min-width: $three-xl) {
+    width: toRem(48);
+    height: toRem(48);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.sun-details__content {
+  @include between-centered();
+  width: 100%;
+}
+
+.title-time {
+  @include column-flex();
+  gap: toRem(8);
+
+  @media screen and (min-width: $three-xl) {
+    gap: toRem(12);
+  }
+
+  .title,
+  .time {
+    font-size: toRem(18);
+    font-weight: 500;
+    line-height: 1.33;
+    color: #fff;
+
+    @media screen and (min-width: $three-xl) {
+      font-size: toRem(24);
+    }
+  }
+
+  .time {
+    font-weight: bold;
+  }
+}
+
+.time-up {
+  font-size: toRem(14);
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+
+  @media screen and (min-width: $three-xl) {
+    font-size: toRem(18);
+    line-height: 1.78;
+  }
+}

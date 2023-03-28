@@ -2,13 +2,31 @@
 
 main {
   @include column-centered-start();
+  width: 100%;
   gap: toRem(40);
   padding: toRem(40) toRem(16);
+
+  @media screen and (min-width: $lg) {
+    padding: toRem(72) toRem(64);
+  }
+  @media screen and (min-width: $xl) {
+    width: calc(100% - toRem(403));
+  }
+  @media screen and (min-width: $two-xl) {
+    padding: toRem(79) toRem(96);
+  }
+  @media screen and (min-width: $three-xl) {
+    width: calc(100% - toRem(592));
+  }
 }
 
 .current-weather__condition {
   @include column-centered();
   gap: toRem(8);
+
+  @media screen and (min-width: $xl) {
+    display: none;
+  }
 }
 
 .current-weather__icon-cover {
@@ -44,6 +62,13 @@ main {
   width: 100%;
   gap: toRem(24);
   margin-bottom: toRem(40);
+
+  @media screen and (min-width: $md) {
+    margin-bottom: toRem(44);
+  }
+  @media screen and (min-width: $two-xl) {
+    margin-bottom: toRem(56);
+  }
 }
 
 .weather-forecast__desc {
@@ -51,10 +76,26 @@ main {
   font-weight: bold;
   line-height: 1.33;
   color: #474343;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(28);
+    line-height: 1;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(32);
+  }
+}
+
+.dropdown {
+  @media screen and (min-width: $md) {
+    font-size: toRem(24);
+    line-height: 1;
+  }
 }
 
 .weather-forecast__dropdown {
   @include centered();
+  position: relative;
   gap: toRem(8);
   background-color: #0000;
   border: none;
@@ -63,9 +104,50 @@ main {
     width: toRem(24);
     height: toRem(24);
 
+    @media screen and (min-width: $md) {
+      width: toRem(32);
+      height: toRem(32);
+    }
+
     img {
       width: 100%;
       height: auto;
+    }
+  }
+}
+
+.dropdown-menu {
+  @include column-flex();
+  gap: toRem(6);
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  background-color: #ebebeb;
+  border-radius: toRem(6);
+  box-shadow: 0.5px 0.5px 7px var(--grey-80);
+  padding: toRem(8);
+}
+
+.dropdown-item {
+  @include between-centered();
+  gap: toRem(22);
+  font-size: toRem(12);
+  font-weight: 500;
+  line-height: toRem(24);
+  color: #333333;
+
+  &.active {
+    color: var(--main-blue);
+  }
+
+  .checkmark {
+    display: flex;
+    width: toRem(8);
+    height: toRem(6);
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 }
@@ -75,6 +157,10 @@ main {
   gap: toRem(24);
   list-style: none;
   width: 100%;
+
+  @media screen and (min-width: $md) {
+    gap: toRem(40);
+  }
 }
 
 .weather-forecast {
@@ -84,6 +170,14 @@ main {
   border-radius: toRem(12);
   background-color: #ebebeb;
   padding: toRem(24) toRem(12);
+
+  @media screen and (min-width: $md) {
+    padding: toRem(18) toRem(26);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(32);
+    padding: toRem(24) toRem(56);
+  }
 }
 
 .summary {
@@ -99,6 +193,15 @@ main {
     font-weight: bold;
     line-height: 1.13;
     color: #333;
+
+    @media screen and (min-width: $md) {
+      font-size: toRem(20);
+      line-height: 1.6;
+    }
+    @media screen and (min-width: $two-xl) {
+      font-size: toRem(24);
+      line-height: 1.33;
+    }
   }
 
   .date {
@@ -106,24 +209,58 @@ main {
     font-weight: bold;
     line-height: 1.29;
     color: #5f5f5f;
+
+    @media screen and (min-width: $md) {
+      font-size: toRem(18);
+      line-height: 1.78;
+    }
+    @media screen and (min-width: $two-xl) {
+      font-size: toRem(20);
+      line-height: 1.6;
+    }
   }
 }
 
 .weather-condition {
   @include between-centered();
+  width: 100%;
   gap: toRem(15);
   margin-left: toRem(12);
   margin-right: toRem(8);
+
+  @media screen and (min-width: $md) {
+    margin-left: toRem(32);
+  }
+  @media screen and (min-width: $two-xl) {
+    margin-left: toRem(56);
+    margin-right: toRem(18);
+  }
 }
 
 .weather-temp__container {
   @include between-centered();
   gap: toRem(8);
+
+  @media screen and (min-width: $md) {
+    gap: toRem(24);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(18);
+  }
 }
 
 .weather-temp__icon {
   width: toRem(35);
   height: toRem(35);
+
+  @media screen and (min-width: $md) {
+    width: toRem(56);
+    height: toRem(56);
+  }
+  @media screen and (min-width: $two-xl) {
+    width: toRem(72);
+    height: toRem(72);
+  }
 
   img {
     width: 100%;
@@ -136,6 +273,15 @@ main {
   font-weight: 500;
   line-height: 1;
   color: #333;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(48);
+    line-height: 1;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(64);
+    line-height: 0.88;
+  }
 }
 
 .apparent {
@@ -143,16 +289,41 @@ main {
   font-weight: 500;
   line-height: 1.29;
   color: #333;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(20);
+    line-height: 1.6;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(24);
+    line-height: 1.33;
+  }
 }
 
 .humidity {
   @include centered();
   gap: toRem(4);
+
+  @media screen and (min-width: $md) {
+    gap: toRem(6);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(8);
+  }
 }
 
 .humidity-icon {
   width: toRem(16);
   height: toRem(16);
+
+  @media screen and (min-width: $md) {
+    width: toRem(24);
+    height: toRem(24);
+  }
+  @media screen and (min-width: $two-xl) {
+    width: toRem(32);
+    height: toRem(32);
+  }
 
   img {
     width: 100%;
@@ -165,12 +336,30 @@ main {
   font-weight: 500;
   line-height: 1;
   color: #333;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(20);
+    line-height: 1.2;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(24);
+    line-height: 1.33;
+  }
 }
 
 .weather-condition__dropddown-icon {
   display: flex;
   width: toRem(12);
   height: toRem(12);
+
+  @media screen and (min-width: $md) {
+    width: toRem(18);
+    height: toRem(18);
+  }
+  @media screen and (min-width: $two-xl) {
+    width: toRem(24);
+    height: toRem(24);
+  }
 
   img {
     width: 100%;
@@ -181,13 +370,33 @@ main {
 .details {
   @include column-centered();
   gap: toRem(24);
+
+  @media screen and (min-width: $md) {
+    gap: toRem(40);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(56);
+  }
 }
 
 .details-weather__desc {
+  width: 100%;
   font-size: toRem(18);
   font-weight: bold;
   line-height: 1;
+  text-align: center;
   color: #333;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(24);
+    line-height: 1.33;
+    text-align: left;
+  }
+  @media screen and (min-width: $two-xl) {
+    font-size: toRem(32);
+    font-weight: 500;
+    line-height: 1;
+  }
 }
 
 .full-weather__forecast-list {
@@ -195,13 +404,30 @@ main {
   list-style: none;
   width: 100%;
   gap: toRem(18);
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(18) toRem(42);
+  }
 }
 
 .full-weather__forecast-item {
-  width: 100%;
   @include between-centered();
+  width: 100%;
   padding: 0 0 toRem(12);
   border-bottom: toRem(1) solid rgba(117, 117, 117, 0.5);
+
+  @media screen and (min-width: $md) {
+    width: calc(50% - toRem(9));
+    padding: 0 0 toRem(18);
+  }
+  @media screen and (min-width: $two-xl) {
+    width: calc(50% - toRem(21));
+  }
 }
 
 .weather-forecast__title,
@@ -210,6 +436,14 @@ main {
   font-weight: 500;
   line-height: 2;
   color: #333;
+
+  @media screen and (min-width: $md) {
+    font-size: toRem(18);
+    line-height: 1.78;
+  }
+  @media screen and (min-width: $two-xl) {
+    line-height: 1.33;
+  }
 }
 
 .weather-forecast__value {

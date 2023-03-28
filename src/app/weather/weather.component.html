@@ -1,4 +1,6 @@
 <main>
+  <!-- main content -->
+
   <section class="current-weather__condition">
     <div class="current-weather__icon-cover">
       <img
@@ -18,7 +20,7 @@
       <h2 class="weather-forecast__desc">Overview</h2>
 
       <button class="weather-forecast__dropdown">
-        <span class="weather-forecast__desc">Hourly</span>
+        <span class="weather-forecast__desc dropdown">Hourly</span>
 
         <div class="dropddown__icon">
           <img
@@ -28,6 +30,32 @@
             alt
           />
         </div>
+
+        <ul class="dropdown-menu">
+          <li class="dropdown-item">
+            <span>Hourly</span>
+            <span class="checkmark">
+              <img
+                width="8"
+                height="6"
+                src="../../assets/icons/checkmark.svg"
+                alt
+              />
+            </span>
+          </li>
+
+          <li class="dropdown-item active">
+            <span>Daily</span>
+            <div class="checkmark">
+              <img
+                width="8"
+                height="6"
+                src="../../assets/icons/checkmark.svg"
+                alt
+              />
+            </div>
+          </li>
+        </ul>
       </button>
     </header>
 
@@ -83,46 +111,50 @@
           <ul class="full-weather__forecast-list">
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
 
             <li class="full-weather__forecast-item">
               <div class="weather-forecast__title">RealFeel Shade</div>
-              <div class="weather-forecast__value">32°</div>
+              <div class="weather-forecast__value">32°C</div>
             </li>
           </ul>
         </div>
       </li>
     </ul>
   </section>
+
+  <!-- side bar -->
+
+  <app-side-bar></app-side-bar>
 </main>
