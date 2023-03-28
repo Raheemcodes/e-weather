@@ -1,3 +1,4 @@
+import { IPRes } from './../shared/shared.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { RestructuredHourlyForecast } from '../shared/shared.model';
@@ -9,7 +10,7 @@ import { SharedService } from '../shared/shared.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  city!: string;
+  ip!: IPRes;
   hourlyData!: RestructuredHourlyForecast[];
   subs: Subscription[] = [];
   _isLoading: boolean = false;
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getIPData() {
     if (this.sharedService.ip) {
-      this.city = this.sharedService.ip.city;
+      this.ip = this.sharedService.ip;
       this.getHourlyData();
       return;
     }
@@ -43,9 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.subs[1] = this.sharedService.ip$.subscribe({
       next: (res) => {
-        const { city } = res;
-
-        this.city = city;
+        this.ip = res;
         this.getHourlyData();
       },
       error: (err) => {

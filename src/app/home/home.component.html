@@ -41,10 +41,17 @@
 <section class="second-sect">
   <div class="first-row">
     <h1 class="location skeleton" *ngIf="isLoading">Manchester</h1>
-    <h1 class="location" *ngIf="!isLoading">{{ city }}</h1>
+    <h1 class="location" *ngIf="!isLoading">{{ ip.city }}</h1>
 
     <button class="more skeleton" *ngIf="isLoading">More details</button>
-    <button class="more" *ngIf="!isLoading">More details</button>
+    <button
+      class="more"
+      *ngIf="!isLoading"
+      routerLink="/weather"
+      [queryParams]="{ lat: ip.latitude, lon: ip.longitude }"
+    >
+      More details
+    </button>
   </div>
 
   <div class="second-row">

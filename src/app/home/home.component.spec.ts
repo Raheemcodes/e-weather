@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
@@ -16,6 +17,8 @@ import {
 import { SharedService } from '../shared/shared.service';
 import { SliderDirective } from './../silder/slider.directive';
 import { HomeComponent } from './home.component';
+import { routes } from '../app-routing.module';
+import { IPRes } from '../shared/shared.model';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -27,6 +30,7 @@ describe('HomeComponent', () => {
     sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [HomeComponent, SliderDirective],
       providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
     }).compileComponents();
@@ -77,6 +81,7 @@ describe('HomeComponent', () => {
   });
 
   it('should have .forecast children of same length with hourlyData property', fakeAsync(() => {
+    component.ip = ipDataMock;
     component.hourlyData = MockHoulyData;
     component.isLoading = false;
     tick(3000);
@@ -91,15 +96,13 @@ describe('HomeComponent', () => {
   }));
 
   it('should set city property based on ip fetch result', fakeAsync(() => {
-    const city: string = 'Ogun';
-    ipDataMock.city = city;
     sharedServiceSpy.ip = ipDataMock;
     sharedServiceSpy.ip$.next(ipDataMock);
 
     fixture.detectChanges();
 
     tick();
-    expect(component.city).toBe(city);
+    expect(component.ip).toBe(ipDataMock);
   }));
 
   it('should have child .title contain city value', fakeAsync(() => {
@@ -107,7 +110,8 @@ describe('HomeComponent', () => {
     component.isLoading = false;
     tick(3000);
 
-    component.city = city;
+    component.ip = ipDataMock;
+    component.ip.city = city;
     fixture.detectChanges();
 
     const title_de = <HTMLElement>de.query(By.css('h1.location')).nativeElement;
@@ -150,6 +154,21 @@ describe('HomeComponent', () => {
       fixture.detectChanges();
 
       expect(spyFn).toHaveBeenCalled();
+    });
+
+    it('should set sharedService ip$ response as ip property value', (done: DoneFn) => {
+      sharedServiceSpy.ip = ipDataMock;
+      sharedServiceSpy.ip$ = new BehaviorSubject(ipDataMock);
+
+      component.getIPData();
+
+      sharedServiceSpy.ip$.subscribe({
+        next: (res) => {
+          done();
+          expect(component.ip).toEqual(res);
+        },
+        error: done.fail,
+      });
     });
   });
 
@@ -197,6 +216,7 @@ describe('HomeComponent', () => {
     });
 
     it('should have been called once', fakeAsync(() => {
+      component.ip = ipDataMock;
       const spyFn = spyOn(component, 'convertWMOCodes');
       component.isLoading = false;
       tick(3000);
