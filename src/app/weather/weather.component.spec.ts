@@ -1,9 +1,12 @@
+import { RouterTestingModule } from '@angular/router/testing';
+import { HourlyComponent } from './../hourly/hourly.component';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 
 import { WeatherComponent } from './weather.component';
+import { DailyComponent } from '../daily/daily.component';
 
 describe('WeatherComponent', () => {
   let component: WeatherComponent;
@@ -12,7 +15,18 @@ describe('WeatherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WeatherComponent, SideBarComponent],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'hourly', component: HourlyComponent },
+          { path: 'daily', component: DailyComponent },
+        ]),
+      ],
+      declarations: [
+        WeatherComponent,
+        SideBarComponent,
+        HourlyComponent,
+        DailyComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WeatherComponent);

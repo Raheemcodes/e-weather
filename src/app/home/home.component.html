@@ -47,7 +47,7 @@
     <button
       class="more"
       *ngIf="!isLoading"
-      routerLink="/weather"
+      routerLink="/weather/hourly"
       [queryParams]="{ lat: ip.latitude, lon: ip.longitude }"
     >
       More details
