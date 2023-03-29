@@ -16,7 +16,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: toRem(84);
+  height: toRem(88);
   gap: toRem(24);
   border-radius: toRem(12);
   background-color: hsl(0, 0%, 92%);
@@ -45,6 +45,10 @@
 
     .weather-condition__dropddown-icon {
       transform: rotateZ(180deg);
+    }
+
+    .details {
+      opacity: 1;
     }
   }
 }
@@ -103,22 +107,6 @@
   }
 }
 
-// .weather-condition {
-//   @include between-centered();
-//   width: 100%;
-//   gap: toRem(15);
-//   margin-left: toRem(12);
-//   margin-right: toRem(8);
-
-//   @media screen and (min-width: $md) {
-//     margin-left: toRem(32);
-//   }
-//   @media screen and (min-width: $two-xl) {
-//     margin-left: toRem(56);
-//     margin-right: toRem(18);
-//   }
-// }
-
 .weather-temp__container {
   @include between-centered();
   gap: toRem(8);
@@ -166,32 +154,8 @@
   }
 }
 
-// .apparent {
-//   font-size: toRem(14);
-//   font-weight: 500;
-//   line-height: 1.29;
-//   color: #333;
-
-//   @media screen and (min-width: $md) {
-//     font-size: toRem(20);
-//     line-height: 1.6;
-//   }
-//   @media screen and (min-width: $two-xl) {
-//     font-size: toRem(24);
-//     line-height: 1.33;
-//   }
-// }
-
 .humidity {
   @include centered();
-  // gap: toRem(4);
-
-  @media screen and (min-width: $md) {
-    // gap: toRem(6);
-  }
-  @media screen and (min-width: $two-xl) {
-    // gap: toRem(8);
-  }
 }
 
 .humidity-icon {
@@ -258,7 +222,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  // opacity: 0;
+  opacity: 0;
   gap: toRem(24);
   padding: toRem(24) toRem(12);
 

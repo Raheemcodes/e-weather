@@ -14,7 +14,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  open(el: HTMLElement) {
+  toggle(el: HTMLElement) {
     this.subs.forEach((sub, idx) => {
       if (sub && idx < 2) sub.unsubscribe();
     });

@@ -49,9 +49,9 @@ describe('WeatherComponent', () => {
     expect(de.query(By.css('app-side-bar'))).toBeTruthy();
   });
 
-  describe('open()', () => {
+  describe('toggle()', () => {
     it('should be called on .weather-forecast__dropdown click event', () => {
-      const spyFn = spyOn(component, 'open');
+      const spyFn = spyOn(component, 'toggle');
       const de_el = de.query(By.css('.weather-forecast__dropdown'));
       de_el.triggerEventHandler('click');
 
@@ -64,7 +64,7 @@ describe('WeatherComponent', () => {
       const dropdown = de_el.query(By.css('.dropdown-menu'));
       const arrow = de_el.query(By.css('.dropddown__icon'));
 
-      component.open(de_el.nativeElement);
+      component.toggle(de_el.nativeElement);
 
       fixture.detectChanges();
       expect(de_el.classes['active']).toBeTrue();
@@ -83,7 +83,7 @@ describe('WeatherComponent', () => {
       const arrow = de_el.query(By.css('.dropddown__icon'));
 
       de_el.nativeElement.classList.add('active');
-      component.open(de_el.nativeElement);
+      component.toggle(de_el.nativeElement);
 
       expect(dropdown.styles['opacity']).withContext('dropdown').toBeFalsy();
       expect(arrow.styles['transform']).withContext('arrow').toBeFalsy();
@@ -103,7 +103,7 @@ describe('WeatherComponent', () => {
         spyFn[idx] = spyOn(sub, 'unsubscribe');
       });
 
-      component.open(de_el.nativeElement);
+      component.toggle(de_el.nativeElement);
 
       spyFn.forEach((spy, idx) => {
         if (idx == 2) {
