@@ -35,7 +35,7 @@ describe('DailyComponent', () => {
     });
 
     it('should add .opened to .weather-forecast class and remove it from its sibling if it has it', () => {
-      let idx: number = 1;
+      let idx: number = 0;
       const de_el = de.queryAll(By.css('.weather-forecast'));
       component.toggle(idx);
 
@@ -51,7 +51,7 @@ describe('DailyComponent', () => {
     });
 
     it('should remove .opened from all .weather-forecast elment class if selected emlement has it', () => {
-      let idx: number = 1;
+      let idx: number = 0;
       const de_el = de.queryAll(By.css('.weather-forecast'));
       de_el[idx].nativeElement.classList.add('opened');
       component.toggle(idx);
