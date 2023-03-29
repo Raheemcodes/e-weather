@@ -16,6 +16,7 @@ describe('DailyComponent', () => {
 
     fixture = TestBed.createComponent(DailyComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
     fixture.detectChanges();
   });
 
