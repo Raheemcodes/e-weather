@@ -1,4 +1,3 @@
-import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
@@ -7,7 +6,9 @@ import {
   tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { BehaviorSubject, of } from 'rxjs';
+import { routes } from '../app-routing.module';
 import { DataService } from '../shared/data.service';
 import {
   httpClientMock,
@@ -17,8 +18,6 @@ import {
 import { SharedService } from '../shared/shared.service';
 import { SliderDirective } from './../silder/slider.directive';
 import { HomeComponent } from './home.component';
-import { routes } from '../app-routing.module';
-import { IPRes } from '../shared/shared.model';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

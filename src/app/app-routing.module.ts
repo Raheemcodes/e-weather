@@ -1,10 +1,10 @@
-import { HourlyComponent } from './hourly/hourly.component';
+import { HourlyComponent } from './weather/hourly/hourly.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { WeatherComponent } from './weather/weather.component';
-import { DailyComponent } from './daily/daily.component';
+import { DailyComponent } from './weather/daily/daily.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

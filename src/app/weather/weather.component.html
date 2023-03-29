@@ -19,7 +19,11 @@
     <header class="weather-forecast__header">
       <h2 class="weather-forecast__desc">Overview</h2>
 
-      <button class="weather-forecast__dropdown">
+      <button
+        #dropdown
+        class="weather-forecast__dropdown"
+        (click)="open(dropdown)"
+      >
         <span class="weather-forecast__desc dropdown">Hourly</span>
 
         <div class="dropddown__icon">

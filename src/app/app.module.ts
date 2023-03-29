@@ -14,8 +14,8 @@ import { SliderDirective } from './silder/slider.directive';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { WeatherComponent } from './weather/weather.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
-import { HourlyComponent } from './hourly/hourly.component';
-import { DailyComponent } from './daily/daily.component';
+import { HourlyComponent } from './weather/hourly/hourly.component';
+import { DailyComponent } from './weather/daily/daily.component';
 
 @NgModule({
   declarations: [

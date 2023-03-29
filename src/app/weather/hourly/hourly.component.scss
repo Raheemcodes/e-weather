@@ -1,4 +1,4 @@
-@import "../shared/shared";
+@import "../../shared/shared";
 
 .weather-forecast__list {
   @include column-centered();
@@ -41,6 +41,10 @@
     }
     @media screen and (min-width: $two-xl) {
       height: toRem(551);
+    }
+
+    .weather-condition__dropddown-icon {
+      transform: rotateZ(180deg);
     }
   }
 }
@@ -115,17 +119,17 @@
 //   }
 // }
 
-// .weather-temp__container {
-//   @include between-centered();
-//   gap: toRem(8);
+.weather-temp__container {
+  @include between-centered();
+  gap: toRem(8);
 
-//   @media screen and (min-width: $md) {
-//     gap: toRem(24);
-//   }
-//   @media screen and (min-width: $two-xl) {
-//     gap: toRem(18);
-//   }
-// }
+  @media screen and (min-width: $md) {
+    gap: toRem(24);
+  }
+  @media screen and (min-width: $two-xl) {
+    gap: toRem(18);
+  }
+}
 
 .weather-temp__icon {
   width: toRem(40);
@@ -229,6 +233,7 @@
   display: flex;
   width: toRem(24);
   height: toRem(24);
+  transition: transform 0.3s ease-out;
 
   @media screen and (min-width: $md) {
     width: toRem(32);
