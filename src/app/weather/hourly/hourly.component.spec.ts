@@ -184,10 +184,13 @@ describe('HourlyComponent', () => {
     }));
 
     it('should call dataService fetchFullHourlyForecast() when invoked', () => {
-      route.queryParams = new BehaviorSubject({ lat: 6.41, lon: 3.39 });
-      const spyFn = spyOn(dataService, 'fetchFullHourlyForecast');
+      const spyFn = spyOn(
+        dataService,
+        'fetchFullHourlyForecast'
+      ).and.returnValue(of());
       component.getHourlyForecast(6.41, 3.39);
 
+      fixture.detectChanges();
       expect(spyFn).toHaveBeenCalledTimes(1);
     });
   });

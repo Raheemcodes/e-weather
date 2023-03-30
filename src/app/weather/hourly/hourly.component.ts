@@ -67,10 +67,9 @@ export class HourlyComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.dataService
-      .fetchHourlyForecast(
+      .fetchFullHourlyForecast(
         lat,
         lon,
-        8,
         'temperature_2m',
         'weathercode',
         'relativehumidity_2m',
