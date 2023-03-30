@@ -2,6 +2,7 @@ import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   CurrentWeatherRes,
+  FullHourlyRes,
   HourlyRes,
   HourlyUnit,
   IPRes,
@@ -203,15 +204,21 @@ export let httpClientMock: HttpClient = {
   get: (url: string) => of(),
 } as any as HttpClient;
 
-export const hourlyRes = {
+export const hourlyRes: HourlyRes = {
+  latitude: 6.5,
+  longitude: 3.375,
+  generationtime_ms: 1.1320114135742188,
+  utc_offset_seconds: 3600,
+  timezone: 'Africa/Lagos',
+  timezone_abbreviation: 'WAT',
+  elevation: 0.0,
   current_weather: {
-    temperature: 32.4,
-    time: '2023-03-17T11:00',
+    temperature: 31.7,
+    windspeed: 12.6,
+    winddirection: 204.0,
     weathercode: 2,
-    winddirection: 187,
-    windspeed: 8.4,
+    time: '2023-03-17T11:00',
   },
-
   daily: {
     time: [
       '2023-03-18',
@@ -244,7 +251,6 @@ export const hourlyRes = {
       '2023-03-25T06:58',
     ],
   },
-
   hourly: {
     temperature_2m: [
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -281,7 +287,137 @@ export const hourlyRes = {
       21, 22, 23,
     ],
   },
-} as HourlyRes;
+};
+
+export const fullHourlyRes: FullHourlyRes = {
+  latitude: 6.5,
+  longitude: 3.375,
+  generationtime_ms: 1.1320114135742188,
+  utc_offset_seconds: 3600,
+  timezone: 'Africa/Lagos',
+  timezone_abbreviation: 'WAT',
+  elevation: 0.0,
+  current_weather: {
+    temperature: 31.7,
+    windspeed: 12.6,
+    winddirection: 204.0,
+    weathercode: 2,
+    time: '2023-03-17T13:00',
+  },
+  hourly_units: {
+    time: 'iso8601',
+    temperature_2m: '°C',
+    weathercode: 'wmo code',
+    relativehumidity_2m: '%',
+    dewpoint_2m: '°C',
+    apparent_temperature: '°C',
+    cloudcover: '%',
+    windspeed_10m: 'km/h',
+    winddirection_10m: '°',
+    windgusts_10m: 'km/h',
+    surface_pressure: 'hPa',
+  },
+  hourly: {
+    temperature_2m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    time: [
+      '2023-03-17T00:00',
+      '2023-03-17T01:00',
+      '2023-03-17T02:00',
+      '2023-03-17T03:00',
+      '2023-03-17T04:00',
+      '2023-03-17T05:00',
+      '2023-03-17T06:00',
+      '2023-03-17T07:00',
+      '2023-03-17T08:00',
+      '2023-03-17T09:00',
+      '2023-03-17T10:00',
+      '2023-03-17T11:00',
+      '2023-03-17T12:00',
+      '2023-03-17T13:00',
+      '2023-03-17T14:00',
+      '2023-03-17T15:00',
+      '2023-03-17T16:00',
+      '2023-03-17T17:00',
+      '2023-03-17T18:00',
+      '2023-03-17T19:00',
+      '2023-03-17T20:00',
+      '2023-03-17T21:00',
+      '2023-03-17T22:00',
+      '2023-03-17T23:00',
+    ],
+    weathercode: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    apparent_temperature: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    cloudcover: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    dewpoint_2m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    relativehumidity_2m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    surface_pressure: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    winddirection_10m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    windgusts_10m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    windspeed_10m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+  },
+  daily: {
+    time: [
+      '2023-03-30',
+      '2023-03-31',
+      '2023-04-01',
+      '2023-04-02',
+      '2023-04-03',
+      '2023-04-04',
+      '2023-04-05',
+      '2023-04-06',
+    ],
+    sunset: [
+      '2023-03-30T18:57',
+      '2023-03-31T18:57',
+      '2023-04-01T18:56',
+      '2023-04-02T18:56',
+      '2023-04-03T18:56',
+      '2023-04-04T18:56',
+      '2023-04-05T18:56',
+      '2023-04-06T18:56',
+    ],
+    sunrise: [
+      '2023-03-30T06:44',
+      '2023-03-31T06:44',
+      '2023-04-01T06:43',
+      '2023-04-02T06:43',
+      '2023-04-03T06:42',
+      '2023-04-04T06:42',
+      '2023-04-05T06:42',
+      '2023-04-06T06:41',
+    ],
+  },
+};
 
 export let generateRestructuredForecast = (
   current: number,
@@ -302,12 +438,11 @@ export let generateRestructuredForecast = (
 };
 
 export let generateFullRestructuredForecast = (
-  current: number,
-  limit: number
+  current: number
 ): RestructuredHourlyForecast[] => {
   let forecast: RestructuredHourlyForecast[] = [];
 
-  for (let i: number = current; i < current + limit; i++) {
+  for (let i: number = current; i < 24; i++) {
     forecast.push({
       time: i,
       day: 'night',

@@ -84,7 +84,6 @@ export class HourlyComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (res) => {
-          console.log(JSON.stringify(res[0]));
           this.isLoading = false;
         },
       });

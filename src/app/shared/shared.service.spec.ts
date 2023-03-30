@@ -4,7 +4,6 @@ import { DataService } from './data.service';
 import {
   current_weather_mock,
   generateRestructuredForecast,
-  hourlyRes,
   httpClientMock,
   ipDataMock,
   locationResMock,
@@ -181,9 +180,16 @@ describe('SharedService', () => {
   });
 
   describe('convertTime()', () => {
-    it('should convert Date from ISO string to recent hour', () => {
-      const value: string = service.convertTime('2023-03-18T13:00');
+    it('should convert Date from ISO string to recent hour in 12 hour format', () => {
+      const value: string = service.convertTime('2023-03-18T13:00', true);
       const result = '1:00 PM';
+
+      expect(value).toBe(result);
+    });
+
+    it('should convert Date from ISO string to recent hour in 24 hour format', () => {
+      const value: string = service.convertTime('2023-03-18T13:00', false);
+      const result = '13:00';
 
       expect(value).toBe(result);
     });

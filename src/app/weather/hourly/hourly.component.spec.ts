@@ -1,7 +1,3 @@
-import {
-  generateFullRestructuredForecast,
-  MockFullHoulyData,
-} from './../../shared/shared.mock';
 import { DebugElement, NgZone } from '@angular/core';
 import {
   ComponentFixture,
@@ -10,15 +6,12 @@ import {
   tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DataService } from 'src/app/shared/data.service';
-import {
-  generateRestructuredForecast,
-  httpClientMock,
-} from 'src/app/shared/shared.mock';
+import { httpClientMock } from 'src/app/shared/shared.mock';
 import { HourlyComponent } from './hourly.component';
 
 describe('HourlyComponent', () => {
@@ -191,10 +184,8 @@ describe('HourlyComponent', () => {
     }));
 
     it('should call dataService fetchFullHourlyForecast() when invoked', () => {
-      const spyFn = spyOn(
-        dataService,
-        'fetchFullHourlyForecast'
-      ).and.returnValue(of(MockFullHoulyData));
+      route.queryParams = new BehaviorSubject({ lat: 6.41, lon: 3.39 });
+      const spyFn = spyOn(dataService, 'fetchFullHourlyForecast');
       component.getHourlyForecast(6.41, 3.39);
 
       expect(spyFn).toHaveBeenCalledTimes(1);

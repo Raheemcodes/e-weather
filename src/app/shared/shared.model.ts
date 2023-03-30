@@ -82,8 +82,21 @@ export interface HourlyRes {
   timezone_abbreviation: string;
   elevation: number;
   current_weather: CurrentWeather;
-  hourly_units: HourlyUnit;
   hourly: HourlyForcast;
+  daily: DailyWeatherRes;
+}
+
+export interface FullHourlyRes {
+  latitude: number;
+  longitude: number;
+  generationtime_ms: number;
+  utc_offset_seconds: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  elevation: number;
+  current_weather: CurrentWeather;
+  hourly_units: HourlyUnit;
+  hourly: FullHourlyForcast;
   daily: DailyWeatherRes;
 }
 
@@ -102,6 +115,12 @@ export interface HourlyUnit {
 }
 
 export interface HourlyForcast {
+  time: string[];
+  temperature_2m: number[];
+  weathercode: number[];
+}
+
+export interface FullHourlyForcast {
   time: string[];
   temperature_2m: number[];
   weathercode: number[];

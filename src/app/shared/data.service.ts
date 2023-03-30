@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   CurrentWeatherRes,
+  FullHourlyRes,
   HourlyRes,
   IPRes,
   RestructuredHourlyForecast,
@@ -46,7 +47,7 @@ export class DataService {
     ...arg: string[]
   ): Observable<RestructuredHourlyForecast[]> {
     return this.http
-      .get<HourlyRes>(
+      .get<FullHourlyRes>(
         environment.METEO_WEATHER_API +
           `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&current_weather=true&hourly=${arg.join(
             ','
@@ -59,22 +60,13 @@ export class DataService {
       );
   }
 
-  mapFullHourlyData(
-    res: HourlyRes,
-    limit?: number
-  ): RestructuredHourlyForecast[] {
+  mapFullHourlyData(res: FullHourlyRes): RestructuredHourlyForecast[] {
     const hourlyForecast: RestructuredHourlyForecast[] = [];
     const currentHour: number = new Date(res.current_weather.time).getTime();
-    const timeLimit: number = limit! * 60 * 60 * 1000;
 
     res.hourly.time.forEach((time, index) => {
       const milliseconds = new Date(time).getTime();
-      if (
-        limit
-          ? milliseconds >= currentHour &&
-            milliseconds < currentHour + timeLimit
-          : milliseconds >= currentHour
-      ) {
+      if (milliseconds >= currentHour) {
         const date: Date = new Date(time);
         const sunrise: Date = new Date(
           res.daily.sunrise[Math.floor(index / 24)]
