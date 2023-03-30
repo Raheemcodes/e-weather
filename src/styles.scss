@@ -146,6 +146,12 @@ img[alt] {
     background-color: var(--gray-40);
     animation: skeleton-loading 1s linear infinite alternate;
   }
+
+  &.index {
+    &::after {
+      z-index: 2;
+    }
+  }
 }
 
 @keyframes skeleton-loading {
