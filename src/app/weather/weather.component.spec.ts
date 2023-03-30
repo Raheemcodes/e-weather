@@ -9,7 +9,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SideBarComponent } from './side-bar/side-bar.component';
 
 import { WeatherComponent } from './weather.component';
 import { DailyComponent } from './daily/daily.component';

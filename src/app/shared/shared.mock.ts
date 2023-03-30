@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   CurrentWeatherRes,
   HourlyRes,
+  HourlyUnit,
   IPRes,
   RestructuredHourlyForecast,
   SearchRes,
@@ -14,10 +15,89 @@ export const ipDataMock = {
   longitude: 3.39,
 } as IPRes;
 
+export const hourlyUnitMock: HourlyUnit = {
+  time: 'iso8601',
+  temperature_2m: '°C',
+  weathercode: 'wmo code',
+  relativehumidity_2m: '%',
+  dewpoint_2m: '°C',
+  apparent_temperature: '°C',
+  cloudcover: '%',
+  windspeed_10m: 'km/h',
+  winddirection_10m: '°',
+  windgusts_10m: 'km/h',
+  surface_pressure: 'hPa',
+};
+
 export const MockHoulyData: RestructuredHourlyForecast[] = [
-  { time: 1, weathercode: 5, temperature_2m: 20, day: 'sunny' },
-  { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
-  { time: 2, weathercode: 5, temperature_2m: 20, day: 'sunny' },
+  {
+    day: 'sunny',
+    time: 13,
+
+    temperature_2m: 31.7,
+    weathercode: 2,
+  },
+  {
+    day: 'sunny',
+    time: 13,
+
+    temperature_2m: 31.7,
+    weathercode: 2,
+  },
+  {
+    day: 'sunny',
+    time: 13,
+
+    temperature_2m: 31.7,
+    weathercode: 2,
+  },
+];
+export const MockFullHoulyData: RestructuredHourlyForecast[] = [
+  {
+    day: 'sunny',
+    time: 13,
+    units: hourlyUnitMock,
+    temperature_2m: 31.7,
+    weathercode: 2,
+    relativehumidity_2m: 67,
+    dewpoint_2m: 24.7,
+    apparent_temperature: 37.7,
+    cloudcover: 53,
+    windspeed_10m: 12.6,
+    winddirection_10m: 204,
+    windgusts_10m: 30.2,
+    surface_pressure: 1011.1,
+  },
+  {
+    day: 'sunny',
+    time: 13,
+    units: hourlyUnitMock,
+    temperature_2m: 31.7,
+    weathercode: 2,
+    relativehumidity_2m: 67,
+    dewpoint_2m: 24.7,
+    apparent_temperature: 37.7,
+    cloudcover: 53,
+    windspeed_10m: 12.6,
+    winddirection_10m: 204,
+    windgusts_10m: 30.2,
+    surface_pressure: 1011.1,
+  },
+  {
+    day: 'sunny',
+    time: 13,
+    units: hourlyUnitMock,
+    temperature_2m: 31.7,
+    weathercode: 2,
+    relativehumidity_2m: 67,
+    dewpoint_2m: 24.7,
+    apparent_temperature: 37.7,
+    cloudcover: 53,
+    windspeed_10m: 12.6,
+    winddirection_10m: 204,
+    windgusts_10m: 30.2,
+    surface_pressure: 1011.1,
+  },
 ];
 
 export const current_weather_mock: CurrentWeatherRes = {
@@ -211,10 +291,37 @@ export let generateRestructuredForecast = (
 
   for (let i: number = current; i < current + limit; i++) {
     forecast.push({
-      temperature_2m: i,
-      weathercode: i,
       time: i,
       day: 'night',
+      temperature_2m: i,
+      weathercode: i,
+    });
+  }
+
+  return forecast;
+};
+
+export let generateFullRestructuredForecast = (
+  current: number,
+  limit: number
+): RestructuredHourlyForecast[] => {
+  let forecast: RestructuredHourlyForecast[] = [];
+
+  for (let i: number = current; i < current + limit; i++) {
+    forecast.push({
+      time: i,
+      day: 'night',
+      units: hourlyUnitMock,
+      temperature_2m: i,
+      weathercode: i,
+      relativehumidity_2m: i,
+      dewpoint_2m: i,
+      apparent_temperature: i,
+      cloudcover: i,
+      windspeed_10m: i,
+      winddirection_10m: i,
+      windgusts_10m: i,
+      surface_pressure: i,
     });
   }
 

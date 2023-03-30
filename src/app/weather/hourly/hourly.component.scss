@@ -20,17 +20,17 @@
   gap: toRem(24);
   border-radius: toRem(12);
   background-color: hsl(0, 0%, 92%);
-  padding: 0 toRem(12);
+  padding: 0;
   transition: height 0.3s ease-out;
 
   @media screen and (min-width: $md) {
     height: toRem(100);
-    padding: 0 toRem(26);
+    padding: 0;
   }
   @media screen and (min-width: $two-xl) {
     height: toRem(120);
     gap: toRem(32);
-    padding: 0 toRem(56);
+    padding: 0;
   }
 
   &.opened {
@@ -60,14 +60,14 @@
   z-index: 2;
   cursor: pointer;
   background-color: #ebebeb;
-  padding: toRem(24) 0;
+  padding: toRem(24) toRem(12);
 
   @media screen and (min-width: $md) {
-    padding: toRem(18) 0;
+    padding: toRem(18) toRem(26);
   }
   @media screen and (min-width: $two-xl) {
     gap: toRem(32);
-    padding: toRem(24) 0;
+    padding: toRem(24) toRem(56);
   }
 }
 

@@ -13,7 +13,7 @@ import { SearchSuggestionComponent } from './search-suggestion/search-suggestion
 import { SliderDirective } from './silder/slider.directive';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { WeatherComponent } from './weather/weather.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
+import { SideBarComponent } from './weather/side-bar/side-bar.component';
 import { HourlyComponent } from './weather/hourly/hourly.component';
 import { DailyComponent } from './weather/daily/daily.component';
 

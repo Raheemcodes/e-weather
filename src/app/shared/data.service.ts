@@ -40,6 +40,71 @@ export class DataService {
       );
   }
 
+  fetchFullHourlyForecast(
+    lat: number,
+    lon: number,
+    ...arg: string[]
+  ): Observable<RestructuredHourlyForecast[]> {
+    return this.http
+      .get<HourlyRes>(
+        environment.METEO_WEATHER_API +
+          `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&current_weather=true&hourly=${arg.join(
+            ','
+          )}&daily=sunset,sunrise`
+      )
+      .pipe(
+        map((res) => {
+          return this.mapFullHourlyData(res);
+        })
+      );
+  }
+
+  mapFullHourlyData(
+    res: HourlyRes,
+    limit?: number
+  ): RestructuredHourlyForecast[] {
+    const hourlyForecast: RestructuredHourlyForecast[] = [];
+    const currentHour: number = new Date(res.current_weather.time).getTime();
+    const timeLimit: number = limit! * 60 * 60 * 1000;
+
+    res.hourly.time.forEach((time, index) => {
+      const milliseconds = new Date(time).getTime();
+      if (
+        limit
+          ? milliseconds >= currentHour &&
+            milliseconds < currentHour + timeLimit
+          : milliseconds >= currentHour
+      ) {
+        const date: Date = new Date(time);
+        const sunrise: Date = new Date(
+          res.daily.sunrise[Math.floor(index / 24)]
+        );
+        const sunset: Date = new Date(res.daily.sunset[Math.floor(index / 24)]);
+
+        const day: 'sunny' | 'night' =
+          date < sunset && date >= sunrise ? 'sunny' : 'night';
+
+        hourlyForecast.push({
+          day,
+          time: new Date(time).getHours(),
+          units: res.hourly_units,
+          temperature_2m: res.hourly.temperature_2m[index],
+          weathercode: res.hourly.weathercode[index],
+          relativehumidity_2m: res.hourly.relativehumidity_2m[index],
+          dewpoint_2m: res.hourly.dewpoint_2m[index],
+          apparent_temperature: res.hourly.apparent_temperature[index],
+          cloudcover: res.hourly.cloudcover[index],
+          windspeed_10m: res.hourly.windspeed_10m[index],
+          winddirection_10m: res.hourly.winddirection_10m[index],
+          windgusts_10m: res.hourly.windgusts_10m[index],
+          surface_pressure: res.hourly.surface_pressure[index],
+        });
+      }
+    });
+
+    return hourlyForecast;
+  }
+
   mapHourlyData(res: HourlyRes, limit: number): RestructuredHourlyForecast[] {
     const hourlyForecast: RestructuredHourlyForecast[] = [];
     const currentHour: number = new Date(res.current_weather.time).getTime();

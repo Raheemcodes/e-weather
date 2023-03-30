@@ -56,7 +56,7 @@ describe('DataService', () => {
       );
 
       service
-        .fetchHourlyForecast(limit, hourlyRes.latitude, hourlyRes.longitude)
+        .fetchHourlyForecast(hourlyRes.latitude, hourlyRes.longitude, limit)
         .subscribe({
           next: (res) => {
             done();

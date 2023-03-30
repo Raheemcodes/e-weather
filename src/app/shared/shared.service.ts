@@ -42,7 +42,7 @@ export class SharedService {
     ...arg: string[]
   ): Observable<RestructuredHourlyForecast[]> {
     return this.dataService
-      .fetchHourlyForecast(limit, this.ip.latitude, this.ip.longitude, ...arg)
+      .fetchHourlyForecast(this.ip.latitude, this.ip.longitude, limit, ...arg)
       .pipe(tap((res) => (this.hourlyForecast = res)));
   }
 

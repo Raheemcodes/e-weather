@@ -82,26 +82,53 @@ export interface HourlyRes {
   timezone_abbreviation: string;
   elevation: number;
   current_weather: CurrentWeather;
-  hourly_units: {
-    time: string;
-    temperature_2m: string;
-    weathercode: string;
-  };
+  hourly_units: HourlyUnit;
   hourly: HourlyForcast;
   daily: DailyWeatherRes;
+}
+
+export interface HourlyUnit {
+  time: string;
+  temperature_2m: string;
+  weathercode: string;
+  relativehumidity_2m: string;
+  dewpoint_2m: string;
+  apparent_temperature: string;
+  cloudcover: string;
+  windspeed_10m: string;
+  winddirection_10m: string;
+  windgusts_10m: string;
+  surface_pressure: string;
 }
 
 export interface HourlyForcast {
   time: string[];
   temperature_2m: number[];
   weathercode: number[];
+  relativehumidity_2m: number[];
+  dewpoint_2m: number[];
+  apparent_temperature: number[];
+  cloudcover: number[];
+  windspeed_10m: number[];
+  winddirection_10m: number[];
+  windgusts_10m: number[];
+  surface_pressure: number[];
 }
 
 export interface RestructuredHourlyForecast {
+  day: 'sunny' | 'night';
   time: number;
+  units?: HourlyUnit;
   temperature_2m: number;
   weathercode: number;
-  day: 'sunny' | 'night';
+  relativehumidity_2m?: number;
+  dewpoint_2m?: number;
+  apparent_temperature?: number;
+  cloudcover?: number;
+  windspeed_10m?: number;
+  winddirection_10m?: number;
+  windgusts_10m?: number;
+  surface_pressure?: number;
 }
 
 export interface SearchRes {

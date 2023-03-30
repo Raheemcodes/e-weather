@@ -1,280 +1,148 @@
 <ul class="weather-forecast__list">
-  <li class="weather-forecast" (click)="toggle(0)">
-    <div class="summary">
-      <div class="time-date">
-        <div class="time">12:00</div>
-        <div class="date">3/7</div>
-      </div>
+  <ng-container *ngIf="isLoading">
+    <li
+      class="weather-forecast skeleton"
+      *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+    >
+      <div class="summary">
+        <div class="time-date">
+          <div class="time">12:00</div>
+          <div class="date">3/7</div>
+        </div>
 
-      <div class="weather-temp__container">
-        <div class="weather-temp__icon">
+        <div class="weather-temp__container">
+          <div class="weather-temp__icon">
+            <img
+              width="40"
+              height="40"
+              src="../../assets/icons/white/thunderstorm.svg"
+              alt
+            />
+          </div>
+          <div class="weather-temp">20°C</div>
+        </div>
+
+        <div class="humidity">
+          <div class="humidity-icon">
+            <img
+              width="16"
+              height="16"
+              src="../../assets/icons/humidity.svg"
+              alt
+            />
+          </div>
+          <div class="humidity-value">89%</div>
+        </div>
+
+        <div class="weather-condition__dropddown-icon">
           <img
-            width="40"
-            height="40"
-            src="../../assets/icons/white/thunderstorm.svg"
+            width="32"
+            height="32"
+            src="../../assets/icons/dropdown.svg"
             alt
           />
         </div>
-        <div class="weather-temp">20°C</div>
       </div>
+    </li>
+  </ng-container>
 
-      <div class="humidity">
-        <div class="humidity-icon">
+  <ng-container *ngIf="!isLoading">
+    <li class="weather-forecast">
+      <div class="summary" (click)="toggle(0)">
+        <div class="time-date">
+          <div class="time">12:00</div>
+          <div class="date">3/7</div>
+        </div>
+
+        <div class="weather-temp__container">
+          <div class="weather-temp__icon">
+            <img
+              width="40"
+              height="40"
+              src="../../assets/icons/white/thunderstorm.svg"
+              alt
+            />
+          </div>
+          <div class="weather-temp">20°C</div>
+        </div>
+
+        <div class="humidity">
+          <div class="humidity-icon">
+            <img
+              width="16"
+              height="16"
+              src="../../assets/icons/humidity.svg"
+              alt
+            />
+          </div>
+          <div class="humidity-value">89%</div>
+        </div>
+
+        <div class="weather-condition__dropddown-icon">
           <img
-            width="16"
-            height="16"
-            src="../../assets/icons/humidity.svg"
+            width="32"
+            height="32"
+            src="../../assets/icons/dropdown.svg"
             alt
           />
         </div>
-        <div class="humidity-value">89%</div>
       </div>
 
-      <div class="weather-condition__dropddown-icon">
-        <img width="32" height="32" src="../../assets/icons/dropdown.svg" alt />
+      <div class="details">
+        <h4 class="details-weather__desc">Heavy rain</h4>
+
+        <ul class="full-weather__forecast-list">
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">RealFeel Shade</div>
+            <div class="weather-forecast__value">32°C</div>
+          </li>
+        </ul>
       </div>
-    </div>
-
-    <div class="details">
-      <h4 class="details-weather__desc">Heavy rain</h4>
-
-      <ul class="full-weather__forecast-list">
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-      </ul>
-    </div>
-  </li>
-
-  <li class="weather-forecast" (click)="toggle(1)">
-    <div class="summary">
-      <div class="time-date">
-        <div class="time">12:00</div>
-        <div class="date">3/7</div>
-      </div>
-
-      <div class="weather-temp__container">
-        <div class="weather-temp__icon">
-          <img
-            width="40"
-            height="40"
-            src="../../assets/icons/white/thunderstorm.svg"
-            alt
-          />
-        </div>
-        <div class="weather-temp">20°C</div>
-      </div>
-
-      <div class="humidity">
-        <div class="humidity-icon">
-          <img
-            width="16"
-            height="16"
-            src="../../assets/icons/humidity.svg"
-            alt
-          />
-        </div>
-        <div class="humidity-value">89%</div>
-      </div>
-
-      <div class="weather-condition__dropddown-icon">
-        <img width="32" height="32" src="../../assets/icons/dropdown.svg" alt />
-      </div>
-    </div>
-
-    <div class="details">
-      <h4 class="details-weather__desc">Heavy rain</h4>
-
-      <ul class="full-weather__forecast-list">
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-      </ul>
-    </div>
-  </li>
-
-  <li class="weather-forecast" (click)="toggle(2)">
-    <div class="summary">
-      <div class="time-date">
-        <div class="time">12:00</div>
-        <div class="date">3/7</div>
-      </div>
-
-      <div class="weather-temp__container">
-        <div class="weather-temp__icon">
-          <img
-            width="40"
-            height="40"
-            src="../../assets/icons/white/thunderstorm.svg"
-            alt
-          />
-        </div>
-        <div class="weather-temp">20°C</div>
-      </div>
-
-      <div class="humidity">
-        <div class="humidity-icon">
-          <img
-            width="16"
-            height="16"
-            src="../../assets/icons/humidity.svg"
-            alt
-          />
-        </div>
-        <div class="humidity-value">89%</div>
-      </div>
-
-      <div class="weather-condition__dropddown-icon">
-        <img width="32" height="32" src="../../assets/icons/dropdown.svg" alt />
-      </div>
-    </div>
-
-    <div class="details">
-      <h4 class="details-weather__desc">Heavy rain</h4>
-
-      <ul class="full-weather__forecast-list">
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-      </ul>
-    </div>
-  </li>
+    </li>
+  </ng-container>
 </ul>
