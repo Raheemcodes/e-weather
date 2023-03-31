@@ -79,8 +79,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.sharedService.convertWMOCodestoSVG(code, time);
   }
 
-  padHour(hour: number): string {
-    return `${hour}:00`.padStart(5, '0');
+  convertTime(time: string, hour: boolean = false): string {
+    return this.sharedService.convertTime(time, hour);
   }
 
   roundup(temperature: number): string {

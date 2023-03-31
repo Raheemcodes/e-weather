@@ -12,9 +12,8 @@ import {
   hourlyRes,
   ipDataMock,
   locationResMock,
-  restructured_current_weather_mock,
 } from './shared.mock';
-import { RestructuredHourlyForecast, FullHourlyRes } from './shared.model';
+import { RestructuredHourlyForecast } from './shared.model';
 
 describe('DataService', () => {
   let service: DataService;

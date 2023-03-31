@@ -88,7 +88,7 @@
               [title]="convertWMOCodes(item.weathercode)"
             />
           </div>
-          <div class="time">{{ padHour(item.time) }}</div>
+          <div class="time">{{ convertTime(item.time) }}</div>
         </li>
       </ng-container>
     </ul>

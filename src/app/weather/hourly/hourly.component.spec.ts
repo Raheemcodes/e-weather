@@ -6,29 +6,36 @@ import {
   tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
+import { MockFullHoulyData } from './../../shared/shared.mock';
 
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DataService } from 'src/app/shared/data.service';
 import { httpClientMock } from 'src/app/shared/shared.mock';
 import { HourlyComponent } from './hourly.component';
+import { SharedService } from 'src/app/shared/shared.service';
 
 describe('HourlyComponent', () => {
   let component: HourlyComponent;
   let fixture: ComponentFixture<HourlyComponent>;
   let de: DebugElement;
   let dataService: DataService;
+  let sharedServiceSpy: SharedService;
   let zone: NgZone;
   let route: ActivatedRoute;
 
   beforeEach(async () => {
     dataService = new DataService(httpClientMock);
+    sharedServiceSpy = new SharedService(dataService);
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [HourlyComponent],
-      providers: [{ provide: DataService, useValue: dataService }],
+      providers: [
+        { provide: DataService, useValue: dataService },
+        { provide: SharedService, useValue: sharedServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HourlyComponent);
@@ -54,6 +61,7 @@ describe('HourlyComponent', () => {
 
   describe('toggle()', () => {
     it('should be called on .weather-forecast click', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();
@@ -71,6 +79,7 @@ describe('HourlyComponent', () => {
     it('should add .opened to .weather-forecast class and remove it from its sibling if it has it', fakeAsync(() => {
       component.isLoading = false;
       tick(3000);
+      fixture.detectChanges();
 
       let idx: number = 0;
       const de_el = de.queryAll(By.css('.weather-forecast:not(.skeleton)'));
@@ -88,6 +97,7 @@ describe('HourlyComponent', () => {
     }));
 
     it('should remove .opened from all .weather-forecast element class if selected element has it', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();
@@ -137,6 +147,7 @@ describe('HourlyComponent', () => {
     });
 
     it('should contain only the original of loaded content if isLoading is false', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();
@@ -176,12 +187,11 @@ describe('HourlyComponent', () => {
   });
 
   describe('getHourlyForecast()', () => {
-    it('should set isLoading to true', fakeAsync(() => {
+    it('should set isLoading to true', () => {
       component.getHourlyForecast(6.41, 3.39);
 
-      tick(3000);
       expect(component.isLoading).toBeTrue();
-    }));
+    });
 
     it('should call dataService fetchFullHourlyForecast() when invoked', () => {
       const spyFn = spyOn(
@@ -190,8 +200,110 @@ describe('HourlyComponent', () => {
       ).and.returnValue(of());
       component.getHourlyForecast(6.41, 3.39);
 
-      fixture.detectChanges();
       expect(spyFn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should set isLoading to false when dataService fetchFullHourlyForecast() return res', fakeAsync(() => {
+      spyOn(dataService, 'fetchFullHourlyForecast').and.returnValue(
+        of(MockFullHoulyData)
+      );
+      component.getHourlyForecast(6.41, 3.39);
+
+      tick(3000);
+      expect(component.isLoading).toBeFalse();
+    }));
+
+    it('should set dataService fetchFullHourlyForecast() res as hourlyData property value', fakeAsync(() => {
+      spyOn(dataService, 'fetchFullHourlyForecast').and.returnValue(
+        of(MockFullHoulyData)
+      );
+      component.getHourlyForecast(6.41, 3.39);
+
+      tick(3000);
+      expect(component.hourlyData).toBe(MockFullHoulyData);
+    }));
+  });
+
+  describe('.weather-forecast', () => {
+    it('should have same length has hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el = de.queryAll(By.css('.weather-forecast:not(skeleton)'));
+      expect(de_el.length).toBe(component.hourlyData.length);
+    }));
+
+    it('should contain child .time with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .time')
+      ).nativeElement;
+      expect(el.textContent).toBe(
+        component.convertTime(MockFullHoulyData[0].time)
+      );
+    }));
+
+    it('should contain child .date with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .date')
+      ).nativeElement;
+      expect(el.textContent).toBe(
+        component.convertDate(MockFullHoulyData[0].time)
+      );
+    }));
+
+    it('should contain child .time-date with attribute value relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const value = de.query(
+        By.css('.weather-forecast:not(skeleton) .time-date')
+      ).attributes['title'];
+      expect(value).toBe(component.convertISOtoDate(MockFullHoulyData[0].time));
+    }));
+  });
+
+  describe('convertTime()', () => {
+    it('should call sharedService convertTime() when invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertTime');
+      component.convertTime('2023-03-17T13:00', false);
+
+      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00', false);
+    });
+  });
+
+  describe('convertDate()', () => {
+    it('should call sharedService convertDate() when invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertDate');
+      component.convertDate('2023-03-17T13:00');
+
+      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00');
+    });
+  });
+
+  describe('convertISOtoDate()', () => {
+    it('should call sharedService convertISOtoDate() when invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertISOtoDate');
+      component.convertISOtoDate('2023-03-17T13:00');
+
+      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00');
     });
   });
 

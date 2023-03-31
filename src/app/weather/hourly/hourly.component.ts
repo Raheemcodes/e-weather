@@ -1,8 +1,10 @@
+import { RestructuredHourlyForecast } from './../../shared/shared.model';
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { DataService } from 'src/app/shared/data.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-hourly',
@@ -10,6 +12,7 @@ import { DataService } from 'src/app/shared/data.service';
   styleUrls: ['./hourly.component.scss'],
 })
 export class HourlyComponent implements OnInit, OnDestroy {
+  hourlyData!: RestructuredHourlyForecast[];
   subs: Subscription[] = [];
   _isLoading: boolean = false;
 
@@ -30,6 +33,7 @@ export class HourlyComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
+    private sharedService: SharedService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -83,9 +87,26 @@ export class HourlyComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (res) => {
+          console.log(res);
+          this.hourlyData = res;
           this.isLoading = false;
         },
+        error: (err) => {
+          console.error(err);
+        },
       });
+  }
+
+  convertTime(time: string, hour: boolean = false): string {
+    return this.sharedService.convertTime(time, hour);
+  }
+
+  convertDate(time: string): string {
+    return this.sharedService.convertDate(time);
+  }
+
+  convertISOtoDate(time: string): string {
+    return this.sharedService.convertISOtoDate(time);
   }
 
   ngOnDestroy(): void {

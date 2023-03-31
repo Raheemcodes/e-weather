@@ -47,11 +47,11 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <li class="weather-forecast">
+    <li class="weather-forecast" *ngFor="let record of hourlyData">
       <div class="summary" (click)="toggle(0)">
-        <div class="time-date">
-          <div class="time">12:00</div>
-          <div class="date">3/7</div>
+        <div class="time-date" [title]="convertISOtoDate(record.time)">
+          <div class="time">{{ convertTime(record.time) }}</div>
+          <div class="date">{{ convertDate(record.time) }}</div>
         </div>
 
         <div class="weather-temp__container">

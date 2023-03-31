@@ -262,6 +262,20 @@ export class SharedService {
     });
   }
 
+  convertDate(time: string): string {
+    const date = new Date(time);
+    const res = date.toLocaleString('en-GB', {
+      month: 'numeric',
+      day: 'numeric',
+    });
+
+    return res;
+  }
+
+  convertISOtoDate(ISO: string): string {
+    return new Date(ISO).toDateString();
+  }
+
   setSearchRes(val: RestructureSearchRes, limit?: number) {
     const field = limit ? 'searchRes' : 'fullSearchRes';
 

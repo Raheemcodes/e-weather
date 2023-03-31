@@ -260,4 +260,46 @@ describe('SharedService', () => {
       expect(service.fullSearchRes).withContext('main').toEqual([]);
     });
   });
+
+  describe('convertTime()', () => {
+    it('should convert hours to 24 hour format if second arg is false', () => {
+      const time: string = '2023-03-17T13:00';
+
+      expect(service.convertTime(time, false)).toBe(`${13}:00`);
+    });
+
+    it('should convert hours to 12 hour format if second arg is true', () => {
+      const time: string = '2023-03-17T13:00';
+
+      expect(service.convertTime(time, true)).toBe(`${1}:00 PM`);
+    });
+
+    it('should pad hours in units by on 0 in 24 hour format', () => {
+      const time: string = '2023-03-17T01:00';
+
+      expect(service.convertTime(time, false)).toBe(`0${1}:00`);
+    });
+
+    it('should not pad hours in units by on 0 in 12 hour format', () => {
+      const time: string = '2023-03-17T01:00';
+
+      expect(service.convertTime(time, true)).toBe(`${1}:00 AM`);
+    });
+  });
+
+  describe('convertDate()', () => {
+    it('should convert time to DD/MM format', () => {
+      const time: string = '2023-03-17T13:00';
+
+      expect(service.convertDate(time)).toBe('17/03');
+    });
+  });
+
+  describe('convertISOtoDate()', () => {
+    it('should convert time to DD/MM format', () => {
+      const time: string = '2023-03-17T13:00';
+
+      expect(service.convertISOtoDate(time)).toBe('Fri Mar 17 2023');
+    });
+  });
 });

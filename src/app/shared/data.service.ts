@@ -78,7 +78,7 @@ export class DataService {
 
         hourlyForecast.push({
           day,
-          time: new Date(time).getHours(),
+          time,
           units: res.hourly_units,
           temperature_2m: res.hourly.temperature_2m[index],
           weathercode: res.hourly.weathercode[index],
@@ -118,7 +118,7 @@ export class DataService {
           date < sunset && date >= sunrise ? 'sunny' : 'night';
 
         hourlyForecast.push({
-          time: new Date(time).getHours(),
+          time,
           temperature_2m: res.hourly.temperature_2m[index],
           weathercode: res.hourly.weathercode[index],
           day,

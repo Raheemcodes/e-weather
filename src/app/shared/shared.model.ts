@@ -136,7 +136,7 @@ export interface FullHourlyForcast {
 
 export interface RestructuredHourlyForecast {
   day: 'sunny' | 'night';
-  time: number;
+  time: string;
   units?: HourlyUnit;
   temperature_2m: number;
   weathercode: number;

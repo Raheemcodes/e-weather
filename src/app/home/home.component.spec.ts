@@ -118,17 +118,12 @@ describe('HomeComponent', () => {
     expect(title_de.textContent).toContain(city);
   }));
 
-  describe('padHour()', () => {
-    it('should convert hours to this format `00:00`', () => {
-      const hour: number = 1;
+  describe('convertTime()', () => {
+    it('should call sharedService convertTime() when invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertTime');
+      component.convertTime('2023-03-17T13:00', false);
 
-      expect(component.padHour(hour)).toBe(`0${1}:00`);
-    });
-
-    it('should not add an extra padding forward if hour is in tens`', () => {
-      const hour: number = 22;
-
-      expect(component.padHour(hour)).toBe(`${22}:00`);
+      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00', false);
     });
   });
 
