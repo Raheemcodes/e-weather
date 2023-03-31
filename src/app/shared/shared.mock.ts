@@ -28,6 +28,7 @@ export const hourlyUnitMock: HourlyUnit = {
   winddirection_10m: '°',
   windgusts_10m: 'km/h',
   surface_pressure: 'hPa',
+  direct_radiation: 'W/m²',
 };
 
 export const MockHoulyData: RestructuredHourlyForecast[] = [
@@ -317,6 +318,7 @@ export const fullHourlyRes: FullHourlyRes = {
     winddirection_10m: '°',
     windgusts_10m: 'km/h',
     surface_pressure: 'hPa',
+    direct_radiation: 'W/m²',
   },
   hourly: {
     temperature_2m: [
@@ -382,6 +384,10 @@ export const fullHourlyRes: FullHourlyRes = {
       21, 22, 23,
     ],
     windspeed_10m: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23,
+    ],
+    direct_radiation: [
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
       21, 22, 23,
     ],
@@ -458,6 +464,7 @@ export let generateFullRestructuredForecast = (
       winddirection_10m: i,
       windgusts_10m: i,
       surface_pressure: i,
+      direct_radiation: i,
     });
   }
 

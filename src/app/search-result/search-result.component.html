@@ -41,7 +41,12 @@
     </ng-container>
 
     <ng-container *ngIf="!isLoading">
-      <li class="search-record" *ngFor="let record of result">
+      <li
+        class="search-record"
+        *ngFor="let record of result"
+        routerLink="/weather/hourly"
+        [queryParams]="{ lat: record.location.lat, lon: record.location.lon }"
+      >
         <div class="icon">
           <svg
             width="24"

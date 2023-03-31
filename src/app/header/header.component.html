@@ -48,8 +48,8 @@
     type="text"
     placeholder="Search City here"
     (focus)="renderer.addClass(form, 'focus'); display = true && !!search.value"
-    (input)="oninput(search)"
     (blur)="onblur(form)"
+    (input)="oninput(search)"
     maxlength="100"
   />
 

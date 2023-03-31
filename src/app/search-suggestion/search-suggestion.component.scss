@@ -35,6 +35,7 @@
   gap: toRem(8);
   border-bottom: 1px solid #b8b8b8;
   padding: toRem(12) toRem(18);
+  cursor: pointer;
 
   @media screen and (min-width: $two-xl) {
     gap: toRem(18);

@@ -32,7 +32,12 @@
     </ng-container>
 
     <ng-container *ngIf="result.length && !isLoading">
-      <li class="suggestion-list__item" *ngFor="let record of result">
+      <li
+        class="suggestion-list__item"
+        *ngFor="let record of result"
+        routerLink="/weather/hourly"
+        [queryParams]="{ lat: record.location.lat, lon: record.location.lon }"
+      >
         <div class="suggestion-icon">
           <svg
             width="24"
@@ -50,11 +55,7 @@
           </svg>
         </div>
 
-        <div
-          class="title-details__container"
-          routerLink="/weather/hourly"
-          [queryParams]="{ lat: record.location.lat, lon: record.location.lon }"
-        >
+        <div class="title-details__container">
           <div class="suggestion-title">
             {{ record?.location?.name }}, {{ record?.location?.country }}
           </div>

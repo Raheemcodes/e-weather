@@ -63,6 +63,7 @@
   gap: toRem(8);
   border-bottom: 1px solid #b8b8b8;
   padding: toRem(0) toRem(18) toRem(12);
+  cursor: pointer;
 
   @media screen and (min-width: $lg) {
     padding: 0 0 toRem(18);

@@ -112,6 +112,7 @@ export interface HourlyUnit {
   winddirection_10m: string;
   windgusts_10m: string;
   surface_pressure: string;
+  direct_radiation: string;
 }
 
 export interface HourlyForcast {
@@ -132,6 +133,7 @@ export interface FullHourlyForcast {
   winddirection_10m: number[];
   windgusts_10m: number[];
   surface_pressure: number[];
+  direct_radiation: number[];
 }
 
 export interface RestructuredHourlyForecast {
@@ -148,6 +150,7 @@ export interface RestructuredHourlyForecast {
   winddirection_10m?: number;
   windgusts_10m?: number;
   surface_pressure?: number;
+  direct_radiation?: number;
 }
 
 export interface SearchRes {

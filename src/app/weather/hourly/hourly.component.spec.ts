@@ -328,6 +328,34 @@ describe('HourlyComponent', () => {
         `${MockFullHoulyData[0].relativehumidity_2m}${MockFullHoulyData[0].units?.relativehumidity_2m}`
       );
     }));
+
+    it('should contain child .details-weather__desc with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .details-weather__desc')
+      ).nativeElement;
+      expect(el.innerText).toBe(
+        component.convertWMOCodes(MockFullHoulyData[0].weathercode)
+      );
+    }));
+
+    it('should contain child .full-weather__forecast-item with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .full-weather__forecast-item')
+      ).nativeElement;
+      expect(el.innerText).toContain('32°C');
+    }));
   });
 
   describe('convertTime()', () => {

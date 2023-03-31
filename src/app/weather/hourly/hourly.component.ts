@@ -83,7 +83,8 @@ export class HourlyComponent implements OnInit, OnDestroy {
         'windspeed_10m',
         'winddirection_10m',
         'windgusts_10m',
-        'surface_pressure'
+        'surface_pressure',
+        'direct_radiation'
       )
       .subscribe({
         next: (res) => {

@@ -69,7 +69,7 @@
               [title]="convertWMOCodes(record.weathercode)"
             />
           </div>
-          <div class="weather-temp" title="Temperature">
+          <div class="weather-temp" title="Approximate Temperature">
             {{ roundup(record.temperature_2m) }}
           </div>
         </div>
@@ -100,57 +100,82 @@
       </div>
 
       <div class="details">
-        <h4 class="details-weather__desc">Heavy rain</h4>
+        <h4 class="details-weather__desc">
+          {{ convertWMOCodes(record.weathercode) }}
+        </h4>
 
         <ul class="full-weather__forecast-list">
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Temperature</div>
+            <div class="weather-forecast__value">
+              {{ record.temperature_2m }}{{ record.units?.temperature_2m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Apparent Temperature</div>
+            <div class="weather-forecast__value">
+              {{ record.apparent_temperature
+              }}{{ record.units?.apparent_temperature }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Relative Humidity</div>
+            <div class="weather-forecast__value">
+              {{ record.relativehumidity_2m
+              }}{{ record.units?.relativehumidity_2m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Cloud Coverage</div>
+            <div class="weather-forecast__value">
+              {{ record.cloudcover }}{{ record.units?.cloudcover }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Dew Point</div>
+            <div class="weather-forecast__value">
+              {{ record.dewpoint_2m }}{{ record.units?.dewpoint_2m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Wind Speed</div>
+            <div class="weather-forecast__value">
+              {{ record.windspeed_10m }}{{ record.units?.windspeed_10m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Wind Deirection</div>
+            <div class="weather-forecast__value">
+              {{ record.winddirection_10m
+              }}{{ record.units?.winddirection_10m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Wind Gusts</div>
+            <div class="weather-forecast__value">
+              {{ record.windgusts_10m }}{{ record.units?.windgusts_10m }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Surface Pressure</div>
+            <div class="weather-forecast__value">
+              {{ record.surface_pressure }}{{ record.units?.surface_pressure }}
+            </div>
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">RealFeel Shade</div>
-            <div class="weather-forecast__value">32°C</div>
+            <div class="weather-forecast__title">Surface Pressure</div>
+            <div class="weather-forecast__value">
+              {{ record.direct_radiation }}{{ record.units?.direct_radiation }}
+            </div>
           </li>
         </ul>
       </div>
