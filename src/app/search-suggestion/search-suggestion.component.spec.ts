@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -21,6 +22,7 @@ describe('SearchSuggestionComponent', () => {
     sharedServiceSpy = new SharedService(new DataService(httpClientMock));
 
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [SearchSuggestionComponent],
       providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
     }).compileComponents();

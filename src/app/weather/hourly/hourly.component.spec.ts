@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { MockFullHoulyData } from './../../shared/shared.mock';
+import { MockFullHoulyData, hourlyUnitMock } from './../../shared/shared.mock';
 
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -77,6 +77,7 @@ describe('HourlyComponent', () => {
     }));
 
     it('should add .opened to .weather-forecast class and remove it from its sibling if it has it', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();
@@ -278,9 +279,68 @@ describe('HourlyComponent', () => {
       ).attributes['title'];
       expect(value).toBe(component.convertISOtoDate(MockFullHoulyData[0].time));
     }));
+
+    it('should contain child .weather-temp with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .weather-temp')
+      ).nativeElement;
+      expect(el.innerText).toBe(
+        component.roundup(MockFullHoulyData[0].temperature_2m)
+      );
+    }));
+
+    it('should contain child .weather-temp__icon img with atrribute value relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el = de.query(
+        By.css('.weather-forecast:not(skeleton) .weather-temp__icon img')
+      );
+      expect(de_el.attributes['src'])
+        .withContext('src')
+        .toBe(`../../assets/icons/white/partly-cloudy-sunny.svg`);
+
+      expect(de_el.attributes['title'])
+        .withContext('title')
+        .toBe('Partly Cloudy');
+    }));
+
+    it('should contain child .weather-temp with content relative to hourlyData property', fakeAsync(() => {
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+
+      tick(3000);
+      fixture.detectChanges();
+
+      const el: HTMLElement = de.query(
+        By.css('.weather-forecast:not(skeleton) .humidity-value')
+      ).nativeElement;
+      expect(el.innerText).toBe(
+        `${MockFullHoulyData[0].relativehumidity_2m}${MockFullHoulyData[0].units?.relativehumidity_2m}`
+      );
+    }));
   });
 
   describe('convertTime()', () => {
+    it('should have been called once on initializaton', fakeAsync(() => {
+      const spyFn = spyOn(component, 'convertTime');
+      component.hourlyData = MockFullHoulyData;
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalled();
+    }));
+
     it('should call sharedService convertTime() when invoked', () => {
       const spyFn = spyOn(sharedServiceSpy, 'convertTime');
       component.convertTime('2023-03-17T13:00', false);
@@ -304,6 +364,66 @@ describe('HourlyComponent', () => {
       component.convertISOtoDate('2023-03-17T13:00');
 
       expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00');
+    });
+  });
+
+  describe('convertWMOtoImage()', () => {
+    beforeEach(() => {
+      component.hourlyData = MockFullHoulyData;
+    });
+
+    it('should have been called once', fakeAsync(() => {
+      const spyFn = spyOn(component, 'convertWMOtoImage');
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalled();
+    }));
+
+    it('should call sharedService relative method after it has been invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertWMOCodestoSVG');
+      component.convertWMOtoImage(1, 'sunny');
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalledWith(1, 'sunny');
+    });
+  });
+
+  describe('roundup()', () => {
+    it('should convert hours to this format `32°C`', () => {
+      const temperature: number = 32.5;
+
+      expect(component.roundup(temperature)).toBe(`${33}°C`);
+    });
+
+    it('should not increase value on approximation if decimal number is < 5`', () => {
+      const temperature: number = 32.1;
+
+      expect(component.roundup(temperature)).toBe(`${32}°C`);
+    });
+  });
+
+  describe('convertWMOCodes()', () => {
+    beforeEach(() => {
+      component.hourlyData = MockFullHoulyData;
+    });
+
+    it('should have been called once', fakeAsync(() => {
+      const spyFn = spyOn(component, 'convertWMOCodes');
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalled();
+    }));
+
+    it('should call sharedService relative method after it has been invoked', () => {
+      const spyFn = spyOn(sharedServiceSpy, 'convertWMOCodes');
+      component.convertWMOCodes(42);
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalledWith(42);
     });
   });
 

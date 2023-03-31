@@ -87,7 +87,6 @@ export class HourlyComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.hourlyData = res;
           this.isLoading = false;
         },
@@ -107,6 +106,18 @@ export class HourlyComponent implements OnInit, OnDestroy {
 
   convertISOtoDate(time: string): string {
     return this.sharedService.convertISOtoDate(time);
+  }
+
+  convertWMOtoImage(code: number, time: 'sunny' | 'night'): string {
+    return this.sharedService.convertWMOCodestoSVG(code, time);
+  }
+
+  roundup(temperature: number): string {
+    return Math.round(temperature) + '°C';
+  }
+
+  convertWMOCodes(code: number): string {
+    return this.sharedService.convertWMOCodes(code);
   }
 
   ngOnDestroy(): void {

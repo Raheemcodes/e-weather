@@ -76,7 +76,7 @@ describe('HeaderComponent', () => {
     expect(form.classes['focus']).toBeTrue();
   });
 
-  it('should remove class .focus on input blur', () => {
+  it('should remove class .focus on input blur', fakeAsync(() => {
     const input: DebugElement = de.query(By.css('form.search-form input'));
 
     // added .focus for test
@@ -84,11 +84,12 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     input.triggerEventHandler('blur');
+    tick(300);
     fixture.detectChanges();
 
     const form: DebugElement = de.query(By.css('form.search-form'));
     expect(form.classes['focus']).toBeFalsy();
-  });
+  }));
 
   it('should set country_code property based on ip fetch result', fakeAsync(() => {
     const country_code: string = 'NG';

@@ -77,6 +77,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  onblur(form: HTMLElement) {
+    timer(300).subscribe(() => {
+      this.renderer.removeClass(form, 'focus');
+      this.display = false;
+    });
+  }
+
   onsubmit(search: HTMLInputElement) {
     this.router.navigate(['search', search.value]);
     search.value = '';

@@ -50,7 +50,11 @@
           </svg>
         </div>
 
-        <div class="title-details__container">
+        <div
+          class="title-details__container"
+          routerLink="/weather/hourly"
+          [queryParams]="{ lat: record.location.lat, lon: record.location.lon }"
+        >
           <div class="suggestion-title">
             {{ record?.location?.name }}, {{ record?.location?.country }}
           </div>

@@ -47,8 +47,11 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <li class="weather-forecast" *ngFor="let record of hourlyData">
-      <div class="summary" (click)="toggle(0)">
+    <li
+      class="weather-forecast"
+      *ngFor="let record of hourlyData; let i = index"
+    >
+      <div class="summary" (click)="toggle(i)">
         <div class="time-date" [title]="convertISOtoDate(record.time)">
           <div class="time">{{ convertTime(record.time) }}</div>
           <div class="date">{{ convertDate(record.time) }}</div>
@@ -59,14 +62,19 @@
             <img
               width="40"
               height="40"
-              src="../../assets/icons/white/thunderstorm.svg"
+              src="../../assets/icons/white/{{
+                convertWMOtoImage(record.weathercode, record.day)
+              }}.svg"
               alt
+              [title]="convertWMOCodes(record.weathercode)"
             />
           </div>
-          <div class="weather-temp">20°C</div>
+          <div class="weather-temp" title="Temperature">
+            {{ roundup(record.temperature_2m) }}
+          </div>
         </div>
 
-        <div class="humidity">
+        <div class="humidity" title="Relative Humidity">
           <div class="humidity-icon">
             <img
               width="16"
@@ -75,7 +83,10 @@
               alt
             />
           </div>
-          <div class="humidity-value">89%</div>
+          <div class="humidity-value">
+            {{ record.relativehumidity_2m
+            }}{{ record.units?.relativehumidity_2m }}
+          </div>
         </div>
 
         <div class="weather-condition__dropddown-icon">
