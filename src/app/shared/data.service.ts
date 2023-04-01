@@ -4,9 +4,11 @@ import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   CurrentWeatherRes,
+  DailyWeatherForecast,
   FullHourlyRes,
   HourlyRes,
   IPRes,
+  RestructuredDailyForecast,
   RestructuredHourlyForecast,
   SearchRes,
 } from './shared.model';
@@ -90,6 +92,7 @@ export class DataService {
           winddirection_10m: res.hourly.winddirection_10m[index],
           windgusts_10m: res.hourly.windgusts_10m[index],
           surface_pressure: res.hourly.surface_pressure[index],
+          direct_radiation: res.hourly.direct_radiation[index],
         });
       }
     });
@@ -129,11 +132,51 @@ export class DataService {
     return hourlyForecast;
   }
 
+  mapDailyRes(res: DailyWeatherForecast): RestructuredDailyForecast[] {
+    let forecast: RestructuredDailyForecast[] = [];
+
+    res.daily.time.forEach((time, index) => {
+      forecast.push({
+        time,
+        units: res.daily_units,
+        temperature_2m_min: res.daily.temperature_2m_min[index],
+        temperature_2m_max: res.daily.temperature_2m_max[index],
+        weathercode: res.daily.weathercode[index],
+        apparent_temperature_min: res.daily.apparent_temperature_min[index],
+        apparent_temperature_max: res.daily.apparent_temperature_max[index],
+        sunrise: res.daily.sunrise[index],
+        sunset: res.daily.sunset[index],
+        windspeed_10m_max: res.daily.windspeed_10m_max[index],
+        windgusts_10m_max: res.daily.windgusts_10m_max[index],
+        winddirection_10m_dominant: res.daily.winddirection_10m_dominant[index],
+        shortwave_radiation_sum: res.daily.shortwave_radiation_sum[index],
+      });
+    });
+
+    return forecast;
+  }
+
   fetchCurrentWeather(location: SearchRes): Observable<CurrentWeatherRes> {
     return this.http.get<CurrentWeatherRes>(
       environment.METEO_WEATHER_API +
         `?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`
     );
+  }
+
+  fetchDailyForecast(
+    lat: number,
+    lon: number
+  ): Observable<RestructuredDailyForecast[]> {
+    return this.http
+      .get<DailyWeatherForecast>(
+        environment.METEO_WEATHER_API +
+          `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&daily=weathercode,sunrise,sunset,temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,apparent_temperature_min,apparent_temperature_max,winddirection_10m_dominant`
+      )
+      .pipe(
+        map((res) => {
+          return this.mapDailyRes(res);
+        })
+      );
   }
 
   fetchLocation(key: string): Observable<SearchRes[]> {

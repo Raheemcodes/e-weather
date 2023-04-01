@@ -181,14 +181,22 @@ describe('SharedService', () => {
 
   describe('convertTime()', () => {
     it('should convert Date from ISO string to recent hour in 12 hour format', () => {
-      const value: string = service.convertTime('2023-03-18T13:00', true);
+      const value: string = service.convertTime(
+        '2023-03-18T13:00',
+        'en-US',
+        true
+      );
       const result = '1:00 PM';
 
       expect(value).toBe(result);
     });
 
     it('should convert Date from ISO string to recent hour in 24 hour format', () => {
-      const value: string = service.convertTime('2023-03-18T13:00', false);
+      const value: string = service.convertTime(
+        '2023-03-18T13:00',
+        'en-GB',
+        false
+      );
       const result = '13:00';
 
       expect(value).toBe(result);
@@ -265,25 +273,25 @@ describe('SharedService', () => {
     it('should convert hours to 24 hour format if second arg is false', () => {
       const time: string = '2023-03-17T13:00';
 
-      expect(service.convertTime(time, false)).toBe(`${13}:00`);
+      expect(service.convertTime(time, 'en-GB', false)).toBe(`${13}:00`);
     });
 
     it('should convert hours to 12 hour format if second arg is true', () => {
       const time: string = '2023-03-17T13:00';
 
-      expect(service.convertTime(time, true)).toBe(`${1}:00 PM`);
+      expect(service.convertTime(time, 'en-US', true)).toBe(`${1}:00 PM`);
     });
 
     it('should pad hours in units by on 0 in 24 hour format', () => {
       const time: string = '2023-03-17T01:00';
 
-      expect(service.convertTime(time, false)).toBe(`0${1}:00`);
+      expect(service.convertTime(time, 'en-GB', false)).toBe(`0${1}:00`);
     });
 
     it('should not pad hours in units by on 0 in 12 hour format', () => {
       const time: string = '2023-03-17T01:00';
 
-      expect(service.convertTime(time, true)).toBe(`${1}:00 AM`);
+      expect(service.convertTime(time, 'en-US', true)).toBe(`${1}:00 AM`);
     });
   });
 

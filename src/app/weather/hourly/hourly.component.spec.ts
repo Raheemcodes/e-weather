@@ -354,7 +354,7 @@ describe('HourlyComponent', () => {
       const el: HTMLElement = de.query(
         By.css('.weather-forecast:not(skeleton) .full-weather__forecast-item')
       ).nativeElement;
-      expect(el.innerText).toContain('32°C');
+      expect(el.innerText).toContain('31.7°C');
     }));
   });
 
@@ -373,7 +373,11 @@ describe('HourlyComponent', () => {
       const spyFn = spyOn(sharedServiceSpy, 'convertTime');
       component.convertTime('2023-03-17T13:00', false);
 
-      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00', false);
+      expect(spyFn).toHaveBeenCalledOnceWith(
+        '2023-03-17T13:00',
+        'en-GB',
+        false
+      );
     });
   });
 

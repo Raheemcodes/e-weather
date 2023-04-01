@@ -9,15 +9,6 @@ export interface Card {
   path: string;
 }
 
-export interface Project {
-  title: string;
-  img: string;
-  desc: string;
-  areas: string[];
-  link: { github: string; website?: string };
-  background: string;
-}
-
 export interface IPRes {
   asn: string;
   city: string;
@@ -67,10 +58,67 @@ export interface CurrentWeatherRes {
   utc_offset_seconds: number;
 }
 
-export interface DailyWeatherRes {
+export interface HourlyDailyWeatherForecast {
   time: string[];
   sunset: string[];
   sunrise: string[];
+}
+
+export interface DailyWeatherForecast {
+  latitude: number;
+  longitude: number;
+  generationtime_ms: number;
+  utc_offset_seconds: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  elevation: number;
+  daily_units: DailyUnits;
+  daily: {
+    time: string[];
+    weathercode: number[];
+    sunrise: string[];
+    sunset: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    windspeed_10m_max: number[];
+    windgusts_10m_max: number[];
+    apparent_temperature_min: number[];
+    apparent_temperature_max: number[];
+    winddirection_10m_dominant: number[];
+    shortwave_radiation_sum: number[];
+  };
+}
+
+export interface DailyUnits {
+  time: 'iso8601';
+  weathercode: 'wmo code';
+  sunrise: 'iso8601';
+  sunset: 'iso8601';
+  temperature_2m_max: '°C';
+  temperature_2m_min: '°C';
+  windspeed_10m_max: 'km/h';
+  windgusts_10m_max: 'km/h';
+  apparent_temperature_min: '°C';
+  apparent_temperature_max: '°C';
+  winddirection_10m_dominant: '°';
+  shortwave_radiation_sum: '';
+}
+
+export interface RestructuredDailyForecast {
+  time: string;
+  units: DailyUnits;
+  // days: 'sunny' | 'night';
+  weathercode: number;
+  sunrise: string;
+  sunset: string;
+  temperature_2m_max: number;
+  temperature_2m_min: number;
+  windspeed_10m_max: number;
+  windgusts_10m_max: number;
+  apparent_temperature_min: number;
+  apparent_temperature_max: number;
+  winddirection_10m_dominant: number;
+  shortwave_radiation_sum: number;
 }
 
 export interface HourlyRes {
@@ -83,7 +131,7 @@ export interface HourlyRes {
   elevation: number;
   current_weather: CurrentWeather;
   hourly: HourlyForcast;
-  daily: DailyWeatherRes;
+  daily: HourlyDailyWeatherForecast;
 }
 
 export interface FullHourlyRes {
@@ -97,7 +145,7 @@ export interface FullHourlyRes {
   current_weather: CurrentWeather;
   hourly_units: HourlyUnit;
   hourly: FullHourlyForcast;
-  daily: DailyWeatherRes;
+  daily: HourlyDailyWeatherForecast;
 }
 
 export interface HourlyUnit {

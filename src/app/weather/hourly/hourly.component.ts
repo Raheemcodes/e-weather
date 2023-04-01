@@ -98,7 +98,7 @@ export class HourlyComponent implements OnInit, OnDestroy {
   }
 
   convertTime(time: string, hour: boolean = false): string {
-    return this.sharedService.convertTime(time, hour);
+    return this.sharedService.convertTime(time, 'en-GB', hour);
   }
 
   convertDate(time: string): string {

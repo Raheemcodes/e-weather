@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   convertTime(time: string, hour: boolean = false): string {
-    return this.sharedService.convertTime(time, hour);
+    return this.sharedService.convertTime(time, 'en-GB', hour);
   }
 
   roundup(temperature: number): string {

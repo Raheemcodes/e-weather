@@ -1,94 +1,189 @@
 <ul class="weather-forecast__list">
-  <li class="weather-forecast" (click)="toggle(0)">
-    <div class="summary">
-      <div class="time-date">
-        <div class="time">12:00</div>
-        <div class="date">3/7</div>
-      </div>
+  <ng-container *ngIf="isLoading">
+    <li
+      class="weather-forecast skeleton index"
+      *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+    >
+      <div class="summary">
+        <div class="time-date">
+          <div class="time">12:00</div>
+          <div class="date">3/7</div>
+        </div>
 
-      <div class="weather-temp__container">
-        <div class="weather-temp__icon">
+        <div class="weather-temp__container">
+          <div class="weather-temp__icon">
+            <img
+              width="40"
+              height="40"
+              src="../../assets/icons/white/thunderstorm.svg"
+              alt
+            />
+          </div>
+          <div class="weather-temp">20°C</div>
+        </div>
+
+        <div class="humidity">
+          <div class="humidity-icon">
+            <img
+              width="16"
+              height="16"
+              src="../../assets/icons/humidity.svg"
+              alt
+            />
+          </div>
+          <div class="humidity-value">89%</div>
+        </div>
+
+        <div class="weather-condition__dropddown-icon">
           <img
-            width="40"
-            height="40"
-            src="../../assets/icons/white/thunderstorm.svg"
+            width="32"
+            height="32"
+            src="../../assets/icons/dropdown.svg"
             alt
           />
         </div>
-        <div class="weather-temp">20°C</div>
       </div>
+    </li>
+  </ng-container>
 
-      <div class="humidity">
-        <div class="humidity-icon">
+  <ng-container *ngIf="!isLoading">
+    <li
+      class="weather-forecast"
+      *ngFor="let record of dailyForecast; let i = index"
+    >
+      <div class="summary" (click)="toggle(i)">
+        <div class="time-date" [title]="convertISOtoDate(record.time)">
+          <div class="time">{{ convertTime(record.time) }}</div>
+          <div class="date">{{ convertDate(record.time) }}</div>
+        </div>
+
+        <div class="weather-temp__container">
+          <div class="weather-temp__icon">
+            <img
+              width="40"
+              height="40"
+              src="../../assets/icons/white/{{
+                convertWMOtoImage(record.weathercode, 'sunny')
+              }}.svg"
+              alt
+              [title]="convertWMOCodes(record.weathercode)"
+            />
+          </div>
+          <div class="weather-temp" title="Maximum Temperature">
+            {{ roundup(record.temperature_2m_max) }}
+          </div>
+        </div>
+
+        <div class="humidity" title="Wind Direction">
+          <div class="humidity-icon">
+            <img
+              width="16"
+              height="16"
+              src="../../../assets/icons/white/wind.svg"
+              alt
+            />
+          </div>
+          <div class="humidity-value">
+            {{ record.winddirection_10m_dominant
+            }}{{ record.units.winddirection_10m_dominant }}
+          </div>
+        </div>
+
+        <div class="weather-condition__dropddown-icon">
           <img
-            width="16"
-            height="16"
-            src="../../assets/icons/humidity.svg"
+            width="32"
+            height="32"
+            src="../../assets/icons/dropdown.svg"
             alt
           />
         </div>
-        <div class="humidity-value">89%</div>
       </div>
 
-      <div class="weather-condition__dropddown-icon">
-        <img width="32" height="32" src="../../assets/icons/dropdown.svg" alt />
+      <div class="details">
+        <h4 class="details-weather__desc">
+          {{ convertWMOCodes(record.weathercode) }}
+        </h4>
+
+        <ul class="full-weather__forecast-list">
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Minimum Temperature</div>
+            <div class="weather-forecast__value">
+              {{ record.temperature_2m_min
+              }}{{ record.units.temperature_2m_min }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Maximum Temperature</div>
+            <div class="weather-forecast__value">
+              {{ record.temperature_2m_max
+              }}{{ record.units.temperature_2m_max }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div
+              class="weather-forecast__title"
+              title="Minimum Apparent Temperature"
+            >
+              Min Apparent Temp.
+            </div>
+            <div class="weather-forecast__value">
+              {{ record.apparent_temperature_min
+              }}{{ record.units.apparent_temperature_min }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div
+              class="weather-forecast__title"
+              title="Maximum Apparent Temperature"
+            >
+              Max Apparent Temp.
+            </div>
+            <div class="weather-forecast__value">
+              {{ record.apparent_temperature_max
+              }}{{ record.units.apparent_temperature_max }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Max Wind Speed</div>
+            <div class="weather-forecast__value">
+              {{ record.windspeed_10m_max }}{{ record.units.windspeed_10m_max }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Max Wind Gust</div>
+            <div class="weather-forecast__value">
+              {{ record.windgusts_10m_max }}{{ record.units.windgusts_10m_max }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Wind Direction</div>
+            <div class="weather-forecast__value">
+              {{ record.winddirection_10m_dominant
+              }}{{ record.units.winddirection_10m_dominant }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Sunrise</div>
+            <div class="weather-forecast__value">
+              {{ convertTime(record.sunrise, false) }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title">Sunset</div>
+            <div class="weather-forecast__value">
+              {{ convertTime(record.sunset, false) }}
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
-
-    <div class="details">
-      <h4 class="details-weather__desc">Heavy rain</h4>
-
-      <ul class="full-weather__forecast-list">
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-
-        <li class="full-weather__forecast-item">
-          <div class="weather-forecast__title">RealFeel Shade</div>
-          <div class="weather-forecast__value">32°C</div>
-        </li>
-      </ul>
-    </div>
-  </li>
+    </li>
+  </ng-container>
 </ul>

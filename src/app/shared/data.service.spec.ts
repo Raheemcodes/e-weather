@@ -7,13 +7,18 @@ import { DataService } from './data.service';
 import {
   current_weather_mock,
   fullHourlyRes,
+  generateDailyRestructuredForecast,
   generateFullRestructuredForecast,
   generateRestructuredForecast,
   hourlyRes,
   ipDataMock,
   locationResMock,
+  mockDailyRes,
 } from './shared.mock';
-import { RestructuredHourlyForecast } from './shared.model';
+import {
+  RestructuredHourlyForecast,
+  RestructuredDailyForecast,
+} from './shared.model';
 
 describe('DataService', () => {
   let service: DataService;
@@ -96,6 +101,28 @@ describe('DataService', () => {
     });
   });
 
+  describe('fetchDailyForecast()', () => {
+    it('should return value of restructured daily data', (done: DoneFn) => {
+      const httpSpy = spyOn(http, 'get').and.returnValue(of(mockDailyRes));
+      const expectedRes: RestructuredDailyForecast[] =
+        generateDailyRestructuredForecast();
+      const mapSpy = spyOn(service, 'mapDailyRes').and.returnValue(expectedRes);
+
+      service
+        .fetchDailyForecast(hourlyRes.latitude, hourlyRes.longitude)
+        .subscribe({
+          next: (res) => {
+            done();
+            expect(mapSpy).withContext('call map').toHaveBeenCalled();
+            expect(res).withContext('equalily').toEqual(expectedRes);
+          },
+          error: done.fail,
+        });
+
+      expect(httpSpy).withContext('httpClient call').toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('fetchCurrentWeather()', () => {
     it('should restructure current_weather response and store in searchRes', (done: DoneFn) => {
       spyOn(http, 'get').and.returnValue(of(current_weather_mock));
@@ -143,6 +170,17 @@ describe('DataService', () => {
         generateFullRestructuredForecast(13);
 
       const res = service.mapFullHourlyData(fullHourlyRes);
+
+      expect(expectedRes).toEqual(res);
+    });
+  });
+
+  describe('mapDailyRes()', () => {
+    it('should return expected result', () => {
+      const expectedRes: RestructuredDailyForecast[] =
+        generateDailyRestructuredForecast();
+
+      const res = service.mapDailyRes(mockDailyRes);
 
       expect(expectedRes).toEqual(res);
     });

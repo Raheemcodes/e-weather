@@ -120,9 +120,13 @@
 }
 
 .weather-temp__icon {
-  width: toRem(40);
-  height: toRem(40);
+  width: toRem(25);
+  height: toRem(25);
 
+  @media screen and (min-width: toRem(375)) {
+    width: toRem(35);
+    height: toRem(35);
+  }
   @media screen and (min-width: $md) {
     width: toRem(56);
     height: toRem(56);

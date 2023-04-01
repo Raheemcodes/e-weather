@@ -123,7 +123,11 @@ describe('HomeComponent', () => {
       const spyFn = spyOn(sharedServiceSpy, 'convertTime');
       component.convertTime('2023-03-17T13:00', false);
 
-      expect(spyFn).toHaveBeenCalledOnceWith('2023-03-17T13:00', false);
+      expect(spyFn).toHaveBeenCalledOnceWith(
+        '2023-03-17T13:00',
+        'en-GB',
+        false
+      );
     });
   });
 

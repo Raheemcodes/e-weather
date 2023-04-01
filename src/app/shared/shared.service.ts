@@ -254,8 +254,12 @@ export class SharedService {
     return image;
   }
 
-  convertTime(ISO: string, hour12: boolean): string {
-    return new Date(ISO).toLocaleTimeString('en-US', {
+  convertTime(
+    ISO: string,
+    format: 'en-US' | 'en-GB' = 'en-US',
+    hour12: boolean
+  ): string {
+    return new Date(ISO).toLocaleTimeString(format, {
       hour12,
       hour: 'numeric',
       minute: 'numeric',
@@ -300,7 +304,7 @@ export class SharedService {
             ...res,
             current_weather: {
               ...res.current_weather,
-              time: this.convertTime(res.current_weather.time, true),
+              time: this.convertTime(res.current_weather.time, 'en-US', true),
             },
           };
         })
