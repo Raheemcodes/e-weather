@@ -1,16 +1,34 @@
-<section class="current-weather__condition">
-  <div class="current-weather__icon-cover">
-    <img
-      width="134"
-      height="134"
-      src="../../assets/icons/white/thunderstorm.svg"
-      alt
-    />
-  </div>
+<ng-container *ngIf="isLoading">
+  <section class="current-weather__condition skeleton">
+    <div class="current-weather__icon-cover">
+      <img
+        width="134"
+        height="134"
+        src="../../assets/icons/white/thunderstorm.svg"
+        alt
+      />
+    </div>
 
-  <h1 class="current-weather__temp">20°C</h1>
-  <p class="current-weather__desc">Thunderstorms</p>
-</section>
+    <h1 class="current-weather__temp skeleton">20°C</h1>
+    <p class="current-weather__desc skeleton">Thunderstorms</p>
+  </section>
+</ng-container>
+
+<ng-container *ngIf="!isLoading">
+  <section class="current-weather__condition">
+    <div class="current-weather__icon-cover">
+      <img
+        width="134"
+        height="134"
+        src="../../assets/icons/white/thunderstorm.svg"
+        alt
+      />
+    </div>
+
+    <h1 class="current-weather__temp">20°C</h1>
+    <p class="current-weather__desc">Thunderstorms</p>
+  </section>
+</ng-container>
 
 <!-- side bar -->
 <aside>
