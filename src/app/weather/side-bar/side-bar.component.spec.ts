@@ -1,4 +1,8 @@
-import { DebugElement } from '@angular/core';
+import {
+  httpClientMock,
+  restructuredCurrentDailyWeatherRes,
+} from './../../shared/shared.mock';
+import { DebugElement, NgZone } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -8,20 +12,38 @@ import {
 import { By } from '@angular/platform-browser';
 
 import { SideBarComponent } from './side-bar.component';
+import { DataService } from 'src/app/shared/data.service';
+import { SharedService } from 'src/app/shared/shared.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
   let fixture: ComponentFixture<SideBarComponent>;
   let de: DebugElement;
+  let dataService: DataService;
+  let sharedServiceSpy: SharedService;
+  let zone: NgZone;
+  let route: ActivatedRoute;
 
   beforeEach(async () => {
+    dataService = new DataService(httpClientMock);
+    sharedServiceSpy = new SharedService(dataService);
+
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [SideBarComponent],
+      providers: [
+        { provide: DataService, useValue: dataService },
+        { provide: SharedService, useValue: sharedServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SideBarComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
+    zone = TestBed.inject(NgZone);
+    zone.run(() => (route = TestBed.inject(ActivatedRoute)));
     fixture.detectChanges();
   });
 
@@ -52,28 +74,28 @@ describe('SideBarComponent', () => {
       component.isLoading = true;
       fixture.detectChanges();
 
-      expect(de.query(By.css('li.weather-forecast.skeleton')))
+      expect(de.query(By.css('.current-weather__condition.skeleton')))
         .withContext('weather-forecast skeleton')
         .toBeTruthy();
 
-      expect(de.query(By.css('li.weather-forecast:not(.skeleton)')))
+      expect(de.query(By.css('current-weather__temp:not(.skeleton)')))
         .withContext('weather-forecast skeleton')
         .toBeFalsy();
     });
 
-    // it('should contain only the original of loaded content if isLoading is false', fakeAsync(() => {
-    //   component.hourlyData = MockFullHoulyData;
-    //   component.isLoading = false;
-    //   tick(3000);
-    //   fixture.detectChanges();
+    it('should contain only the original of loaded content if isLoading is false', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
 
-    //   expect(de.query(By.css('li.weather-forecast.skeleton')))
-    //     .withContext('weather-forecast skeleton')
-    //     .toBeFalsy();
+      expect(de.query(By.css('.current-weather__condition.skeleton')))
+        .withContext('weather-forecast skeleton')
+        .toBeFalsy();
 
-    //   expect(de.query(By.css('li.weather-forecast:not(.skeleton)')))
-    //     .withContext('weather-forecast skeleton')
-    //     .toBeTruthy();
-    // }));
+      expect(de.query(By.css('current-weather__temp:not(.skeleton)')))
+        .withContext('weather-forecast skeleton')
+        .toBeTruthy();
+    }));
   });
 });

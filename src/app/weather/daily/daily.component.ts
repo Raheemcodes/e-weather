@@ -30,9 +30,9 @@ export class DailyComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute,
     private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private dataService: DataService,
     private sharedService: SharedService,
     @Inject(DOCUMENT) private document: Document
   ) {}

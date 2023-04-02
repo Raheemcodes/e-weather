@@ -89,6 +89,32 @@ export interface DailyWeatherForecast {
   };
 }
 
+export interface CurrentDailyWeatherRes {
+  latitude: number;
+  longitude: number;
+  generationtime_ms: number;
+  utc_offset_seconds: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  elevation: number;
+  current_weather: CurrentWeather;
+  daily_units: {
+    time: string[];
+    sunset: string[];
+    sunrise: string[];
+  };
+  daily: HourlyDailyWeatherForecast;
+}
+
+export interface RestructuredCurrentDailyWeatherRes {
+  current_weather: CurrentWeather;
+  daily: {
+    time: string;
+    sunset: string;
+    sunrise: string;
+  };
+}
+
 export interface DailyUnits {
   time: 'iso8601';
   weathercode: 'wmo code';

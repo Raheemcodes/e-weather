@@ -13,7 +13,9 @@ import {
   hourlyRes,
   ipDataMock,
   locationResMock,
+  mockCurrentDailyWeatherRes,
   mockDailyRes,
+  restructuredCurrentDailyWeatherRes,
 } from './shared.mock';
 import {
   RestructuredHourlyForecast,
@@ -131,6 +133,22 @@ describe('DataService', () => {
         next: (res) => {
           done();
           expect(res).withContext('equalily').toEqual(current_weather_mock);
+        },
+        error: done.fail,
+      });
+    });
+  });
+
+  describe('fetchCurrentandDailyWeather()', () => {
+    it('should restructure current_weather response and store in searchRes', (done: DoneFn) => {
+      spyOn(http, 'get').and.returnValue(of(mockCurrentDailyWeatherRes));
+
+      service.fetchCurrentandDailyWeather(6.71, 3.39).subscribe({
+        next: (res) => {
+          done();
+          expect(res)
+            .withContext('equalily')
+            .toEqual(restructuredCurrentDailyWeatherRes);
         },
         error: done.fail,
       });

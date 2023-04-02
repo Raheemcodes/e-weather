@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
+  CurrentDailyWeatherRes,
   CurrentWeatherRes,
   DailyWeatherForecast,
   FullHourlyRes,
   HourlyRes,
   IPRes,
   LocationRes,
+  RestructuredCurrentDailyWeatherRes,
   RestructuredDailyForecast,
   RestructuredHourlyForecast,
   SearchRes,
@@ -176,6 +178,30 @@ export class DataService {
       .pipe(
         map((res) => {
           return this.mapDailyRes(res);
+        })
+      );
+  }
+
+  fetchCurrentandDailyWeather(
+    lat: number,
+    lon: number
+  ): Observable<RestructuredCurrentDailyWeatherRes> {
+    return this.http
+      .get<CurrentDailyWeatherRes>(
+        environment.METEO_WEATHER_API +
+          `forecast_days=1&latitude=${lat}1&longitude=${lon}&daily=sunset,sunrise&current_weather=true&timezone=auto`
+      )
+      .pipe(
+        map((res) => {
+          const restructured: RestructuredCurrentDailyWeatherRes = {
+            current_weather: res.current_weather,
+            daily: {
+              time: res.daily.time[0],
+              sunrise: res.daily.sunrise[0],
+              sunset: res.daily.sunset[0],
+            },
+          };
+          return restructured;
         })
       );
   }

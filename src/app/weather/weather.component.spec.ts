@@ -1,3 +1,4 @@
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HourlyComponent } from './hourly/hourly.component';
@@ -13,6 +14,7 @@ import { SideBarComponent } from './side-bar/side-bar.component';
 
 import { WeatherComponent } from './weather.component';
 import { DailyComponent } from './daily/daily.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('WeatherComponent', () => {
   let component: WeatherComponent;
@@ -33,6 +35,7 @@ describe('WeatherComponent', () => {
         HourlyComponent,
         DailyComponent,
       ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WeatherComponent);

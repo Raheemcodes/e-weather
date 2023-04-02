@@ -1,5 +1,9 @@
+import { RestructuredCurrentDailyWeatherRes } from './../../shared/shared.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
+import { DataService } from 'src/app/shared/data.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,6 +11,7 @@ import { Subscription, timer } from 'rxjs';
   styleUrls: ['./side-bar.component.scss'],
 })
 export class SideBarComponent implements OnInit, OnDestroy {
+  data!: RestructuredCurrentDailyWeatherRes;
   subs: Subscription[] = [];
   _isLoading: boolean = false;
 
@@ -19,9 +24,23 @@ export class SideBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor() {}
+  constructor(
+    private dataService: DataService,
+    private sharedService: SharedService,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getParams();
+  }
+
+  getParams() {
+    this.subs[0] = this.route.queryParams.subscribe({
+      next: ({ lat, lon }: Params) => {
+        // this.getHourlyForecast(lat, lon);
+      },
+    });
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {

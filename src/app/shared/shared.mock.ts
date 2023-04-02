@@ -8,6 +8,7 @@ import {
   HourlyUnit,
   IPRes,
   LocationRes,
+  RestructuredCurrentDailyWeatherRes,
   RestructuredDailyForecast,
   RestructuredHourlyForecast,
   SearchRes,
@@ -578,6 +579,43 @@ export const mockDailyRes: DailyWeatherForecast = {
     ],
   },
 };
+
+export const mockCurrentDailyWeatherRes = {
+  latitude: 6.75,
+  longitude: 3.375,
+  generationtime_ms: 0.6389617919921875,
+  utc_offset_seconds: 3600,
+  timezone: 'Africa/Lagos',
+  timezone_abbreviation: 'WAT',
+  elevation: 7.0,
+  current_weather: {
+    temperature: 28.2,
+    windspeed: 5.9,
+    winddirection: 194.0,
+    weathercode: 0,
+    time: '2023-04-02T21:00',
+  },
+  daily_units: {
+    time: 'iso8601',
+    sunset: 'iso8601',
+    sunrise: 'iso8601',
+  },
+  daily: {
+    time: ['2023-04-02'],
+    sunset: ['2023-04-02T18:56'],
+    sunrise: ['2023-04-02T06:43'],
+  },
+};
+
+export const restructuredCurrentDailyWeatherRes: RestructuredCurrentDailyWeatherRes =
+  {
+    current_weather: mockCurrentDailyWeatherRes.current_weather,
+    daily: {
+      time: mockCurrentDailyWeatherRes.daily.time[0],
+      sunrise: mockCurrentDailyWeatherRes.daily.sunrise[0],
+      sunset: mockCurrentDailyWeatherRes.daily.sunset[0],
+    },
+  };
 
 export let generateRestructuredForecast = (
   current: number,
