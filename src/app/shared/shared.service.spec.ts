@@ -90,11 +90,9 @@ describe('SharedService', () => {
       spyOn(dataService, 'fetchLocation').and.returnValue(of(locationResMock));
       const spyFn = spyOn(service, 'fetchCurrentWeather');
 
-      service.fetchLocation('lag', locationResMock.length);
+      service.fetchLocation('lag', 5);
       expect(service.searchRes.length).withContext('searchRes').toBe(0);
-      expect(spyFn)
-        .withContext('fetchCurrentWeather')
-        .toHaveBeenCalledTimes(locationResMock.length);
+      expect(spyFn).withContext('fetchCurrentWeather').toHaveBeenCalledTimes(5);
     });
 
     it('should call fetchCurrentWeather() by the number of limit if it is passed', () => {
@@ -125,7 +123,7 @@ describe('SharedService', () => {
       let limit: number = 5;
       const fetchCurrentWeatherSpy = spyOn(service, 'fetchCurrentWeather');
       const resetSearchResSpy = spyOn(service, 'resetSearchRes');
-      spyOn(dataService, 'fetchLocation').and.returnValue(of([]));
+      spyOn(dataService, 'fetchLocation').and.returnValue(of({ results: [] }));
 
       service.fetchLocation('lag', limit);
       expect(resetSearchResSpy)
@@ -143,7 +141,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
 
-      service.fetchCurrentWeather(locationResMock[0], 5);
+      service.fetchCurrentWeather(locationResMock.results[0], 5);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
@@ -153,7 +151,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
 
-      service.fetchCurrentWeather(locationResMock[0], 5);
+      service.fetchCurrentWeather(locationResMock.results[0], 5);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
@@ -163,7 +161,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
       const setSearchResSpy = spyOn(service, 'setSearchRes');
-      service.fetchCurrentWeather(locationResMock[0]);
+      service.fetchCurrentWeather(locationResMock.results[0]);
 
       expect(setSearchResSpy).toHaveBeenCalledTimes(1);
     });
@@ -173,7 +171,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
       const convertTimeSpy = spyOn(service, 'convertTime');
-      service.fetchCurrentWeather(locationResMock[0]);
+      service.fetchCurrentWeather(locationResMock.results[0]);
 
       expect(convertTimeSpy).toHaveBeenCalledTimes(1);
     });

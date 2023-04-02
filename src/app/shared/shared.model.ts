@@ -101,7 +101,7 @@ export interface DailyUnits {
   apparent_temperature_min: '°C';
   apparent_temperature_max: '°C';
   winddirection_10m_dominant: '°';
-  shortwave_radiation_sum: '';
+  shortwave_radiation_sum: 'MJ/m²';
 }
 
 export interface RestructuredDailyForecast {
@@ -201,14 +201,26 @@ export interface RestructuredHourlyForecast {
   direct_radiation?: number;
 }
 
+export interface LocationRes {
+  results: SearchRes[];
+}
+
 export interface SearchRes {
   id: number;
   name: string;
-  region: string;
+  latitude: number;
+  longitude: number;
+  elevation: number;
+  feature_code: string;
+  country_code: string;
+  admin1_id: number;
+  admin2_id?: number;
+  timezone: string;
+  population?: number;
+  country_id: number;
   country: string;
-  lat: number;
-  lon: number;
-  url: string;
+  admin1: string;
+  admin2?: string;
 }
 
 export interface RestructureSearchRes {

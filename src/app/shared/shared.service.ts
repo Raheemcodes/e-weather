@@ -331,13 +331,8 @@ export class SharedService {
     if (!key) return this.resetSearchRes(limit);
 
     this.dataService
-      .fetchLocation(key)
-      .pipe(
-        map((res) => {
-          if (limit) return [...res].slice(0, limit);
-          else return res;
-        })
-      )
+      .fetchLocation(key, limit)
+      .pipe(map((res) => res.results || []))
       .subscribe({
         next: (res) => {
           if (!res.length) return this.resetSearchRes(limit);

@@ -8,6 +8,7 @@ import {
   FullHourlyRes,
   HourlyRes,
   IPRes,
+  LocationRes,
   RestructuredDailyForecast,
   RestructuredHourlyForecast,
   SearchRes,
@@ -159,7 +160,7 @@ export class DataService {
   fetchCurrentWeather(location: SearchRes): Observable<CurrentWeatherRes> {
     return this.http.get<CurrentWeatherRes>(
       environment.METEO_WEATHER_API +
-        `?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`
+        `?latitude=${location.latitude}&longitude=${location.longitude}&current_weather=true&timezone=auto`
     );
   }
 
@@ -170,7 +171,7 @@ export class DataService {
     return this.http
       .get<DailyWeatherForecast>(
         environment.METEO_WEATHER_API +
-          `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&daily=weathercode,sunrise,sunset,temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,apparent_temperature_min,apparent_temperature_max,winddirection_10m_dominant`
+          `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&daily=weathercode,sunrise,sunset,temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,apparent_temperature_min,apparent_temperature_max,winddirection_10m_dominant,shortwave_radiation_sum`
       )
       .pipe(
         map((res) => {
@@ -179,9 +180,11 @@ export class DataService {
       );
   }
 
-  fetchLocation(key: string): Observable<SearchRes[]> {
-    return this.http.get<SearchRes[]>(
-      `${environment.SEARCH_API}?key=${environment.SEARCH_API_KEY}&q=${key}`
+  fetchLocation(key: string, limit?: number): Observable<LocationRes> {
+    return this.http.get<LocationRes>(
+      `${environment.SEARCH_API}?name=${key}&language=en&count=${
+        limit || 35
+      }&format=json`
     );
   }
 }

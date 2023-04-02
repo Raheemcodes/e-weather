@@ -1,19 +1,7 @@
 <main>
-  <!-- main content -->
+  <!-- side bar -->
 
-  <section class="current-weather__condition">
-    <div class="current-weather__icon-cover">
-      <img
-        width="134"
-        height="134"
-        src="../../assets/icons/white/thunderstorm.svg"
-        alt
-      />
-    </div>
-
-    <h1 class="current-weather__temp">20°C</h1>
-    <p class="current-weather__desc">Thunderstorms</p>
-  </section>
+  <app-side-bar></app-side-bar>
 
   <section class="weather-forecast__container">
     <header class="weather-forecast__header">
@@ -24,7 +12,7 @@
         class="weather-forecast__dropdown"
         (click)="toggle(dropdown)"
       >
-        <span class="weather-forecast__desc dropdown">Hourly</span>
+        <span class="weather-forecast__desc dropdown">Time Frame</span>
 
         <div class="dropddown__icon">
           <img
@@ -75,8 +63,4 @@
 
     <router-outlet></router-outlet>
   </section>
-
-  <!-- side bar -->
-
-  <app-side-bar></app-side-bar>
 </main>

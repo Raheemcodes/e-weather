@@ -36,7 +36,10 @@
         class="suggestion-list__item"
         *ngFor="let record of result"
         routerLink="/weather/hourly"
-        [queryParams]="{ lat: record.location.lat, lon: record.location.lon }"
+        [queryParams]="{
+          lat: record.location.latitude,
+          lon: record.location.longitude
+        }"
       >
         <div class="suggestion-icon">
           <svg
@@ -62,7 +65,8 @@
 
           <div class="suggestion-details">
             Deg.: {{ record?.current_weather?.temperature }}°C / L.M.:
-            {{ record?.current_weather?.time }} / {{ record?.location?.region }}
+            {{ record?.current_weather?.time }} LT /
+            {{ record?.location?.admin1 }}
           </div>
         </div>
       </li>

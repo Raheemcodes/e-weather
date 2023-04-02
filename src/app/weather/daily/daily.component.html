@@ -74,7 +74,7 @@
           </div>
         </div>
 
-        <div class="humidity" title="Wind Direction">
+        <div class="humidity" title="Dominant Wind Direction">
           <div class="humidity-icon">
             <img
               width="16"
@@ -162,10 +162,25 @@
           </li>
 
           <li class="full-weather__forecast-item">
-            <div class="weather-forecast__title">Wind Direction</div>
+            <div
+              class="weather-forecast__title"
+              title="Dominant Wind Direction"
+            >
+              Wind Direction
+            </div>
             <div class="weather-forecast__value">
               {{ record.winddirection_10m_dominant
               }}{{ record.units.winddirection_10m_dominant }}
+            </div>
+          </li>
+
+          <li class="full-weather__forecast-item">
+            <div class="weather-forecast__title" title="Solar Radiation Sum">
+              Solar Radiation
+            </div>
+            <div class="weather-forecast__value">
+              {{ record.shortwave_radiation_sum
+              }}{{ record.units.shortwave_radiation_sum }}
             </div>
           </li>
 

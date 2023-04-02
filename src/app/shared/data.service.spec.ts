@@ -127,7 +127,7 @@ describe('DataService', () => {
     it('should restructure current_weather response and store in searchRes', (done: DoneFn) => {
       spyOn(http, 'get').and.returnValue(of(current_weather_mock));
 
-      service.fetchCurrentWeather(locationResMock[0]).subscribe({
+      service.fetchCurrentWeather(locationResMock.results[0]).subscribe({
         next: (res) => {
           done();
           expect(res).withContext('equalily').toEqual(current_weather_mock);

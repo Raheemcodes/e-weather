@@ -7,14 +7,14 @@ import {
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { MockFullHoulyData, hourlyUnitMock } from './../../shared/shared.mock';
+import { MockFullHoulyData } from './../../shared/shared.mock';
 
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DataService } from 'src/app/shared/data.service';
 import { httpClientMock } from 'src/app/shared/shared.mock';
-import { HourlyComponent } from './hourly.component';
 import { SharedService } from 'src/app/shared/shared.service';
+import { HourlyComponent } from './hourly.component';
 
 describe('HourlyComponent', () => {
   let component: HourlyComponent;

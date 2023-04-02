@@ -20,39 +20,6 @@ main {
   }
 }
 
-.current-weather__condition {
-  @include column-centered();
-  gap: toRem(8);
-
-  @media screen and (min-width: $xl) {
-    display: none;
-  }
-}
-
-.current-weather__icon-cover {
-  width: toRem(134);
-  height: toRem(134);
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.current-weather__temp {
-  font-size: toRem(72);
-  font-weight: 500;
-  line-height: 0.89;
-  color: #474343;
-}
-
-.current-weather__desc {
-  font-size: toRem(18);
-  font-weight: 500;
-  line-height: 1.33;
-  color: #474343;
-}
-
 .weather-forecast__container {
   width: 100%;
 }
