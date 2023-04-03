@@ -151,7 +151,7 @@
             <div class="title-time">
               <div class="title">Sunrise</div>
               <div class="time">
-                {{ convertTime(data.daily[0].sunrise, true).toUpperCase() }}
+                {{ getSunriseTime("rise") }}
               </div>
             </div>
 
@@ -177,7 +177,7 @@
             <div class="title-time">
               <div class="title">Sunset</div>
               <div class="time">
-                {{ convertTime(data.daily[0].sunset, true).toUpperCase() }}
+                {{ getSunriseTime("set") }}
               </div>
             </div>
 

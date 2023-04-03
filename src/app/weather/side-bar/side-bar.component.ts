@@ -109,6 +109,22 @@ export class SideBarComponent implements OnInit, OnDestroy {
     return this.sharedService.convertTime(time, 'en-GB', hour);
   }
 
+  getSunriseTime(opt: 'rise' | 'set'): string {
+    const cur: Date = new Date(this.data.current_weather.time);
+    const rise: Date = new Date(this.data.daily[0].sunrise);
+    const set: Date = new Date(this.data.daily[0].sunset);
+
+    const sunrise: string =
+      cur > rise ? this.data.daily[1].sunrise : this.data.daily[0].sunrise;
+    const sunset: string =
+      cur > set ? this.data.daily[1].sunset : this.data.daily[0].sunset;
+
+    return this.convertTime(
+      opt == 'rise' ? sunrise : sunset,
+      true
+    ).toUpperCase();
+  }
+
   getRemainingHours(
     time: string,
     daily: {
@@ -126,8 +142,6 @@ export class SideBarComponent implements OnInit, OnDestroy {
     let sunsetHours: number = new Date(daily[0].sunset).getHours() - current;
     if (sunsetHours > current) sunsetHours -= current;
     else sunsetHours = 24 + new Date(daily[1].sunset).getHours() - current;
-
-    console.log(daily[1].sunrise, daily[1].sunset);
 
     return {
       sunrise: `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`,
