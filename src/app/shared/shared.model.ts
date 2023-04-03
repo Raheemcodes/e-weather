@@ -108,6 +108,8 @@ export interface CurrentDailyWeatherRes {
 
 export interface RestructuredCurrentDailyWeatherRes {
   current_weather: CurrentWeather;
+  timezone: string;
+  day: 'sunny' | 'night';
   daily: {
     time: string;
     sunset: string;
@@ -133,7 +135,6 @@ export interface DailyUnits {
 export interface RestructuredDailyForecast {
   time: string;
   units: DailyUnits;
-  // days: 'sunny' | 'night';
   weathercode: number;
   sunrise: string;
   sunset: string;

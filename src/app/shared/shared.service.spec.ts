@@ -141,7 +141,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
 
-      service.fetchCurrentWeather(locationResMock.results[0], 5);
+      service.fetchCurrentWeather(locationResMock.results[0], 0, 5);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
@@ -151,7 +151,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
 
-      service.fetchCurrentWeather(locationResMock.results[0], 5);
+      service.fetchCurrentWeather(locationResMock.results[0], 0, 5);
 
       expect(service.searchRes).toEqual(restructuredSearchResMock);
     });
@@ -161,7 +161,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
       const setSearchResSpy = spyOn(service, 'setSearchRes');
-      service.fetchCurrentWeather(locationResMock.results[0]);
+      service.fetchCurrentWeather(locationResMock.results[0], 0);
 
       expect(setSearchResSpy).toHaveBeenCalledTimes(1);
     });
@@ -171,7 +171,7 @@ describe('SharedService', () => {
         of(current_weather_mock)
       );
       const convertTimeSpy = spyOn(service, 'convertTime');
-      service.fetchCurrentWeather(locationResMock.results[0]);
+      service.fetchCurrentWeather(locationResMock.results[0], 0);
 
       expect(convertTimeSpy).toHaveBeenCalledTimes(1);
     });

@@ -37,6 +37,7 @@ aside {
 .current-weather__icon-cover {
   width: toRem(134);
   height: toRem(134);
+  border-radius: toRem(4);
 
   img {
     width: 100%;
@@ -49,6 +50,8 @@ aside {
   font-weight: 500;
   line-height: 0.89;
   color: #474343;
+  text-align: center;
+  border-radius: toRem(4);
 }
 
 .current-weather__desc {
@@ -56,6 +59,8 @@ aside {
   font-weight: 500;
   line-height: 1.33;
   color: #474343;
+  text-align: center;
+  border-radius: toRem(4);
 }
 
 .weather-details__container {
@@ -81,6 +86,7 @@ aside {
     font-weight: 500;
     line-height: 1.09;
     color: #fff;
+    border-radius: toRem(4);
 
     @media screen and (min-width: $three-xl) {
       font-size: toRem(32);
@@ -102,8 +108,9 @@ aside {
 .weather-deatils__icon {
   width: toRem(72);
   height: toRem(72);
+  border-radius: toRem(4);
 
-  @media screen and (min-width: $three-xl) {
+  @media screen and (min-width: $two-xl) {
     width: toRem(88);
     height: toRem(88);
   }
@@ -125,6 +132,7 @@ aside {
   font-weight: 500;
   line-height: 1;
   color: #fff;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $three-xl) {
     font-size: toRem(80);
@@ -138,6 +146,7 @@ aside {
   line-height: 1.09;
   color: #fff;
   margin-bottom: toRem(10);
+  border-radius: toRem(4);
 
   @media screen and (min-width: $three-xl) {
     font-size: toRem(32);

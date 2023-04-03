@@ -47,7 +47,9 @@
         routerLink="/weather/hourly"
         [queryParams]="{
           lat: record.location.latitude,
-          lon: record.location.longitude
+          lon: record.location.longitude,
+          city: record.location.name,
+          country: record.location.country
         }"
       >
         <div class="icon">

@@ -1,6 +1,7 @@
 <ng-container *ngIf="isLoading">
-  <section class="current-weather__condition skeleton">
-    <div class="current-weather__icon-cover">
+  <!-- overview -->
+  <section class="current-weather__condition">
+    <div class="current-weather__icon-cover skeleton">
       <img
         width="134"
         height="134"
@@ -10,7 +11,7 @@
     </div>
 
     <h1 class="current-weather__temp skeleton">20°C</h1>
-    <p class="current-weather__desc skeleton">Thunderstorms</p>
+    <p class="current-weather__desc skeleton">Slight/Moderate Thunderstorm</p>
   </section>
 </ng-container>
 
@@ -20,13 +21,20 @@
       <img
         width="134"
         height="134"
-        src="../../assets/icons/white/thunderstorm.svg"
+        src="../../assets/icons/white/{{
+          convertWMOtoImage(data.current_weather.weathercode, data.day)
+        }}.svg"
         alt
+        [title]="convertWMOCodes(data.current_weather.weathercode)"
       />
     </div>
 
-    <h1 class="current-weather__temp">20°C</h1>
-    <p class="current-weather__desc">Thunderstorms</p>
+    <h1 class="current-weather__temp">
+      {{ roundup(data.current_weather.temperature) }}
+    </h1>
+    <p class="current-weather__desc">
+      {{ convertWMOCodes(data.current_weather.weathercode) }}
+    </p>
   </section>
 </ng-container>
 
@@ -40,7 +48,7 @@
     </div>
 
     <div class="weather-details">
-      <div class="weather-deatils__icon">
+      <div class="weather-deatils__icon skeleton">
         <img
           width="72"
           height="72"
@@ -58,9 +66,9 @@
 
   <section *ngIf="!isLoading" class="weather-details__container">
     <div class="location-time">
-      <div class="location">Lagos, Nigeria</div>
+      <div class="location">{{ location }}</div>
 
-      <div class="time">01:24</div>
+      <div class="time">{{ time }}</div>
     </div>
 
     <div class="weather-details">

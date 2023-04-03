@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject, tap } from 'rxjs';
+import { map, Observable, Subject, tap, Subscription } from 'rxjs';
 import { DataService } from './data.service';
 import {
   IPRes,
@@ -20,6 +20,7 @@ export class SharedService {
   fullSearchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
   hourlyForecast!: RestructuredHourlyForecast[];
+  subs: Subscription[] = [];
 
   constructor(private dataService: DataService) {
     this.fetchIPData();
@@ -151,7 +152,7 @@ export class SharedService {
         break;
 
       case 95:
-        weatherCondition = 'Slight or Moderate Thunderstorm';
+        weatherCondition = 'Slight/Moderate Thunderstorm';
         break;
 
       case 96:
@@ -295,8 +296,8 @@ export class SharedService {
     this[`${field}$`].next(this[field]);
   }
 
-  fetchCurrentWeather(location: SearchRes, limit?: number) {
-    this.dataService
+  fetchCurrentWeather(location: SearchRes, idx: number, limit?: number) {
+    this.subs[idx] = this.dataService
       .fetchCurrentWeather(location)
       .pipe(
         map((res) => {
@@ -326,6 +327,7 @@ export class SharedService {
 
   fetchLocation(key: string, limit?: number): void {
     const field = limit ? 'searchRes' : 'fullSearchRes';
+    this.subs.forEach((sub) => sub.unsubscribe());
 
     this.isLoading$.next(true);
     if (!key) return this.resetSearchRes(limit);
@@ -338,8 +340,8 @@ export class SharedService {
           if (!res.length) return this.resetSearchRes(limit);
           this[field] = [];
 
-          res.forEach((val) => {
-            this.fetchCurrentWeather(val, limit);
+          res.forEach((val, idx) => {
+            this.fetchCurrentWeather(val, idx, limit);
           });
         },
         error: (err) => {

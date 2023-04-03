@@ -189,12 +189,21 @@ export class DataService {
     return this.http
       .get<CurrentDailyWeatherRes>(
         environment.METEO_WEATHER_API +
-          `forecast_days=1&latitude=${lat}1&longitude=${lon}&daily=sunset,sunrise&current_weather=true&timezone=auto`
+          `?forecast_days=1&latitude=${lat}1&longitude=${lon}&daily=sunset,sunrise&current_weather=true&timezone=auto`
       )
       .pipe(
         map((res) => {
+          const date: Date = new Date(res.current_weather.time);
+          const sunrise: Date = new Date(res.daily.sunrise[0]);
+          const sunset: Date = new Date(res.daily.sunset[0]);
+
+          const day: 'sunny' | 'night' =
+            date < sunset && date >= sunrise ? 'sunny' : 'night';
+
           const restructured: RestructuredCurrentDailyWeatherRes = {
             current_weather: res.current_weather,
+            timezone: res.timezone,
+            day,
             daily: {
               time: res.daily.time[0],
               sunrise: res.daily.sunrise[0],

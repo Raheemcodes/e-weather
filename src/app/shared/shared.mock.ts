@@ -610,6 +610,8 @@ export const mockCurrentDailyWeatherRes = {
 export const restructuredCurrentDailyWeatherRes: RestructuredCurrentDailyWeatherRes =
   {
     current_weather: mockCurrentDailyWeatherRes.current_weather,
+    timezone: mockCurrentDailyWeatherRes.timezone,
+    day: 'night',
     daily: {
       time: mockCurrentDailyWeatherRes.daily.time[0],
       sunrise: mockCurrentDailyWeatherRes.daily.sunrise[0],
