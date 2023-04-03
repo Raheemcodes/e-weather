@@ -195,12 +195,7 @@ describe('SideBarComponent', () => {
       )[0].nativeElement;
 
       expect(de_el.textContent).toBe(
-        ` ${component
-          .convertTime(
-            restructuredCurrentDailyWeatherRes.daily[0].sunrise,
-            true
-          )
-          .toUpperCase()} `
+        ` ${`${component.getSunriseTime('rise')}`} `
       );
     }));
 
@@ -234,11 +229,7 @@ describe('SideBarComponent', () => {
         By.css('.sun-details:not(.skeleton) .time')
       )[1].nativeElement;
 
-      expect(de_el.textContent).toBe(
-        ` ${component
-          .convertTime(component.data.daily[0].sunset, true)
-          .toUpperCase()} `
-      );
+      expect(de_el.textContent).toBe(` ${component.getSunriseTime('set')} `);
     }));
 
     it('should have child 2nd .sun-details .time-up with content relative to data property', fakeAsync(() => {

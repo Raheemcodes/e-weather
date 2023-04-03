@@ -143,6 +143,8 @@ export class SideBarComponent implements OnInit, OnDestroy {
     if (sunsetHours > current) sunsetHours -= current;
     else sunsetHours = 24 + new Date(daily[1].sunset).getHours() - current;
 
+    console.log(daily[1].sunrise, daily[1].sunset);
+
     return {
       sunrise: `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`,
       sunset: `in ${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'}`,
