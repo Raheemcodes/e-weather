@@ -69,8 +69,21 @@ export class SideBarComponent implements OnInit, OnDestroy {
 
   handleTime(timeZone: string) {
     if (this.subs[2]) this.subs[2].unsubscribe();
+    let count: number = +new Date().toLocaleString('en-US', {
+      timeZone,
+      second: '2-digit',
+    });
 
-    this.subs[2] = interval(60000).subscribe(() => {
+    this.time = new Date().toLocaleString('en-US', {
+      timeZone,
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    this.subs[2] = interval(60000 - count * 1000).subscribe(() => {
+      if (!count) count = 0;
+
       this.time = new Date().toLocaleString('en-US', {
         timeZone,
         hour12: false,
@@ -90,6 +103,36 @@ export class SideBarComponent implements OnInit, OnDestroy {
 
   convertWMOCodes(code: number): string {
     return this.sharedService.convertWMOCodes(code);
+  }
+
+  convertTime(time: string, hour: boolean = false): string {
+    return this.sharedService.convertTime(time, 'en-GB', hour);
+  }
+
+  getRemainingHours(
+    time: string,
+    daily: {
+      time: string;
+      sunset: string;
+      sunrise: string;
+    }[]
+  ): { sunrise: string; sunset: string } {
+    const current: number = new Date(time).getHours();
+
+    let sunriseHours: number = new Date(daily[0].sunrise).getHours();
+    if (sunriseHours > current) sunriseHours -= current;
+    else sunriseHours = 24 + new Date(daily[1].sunrise).getHours() - current;
+
+    let sunsetHours: number = new Date(daily[0].sunset).getHours() - current;
+    if (sunsetHours > current) sunsetHours -= current;
+    else sunsetHours = 24 + new Date(daily[1].sunset).getHours() - current;
+
+    console.log(daily[1].sunrise, daily[1].sunset);
+
+    return {
+      sunrise: `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`,
+      sunset: `in ${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'}`,
+    };
   }
 
   ngOnDestroy(): void {

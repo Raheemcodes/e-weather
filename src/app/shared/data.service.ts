@@ -189,7 +189,7 @@ export class DataService {
     return this.http
       .get<CurrentDailyWeatherRes>(
         environment.METEO_WEATHER_API +
-          `?forecast_days=1&latitude=${lat}1&longitude=${lon}&daily=sunset,sunrise&current_weather=true&timezone=auto`
+          `?forecast_days=2&latitude=${lat}1&longitude=${lon}&daily=sunset,sunrise&current_weather=true&timezone=auto`
       )
       .pipe(
         map((res) => {
@@ -204,11 +204,18 @@ export class DataService {
             current_weather: res.current_weather,
             timezone: res.timezone,
             day,
-            daily: {
-              time: res.daily.time[0],
-              sunrise: res.daily.sunrise[0],
-              sunset: res.daily.sunset[0],
-            },
+            daily: [
+              {
+                time: res.daily.time[0],
+                sunrise: res.daily.sunrise[0],
+                sunset: res.daily.sunset[0],
+              },
+              {
+                time: res.daily.time[1],
+                sunrise: res.daily.sunrise[1],
+                sunset: res.daily.sunset[1],
+              },
+            ],
           };
           return restructured;
         })

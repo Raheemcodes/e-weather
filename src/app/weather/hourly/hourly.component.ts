@@ -1,4 +1,7 @@
-import { RestructuredHourlyForecast } from './../../shared/shared.model';
+import {
+  DailyWeatherForecast,
+  RestructuredHourlyForecast,
+} from './../../shared/shared.model';
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -52,9 +55,9 @@ export class HourlyComponent implements OnInit, OnDestroy {
           this.renderer.addClass(el, 'opened');
         }
       } else {
-        if (el.classList.contains('opened')) {
-          this.renderer.removeClass(el, 'opened');
-        }
+        // if (el.classList.contains('opened')) {
+        //   this.renderer.removeClass(el, 'opened');
+        // }
       }
     });
   }

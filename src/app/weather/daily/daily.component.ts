@@ -52,9 +52,9 @@ export class DailyComponent implements OnInit, OnDestroy {
           this.renderer.addClass(el, 'opened');
         }
       } else {
-        if (el.classList.contains('opened')) {
-          this.renderer.removeClass(el, 'opened');
-        }
+        // if (el.classList.contains('opened')) {
+        //   this.renderer.removeClass(el, 'opened');
+        // }
       }
     });
   }

@@ -76,14 +76,21 @@
         <img
           width="72"
           height="72"
-          src="../../assets/icons/blue/thunderstorm.svg"
+          src="../../assets/icons/blue/{{
+            convertWMOtoImage(data.current_weather.weathercode, data.day)
+          }}.svg"
           alt
+          [title]="convertWMOCodes(data.current_weather.weathercode)"
         />
       </div>
 
       <div class="weather-details__desc">
-        <div class="weather-details__value">20°C</div>
-        <div class="weather-details__name">Thunderstorm</div>
+        <div class="weather-details__value">
+          {{ roundup(data.current_weather.temperature) }}
+        </div>
+        <div class="weather-details__name">
+          {{ convertWMOCodes(data.current_weather.weathercode) }}
+        </div>
       </div>
     </div>
   </section>
@@ -143,25 +150,42 @@
           <div class="sun-details__content">
             <div class="title-time">
               <div class="title">Sunrise</div>
-              <div class="time">4:20 AM</div>
+              <div class="time">
+                {{ convertTime(data.daily[0].sunrise, true).toUpperCase() }}
+              </div>
             </div>
 
-            <div class="time-up">in 3 hours</div>
+            <div class="time-up">
+              {{
+                getRemainingHours(data.current_weather.time, data.daily).sunrise
+              }}
+            </div>
           </div>
         </li>
 
         <li class="sun-details">
           <div class="sun-details__icon">
-            <img src="../../assets/icons/white/sunny.svg" alt="" />
+            <img
+              width="32"
+              height="32"
+              src="../../assets/icons/white/night.svg"
+              alt=""
+            />
           </div>
 
           <div class="sun-details__content">
             <div class="title-time">
-              <div class="title">Sunrise</div>
-              <div class="time">4:20 AM</div>
+              <div class="title">Sunset</div>
+              <div class="time">
+                {{ convertTime(data.daily[0].sunset, true).toUpperCase() }}
+              </div>
             </div>
 
-            <div class="time-up">in 3 hours</div>
+            <div class="time-up">
+              {{
+                getRemainingHours(data.current_weather.time, data.daily).sunset
+              }}
+            </div>
           </div>
         </li>
       </ng-container>

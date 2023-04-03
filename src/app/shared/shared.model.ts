@@ -110,11 +110,18 @@ export interface RestructuredCurrentDailyWeatherRes {
   current_weather: CurrentWeather;
   timezone: string;
   day: 'sunny' | 'night';
-  daily: {
-    time: string;
-    sunset: string;
-    sunrise: string;
-  };
+  daily: [
+    {
+      time: string;
+      sunset: string;
+      sunrise: string;
+    },
+    {
+      time: string;
+      sunset: string;
+      sunrise: string;
+    }
+  ];
 }
 
 export interface DailyUnits {

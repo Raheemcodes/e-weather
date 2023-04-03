@@ -61,7 +61,7 @@ describe('SideBarComponent', () => {
       fixture.detectChanges();
 
       const de_el = de.query(
-        By.css('.current-weather__icon-cover:not(skeleton) img')
+        By.css('.current-weather__icon-cover:not(.skeleton) img')
       );
 
       expect(de_el.attributes['src'])
@@ -77,7 +77,7 @@ describe('SideBarComponent', () => {
       fixture.detectChanges();
 
       const de_el: HTMLElement = de.query(
-        By.css('h1.current-weather__temp:not(skeleton)')
+        By.css('h1.current-weather__temp:not(.skeleton)')
       ).nativeElement;
 
       expect(de_el.textContent).toBe(
@@ -94,7 +94,87 @@ describe('SideBarComponent', () => {
       fixture.detectChanges();
 
       const de_el: HTMLElement = de.query(
-        By.css('.current-weather__desc:not(skeleton)')
+        By.css('.current-weather__desc:not(.skeleton)')
+      ).nativeElement;
+
+      expect(de_el.textContent).toBe(
+        ` ${component.convertWMOCodes(
+          restructuredCurrentDailyWeatherRes.current_weather.weathercode
+        )} `
+      );
+    }));
+  });
+
+  describe('side-bar', () => {
+    it('should have child .location with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.query(
+        By.css('.location:not(.skeleton)')
+      ).nativeElement;
+
+      expect(de_el.textContent).toBe(component.location);
+    }));
+
+    it('should have child .time with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.time = '04:56';
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.query(
+        By.css('.time:not(.skeleton)')
+      ).nativeElement;
+
+      expect(de_el.textContent).toBe(component.time);
+      discardPeriodicTasks();
+    }));
+
+    it('should have child .weather-deatils__icon with img attribute value relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el = de.query(
+        By.css('.weather-deatils__icon:not(.skeleton) img')
+      );
+
+      expect(de_el.attributes['src'])
+        .withContext('src')
+        .toBe(`../../assets/icons/blue/sunny.svg`);
+      expect(de_el.attributes['title']).withContext('title').toBe('Sunny');
+    }));
+
+    it('should have child .weather-details__value with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.query(
+        By.css('.weather-details__value:not(.skeleton)')
+      ).nativeElement;
+
+      expect(de_el.textContent).toBe(
+        ` ${component.roundup(
+          restructuredCurrentDailyWeatherRes.current_weather.temperature
+        )} `
+      );
+    }));
+
+    it('should have child .weather-details__name with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.query(
+        By.css('.weather-details__name:not(.skeleton)')
       ).nativeElement;
 
       expect(de_el.textContent).toBe(
@@ -104,17 +184,81 @@ describe('SideBarComponent', () => {
       );
     }));
 
-    it('should have child .location with content relative to data property', fakeAsync(() => {
+    it('should have child 1st .sun-details .time with content relative to data property', fakeAsync(() => {
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
       fixture.detectChanges();
 
-      const de_el: HTMLElement = de.query(
-        By.css('.location:not(skeleton)')
-      ).nativeElement;
+      const de_el: HTMLElement = de.queryAll(
+        By.css('.sun-details:not(.skeleton) .time')
+      )[0].nativeElement;
 
-      expect(de_el.textContent).toBe(component.location);
+      expect(de_el.textContent).toBe(
+        ` ${component
+          .convertTime(
+            restructuredCurrentDailyWeatherRes.daily[0].sunrise,
+            true
+          )
+          .toUpperCase()} `
+      );
+    }));
+
+    it('should have child 1st .sun-details .time-up with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.queryAll(
+        By.css('.sun-details:not(.skeleton) .time-up')
+      )[0].nativeElement;
+
+      expect(de_el.textContent).toBe(
+        ` ${
+          component.getRemainingHours(
+            component.data.current_weather.time,
+            component.data.daily
+          ).sunrise
+        } `
+      );
+    }));
+
+    it('should have child 2nd .sun-details .time with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.queryAll(
+        By.css('.sun-details:not(.skeleton) .time')
+      )[1].nativeElement;
+
+      expect(de_el.textContent).toBe(
+        ` ${component
+          .convertTime(component.data.daily[0].sunset, true)
+          .toUpperCase()} `
+      );
+    }));
+
+    it('should have child 2nd .sun-details .time-up with content relative to data property', fakeAsync(() => {
+      component.data = restructuredCurrentDailyWeatherRes;
+      component.isLoading = false;
+      tick(3000);
+      fixture.detectChanges();
+
+      const de_el: HTMLElement = de.queryAll(
+        By.css('.sun-details:not(.skeleton) .time-up')
+      )[1].nativeElement;
+
+      expect(de_el.textContent).toBe(
+        ` ${
+          component.getRemainingHours(
+            component.data.current_weather.time,
+            component.data.daily
+          ).sunset
+        } `
+      );
     }));
   });
 
@@ -162,7 +306,7 @@ describe('SideBarComponent', () => {
       const spyFn = spyOn(component, 'handleTime');
 
       component.getForecast(6.51, 3.39);
-      tick(60000);
+      tick(1000);
 
       expect(spyFn).toHaveBeenCalled();
       discardPeriodicTasks();
@@ -173,7 +317,7 @@ describe('SideBarComponent', () => {
       const spyFn = spyOn(component.subs[2], 'unsubscribe');
 
       component.handleTime('Africa/Lagos');
-      tick(60000);
+      tick(1000);
 
       expect(spyFn).toHaveBeenCalled();
 
@@ -182,9 +326,10 @@ describe('SideBarComponent', () => {
 
     it('should change time property value every 60 second', fakeAsync(() => {
       component.handleTime('Africa/Lagos');
-      tick(60000);
+      expect(component.time).withContext('before').toBeTruthy();
 
-      expect(component.time).toBe('08:00');
+      tick(1000);
+      expect(component.time).withContext('after').toBeTruthy();
       discardPeriodicTasks();
     }));
   });
