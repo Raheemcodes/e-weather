@@ -173,7 +173,7 @@ export class DataService {
     return this.http
       .get<DailyWeatherForecast>(
         environment.METEO_WEATHER_API +
-          `?forecast_days=8&latitude=${lat}&longitude=${lon}&timezone=auto&daily=weathercode,sunrise,sunset,temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,apparent_temperature_min,apparent_temperature_max,winddirection_10m_dominant,shortwave_radiation_sum`
+          `?forecast_days=16&latitude=${lat}&longitude=${lon}&timezone=auto&daily=weathercode,sunrise,sunset,temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,apparent_temperature_min,apparent_temperature_max,winddirection_10m_dominant,shortwave_radiation_sum`
       )
       .pipe(
         map((res) => {
