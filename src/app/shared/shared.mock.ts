@@ -602,8 +602,8 @@ export const mockCurrentDailyWeatherRes = {
   },
   daily: {
     time: ['2023-04-02'],
-    sunset: ['2023-04-02T18:56'],
     sunrise: ['2023-04-02T06:43'],
+    sunset: ['2023-04-02T18:56'],
   },
 };
 
