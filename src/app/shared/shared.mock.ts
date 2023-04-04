@@ -602,8 +602,8 @@ export const mockCurrentDailyWeatherRes = {
   },
   daily: {
     time: ['2023-04-02'],
-    sunset: ['2023-04-02T18:56', '2022-04-02T18:48'],
-    sunrise: ['2023-04-02T06:43', '2022-04-02T06:40'],
+    sunset: ['2023-04-02T18:56'],
+    sunrise: ['2023-04-02T06:43'],
   },
 };
 
@@ -612,18 +612,11 @@ export const restructuredCurrentDailyWeatherRes: RestructuredCurrentDailyWeather
     current_weather: mockCurrentDailyWeatherRes.current_weather,
     timezone: mockCurrentDailyWeatherRes.timezone,
     day: 'night',
-    daily: [
-      {
-        time: mockCurrentDailyWeatherRes.daily.time[0],
-        sunrise: mockCurrentDailyWeatherRes.daily.sunrise[0],
-        sunset: mockCurrentDailyWeatherRes.daily.sunset[0],
-      },
-      {
-        time: mockCurrentDailyWeatherRes.daily.time[1],
-        sunrise: mockCurrentDailyWeatherRes.daily.sunrise[1],
-        sunset: mockCurrentDailyWeatherRes.daily.sunset[1],
-      },
-    ],
+    daily: {
+      time: mockCurrentDailyWeatherRes.daily.time[0],
+      sunrise: mockCurrentDailyWeatherRes.daily.sunrise[0],
+      sunset: mockCurrentDailyWeatherRes.daily.sunset[0],
+    },
   };
 
 export let generateRestructuredForecast = (

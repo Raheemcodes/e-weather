@@ -110,14 +110,8 @@ export class SideBarComponent implements OnInit, OnDestroy {
   }
 
   getSunriseTime(opt: 'rise' | 'set'): string {
-    const cur: Date = new Date(this.data.current_weather.time);
-    const rise: Date = new Date(this.data.daily[0].sunrise);
-    const set: Date = new Date(this.data.daily[0].sunset);
-
-    const sunrise: string =
-      cur > rise ? this.data.daily[1].sunrise : this.data.daily[0].sunrise;
-    const sunset: string =
-      cur > set ? this.data.daily[1].sunset : this.data.daily[0].sunset;
+    const sunrise: string = this.data.daily.sunrise;
+    const sunset: string = this.data.daily.sunset;
 
     return this.convertTime(
       opt == 'rise' ? sunrise : sunset,
@@ -131,24 +125,31 @@ export class SideBarComponent implements OnInit, OnDestroy {
       time: string;
       sunset: string;
       sunrise: string;
-    }[]
+    }
   ): { sunrise: string; sunset: string } {
     const current: number = new Date(time).getHours();
+    let sunrise: string = '';
+    let sunset: string = '';
 
-    let sunriseHours: number = new Date(daily[0].sunrise).getHours();
-    if (sunriseHours > current) sunriseHours -= current;
-    else sunriseHours = 24 + new Date(daily[1].sunrise).getHours() - current;
+    let sunriseHours: number = new Date(daily.sunrise).getHours();
+    if (sunriseHours > current) {
+      sunriseHours -= current;
+      sunrise = `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`;
+    } else if (current > sunriseHours) {
+      sunriseHours = current - sunriseHours;
+      sunrise = `${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'} ago`;
+    }
 
-    let sunsetHours: number = new Date(daily[0].sunset).getHours() - current;
-    if (sunsetHours > current) sunsetHours -= current;
-    else sunsetHours = 24 + new Date(daily[1].sunset).getHours() - current;
+    let sunsetHours: number = new Date(daily.sunset).getHours();
+    if (sunsetHours > current) {
+      sunsetHours -= current;
+      sunset = `in ${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'}`;
+    } else if (current > sunsetHours) {
+      sunsetHours = current - sunsetHours;
+      sunset = `${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'} ago`;
+    }
 
-    console.log(daily[1].sunrise, daily[1].sunset);
-
-    return {
-      sunrise: `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`,
-      sunset: `in ${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'}`,
-    };
+    return { sunrise, sunset };
   }
 
   ngOnDestroy(): void {
