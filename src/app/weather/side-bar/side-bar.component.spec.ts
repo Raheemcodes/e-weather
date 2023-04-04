@@ -55,6 +55,7 @@ describe('SideBarComponent', () => {
 
   describe('.weather-forecast', () => {
     it('should have child .current-weather__icon-cover with img attribute value relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -71,6 +72,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .current-weather__temp with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -88,6 +90,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .current-weather__desc with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -107,6 +110,7 @@ describe('SideBarComponent', () => {
 
   describe('side-bar', () => {
     it('should have child .location with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -120,6 +124,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .time with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.time = '04:56';
       component.isLoading = false;
@@ -135,6 +140,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .weather-deatils__icon with img attribute value relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -151,6 +157,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .weather-details__value with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -168,6 +175,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child .weather-details__name with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -185,6 +193,7 @@ describe('SideBarComponent', () => {
     }));
 
     it('should have child 1st .sun-details .time with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -195,11 +204,12 @@ describe('SideBarComponent', () => {
       )[0].nativeElement;
 
       expect(de_el.textContent).toBe(
-        ` ${`${component.getSunriseTime('rise')}`} `
+        ` ${`${component.getSunTimeForecast('rise')}`} `
       );
     }));
 
     it('should have child 1st .sun-details .time-up with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -210,16 +220,12 @@ describe('SideBarComponent', () => {
       )[0].nativeElement;
 
       expect(de_el.textContent).toBe(
-        ` ${
-          component.getRemainingHours(
-            component.data.current_weather.time,
-            component.data.daily
-          ).sunrise
-        } `
+        ` ${component.getRemainingHours(component.data.daily).sunrise} `
       );
     }));
 
     it('should have child 2nd .sun-details .time with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -229,10 +235,13 @@ describe('SideBarComponent', () => {
         By.css('.sun-details:not(.skeleton) .time')
       )[1].nativeElement;
 
-      expect(de_el.textContent).toBe(` ${component.getSunriseTime('set')} `);
+      expect(de_el.textContent).toBe(
+        ` ${component.getSunTimeForecast('set')} `
+      );
     }));
 
     it('should have child 2nd .sun-details .time-up with content relative to data property', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -243,12 +252,7 @@ describe('SideBarComponent', () => {
       )[1].nativeElement;
 
       expect(de_el.textContent).toBe(
-        ` ${
-          component.getRemainingHours(
-            component.data.current_weather.time,
-            component.data.daily
-          ).sunset
-        } `
+        ` ${component.getRemainingHours(component.data.daily).sunset} `
       );
     }));
   });
@@ -471,6 +475,7 @@ describe('SideBarComponent', () => {
     });
 
     it('should contain only the original of loaded content if isLoading is false', fakeAsync(() => {
+      component.time = '06:43';
       component.data = restructuredCurrentDailyWeatherRes;
       component.isLoading = false;
       tick(3000);
@@ -558,5 +563,69 @@ describe('SideBarComponent', () => {
         .withContext('side-bar sunset details')
         .toBeTruthy();
     }));
+  });
+
+  describe('convertMilitoTime', () => {
+    it('should return negative property to true if argument is negative', () => {
+      const val: boolean = component.convertMilitoTime(
+        -3600000 + 2 * 60000
+      ).negative;
+
+      expect(val).toBeTrue();
+    });
+
+    it('should return negative property to false if argument is negative', () => {
+      const val: boolean = component.convertMilitoTime(
+        3600000 + 2 * 60000
+      ).negative;
+
+      expect(val).toBeFalse();
+    });
+
+    it('should return hour if hours is 1', () => {
+      const val: string = component.convertMilitoTime(3600000 + 2 * 60000).time;
+
+      expect(val).toContain('1 hour');
+    });
+
+    it('should return hours if hours > 1', () => {
+      const val: string = component.convertMilitoTime(
+        2 * 3600000 + 2 * 60000
+      ).time;
+
+      expect(val).toContain('2 hours');
+    });
+
+    it('should not contain hours if no hours', () => {
+      const val: string = component.convertMilitoTime(
+        0 * 3600000 + 2 * 60000
+      ).time;
+
+      expect(val).not.toContain('2 hours');
+    });
+
+    it('should return minute if minutes is 1', () => {
+      const val: string = component.convertMilitoTime(
+        2 * 3600000 + 1 * 60000
+      ).time;
+
+      expect(val).toContain('1 min');
+    });
+
+    it('should return minutes if minutes > 1', () => {
+      const val: string = component.convertMilitoTime(
+        2 * 3600000 + 2 * 60000
+      ).time;
+
+      expect(val).toContain('2 mins');
+    });
+
+    it('should convert miliseconds to hours and minutes', () => {
+      const val: string = component.convertMilitoTime(
+        2 * 3600000 + 2 * 60000
+      ).time;
+
+      expect(val).toBe('2 hours 2 mins');
+    });
   });
 });

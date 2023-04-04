@@ -151,14 +151,12 @@
             <div class="title-time">
               <div class="title">Sunrise</div>
               <div class="time">
-                {{ getSunriseTime("rise") }}
+                {{ getSunTimeForecast("rise") }}
               </div>
             </div>
 
             <div class="time-up">
-              {{
-                getRemainingHours(data.current_weather.time, data.daily).sunrise
-              }}
+              {{ getRemainingHours(data.daily).sunrise }}
             </div>
           </div>
         </li>
@@ -177,14 +175,12 @@
             <div class="title-time">
               <div class="title">Sunset</div>
               <div class="time">
-                {{ getSunriseTime("set") }}
+                {{ getSunTimeForecast("set") }}
               </div>
             </div>
 
             <div class="time-up">
-              {{
-                getRemainingHours(data.current_weather.time, data.daily).sunset
-              }}
+              {{ getRemainingHours(data.daily).sunset }}
             </div>
           </div>
         </li>

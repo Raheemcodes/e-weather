@@ -69,6 +69,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
 
   handleTime(timeZone: string) {
     if (this.subs[2]) this.subs[2].unsubscribe();
+
     let count: number = +new Date().toLocaleString('en-US', {
       timeZone,
       second: '2-digit',
@@ -109,7 +110,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
     return this.sharedService.convertTime(time, 'en-GB', hour);
   }
 
-  getSunriseTime(opt: 'rise' | 'set'): string {
+  getSunTimeForecast(opt: 'rise' | 'set'): string {
     const sunrise: string = this.data.daily.sunrise;
     const sunset: string = this.data.daily.sunset;
 
@@ -119,37 +120,39 @@ export class SideBarComponent implements OnInit, OnDestroy {
     ).toUpperCase();
   }
 
-  getRemainingHours(
-    time: string,
-    daily: {
-      time: string;
-      sunset: string;
-      sunrise: string;
-    }
-  ): { sunrise: string; sunset: string } {
-    const current: number = new Date(time).getHours();
-    let sunrise: string = '';
-    let sunset: string = '';
-
-    let sunriseHours: number = new Date(daily.sunrise).getHours();
-    if (sunriseHours > current) {
-      sunriseHours -= current;
-      sunrise = `in ${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'}`;
-    } else if (current > sunriseHours) {
-      sunriseHours = current - sunriseHours;
-      sunrise = `${sunriseHours} ${sunriseHours > 1 ? 'hours' : 'hour'} ago`;
+  convertMilitoTime(mili: number): { time: string; negative: boolean } {
+    let time: string = '';
+    let negative: boolean = false;
+    if (mili < 0) {
+      mili = Math.abs(mili);
+      negative = true;
     }
 
-    let sunsetHours: number = new Date(daily.sunset).getHours();
-    if (sunsetHours > current) {
-      sunsetHours -= current;
-      sunset = `in ${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'}`;
-    } else if (current > sunsetHours) {
-      sunsetHours = current - sunsetHours;
-      sunset = `${sunsetHours} ${sunsetHours > 1 ? 'hours' : 'hour'} ago`;
-    }
+    const hours: number = Math.floor(mili / (60 * 60 * 1000));
+    if (hours) time = hours + `${hours > 1 ? ' hours' : ' hour'}`;
 
-    return { sunrise, sunset };
+    const remainder: number = mili % (60 * 60 * 1000);
+    const mins: number = Math.floor(remainder / (60 * 1000));
+    if (mins) time += mins > 1 ? ` ${mins} mins` : ` ${mins} min`;
+
+    return { time, negative };
+  }
+
+  getRemainingHours(daily: { time: string; sunset: string; sunrise: string }): {
+    sunrise: string;
+    sunset: string;
+  } {
+    const current: number = new Date(daily.time + 'T' + this.time).getTime();
+    const sunriseMili: number = new Date(daily.sunrise).getTime();
+    const sunsetMili: number = new Date(daily.sunset).getTime();
+
+    const sunrise = this.convertMilitoTime(sunriseMili - current);
+    const sunset = this.convertMilitoTime(sunsetMili - current);
+
+    return {
+      sunrise: sunrise.negative ? `${sunrise.time} ago` : `in ${sunrise.time}`,
+      sunset: sunset.negative ? `${sunset.time} ago` : `in ${sunset.time}`,
+    };
   }
 
   ngOnDestroy(): void {
