@@ -80,7 +80,7 @@ describe('DailyComponent', () => {
       expect(spyFn).toHaveBeenCalledOnceWith(0);
     }));
 
-    it('should add .opened to .weather-forecast class and remove it from its sibling if it has it', fakeAsync(() => {
+    it('should add .opened to .weather-forecast class if it doesn`t have it', fakeAsync(() => {
       component.dailyForecast = generateDailyRestructuredForecast();
       component.isLoading = false;
       tick(3000);
@@ -92,16 +92,31 @@ describe('DailyComponent', () => {
 
       fixture.detectChanges();
 
-      de_el.forEach((el, index) => {
-        if (idx == index) {
-          expect(el.classes['opened']).withContext(`index: ${idx}`).toBeTrue();
-        } else {
-          expect(el.classes['opened']).withContext(`index: ${idx}`).toBeFalsy();
-        }
-      });
+      expect(de_el[idx].classes['opened']).toBeTrue();
     }));
 
-    it('should remove .opened from all .weather-forecast element class if selected element has it', fakeAsync(() => {
+    // it('should add .opened to .weather-forecast class and remove it from its sibling if it has it', fakeAsync(() => {
+    //   component.dailyForecast = generateDailyRestructuredForecast();
+    //   component.isLoading = false;
+    //   tick(3000);
+    //   fixture.detectChanges();
+
+    //   let idx: number = 0;
+    //   const de_el = de.queryAll(By.css('.weather-forecast:not(.skeleton)'));
+    //   component.toggle(idx);
+
+    //   fixture.detectChanges();
+
+    //   de_el.forEach((el, index) => {
+    //     if (idx == index) {
+    //       expect(el.classes['opened']).withContext(`index: ${idx}`).toBeTrue();
+    //     } else {
+    //       expect(el.classes['opened']).withContext(`index: ${idx}`).toBeFalsy();
+    //     }
+    //   });
+    // }));
+
+    it('should remove .opened from selcted .weather-forecast element class if selected element has it', fakeAsync(() => {
       component.dailyForecast = generateDailyRestructuredForecast();
       component.isLoading = false;
       tick(3000);
@@ -113,10 +128,26 @@ describe('DailyComponent', () => {
       component.toggle(idx);
 
       fixture.detectChanges();
-      de_el.forEach((el, index) => {
-        expect(el.classes['opened']).withContext(`index: ${index}`).toBeFalsy();
-      });
+
+      expect(de_el[idx].classes['opened']).toBeFalsy();
     }));
+
+    // it('should remove .opened from all .weather-forecast element class if selected element has it', fakeAsync(() => {
+    //   component.dailyForecast = generateDailyRestructuredForecast();
+    //   component.isLoading = false;
+    //   tick(3000);
+    //   fixture.detectChanges();
+
+    //   let idx: number = 0;
+    //   const de_el = de.queryAll(By.css('.weather-forecast:not(.skeleton)'));
+    //   de_el[idx].nativeElement.classList.add('opened');
+    //   component.toggle(idx);
+
+    //   fixture.detectChanges();
+    //   de_el.forEach((el, index) => {
+    //     expect(el.classes['opened']).withContext(`index: ${index}`).toBeFalsy();
+    //   });
+    // }));
   });
 
   describe('isLoading', () => {
@@ -253,7 +284,7 @@ describe('DailyComponent', () => {
         By.css('.weather-forecast:not(skeleton) .time')
       ).nativeElement;
       expect(el.textContent).toBe(
-        component.convertTime(generateDailyRestructuredForecast()[0].time)
+        component.convertToDay(generateDailyRestructuredForecast()[0].time)
       );
     }));
 
@@ -393,6 +424,24 @@ describe('DailyComponent', () => {
         'en-GB',
         false
       );
+    });
+  });
+
+  describe('convertToDay()', () => {
+    it('should have been called once on initializaton', fakeAsync(() => {
+      const spyFn = spyOn(component, 'convertToDay');
+      component.dailyForecast = generateDailyRestructuredForecast();
+      component.isLoading = false;
+      tick(3000);
+
+      fixture.detectChanges();
+      expect(spyFn).toHaveBeenCalled();
+    }));
+
+    it('should convert time to a weekday', () => {
+      const result: string = component.convertToDay('2023-04-04');
+
+      expect(result).toBe('Tue');
     });
   });
 

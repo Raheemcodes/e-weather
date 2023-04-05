@@ -45,17 +45,17 @@ export class DailyComponent implements OnInit, OnDestroy {
     const forecast = this.document.querySelectorAll('.weather-forecast');
 
     forecast.forEach((el, index) => {
-      if (idx == index) {
-        if (el.classList.contains('opened')) {
-          this.renderer.removeClass(el, 'opened');
-        } else {
-          this.renderer.addClass(el, 'opened');
-        }
+      // if (idx == index) {
+      if (el.classList.contains('opened')) {
+        this.renderer.removeClass(el, 'opened');
       } else {
-        // if (el.classList.contains('opened')) {
-        //   this.renderer.removeClass(el, 'opened');
-        // }
+        this.renderer.addClass(el, 'opened');
       }
+      // } else {
+      // if (el.classList.contains('opened')) {
+      //   this.renderer.removeClass(el, 'opened');
+      // }
+      // }
     });
   }
 
@@ -83,6 +83,10 @@ export class DailyComponent implements OnInit, OnDestroy {
 
   convertTime(time: string, hour: boolean = false): string {
     return this.sharedService.convertTime(time, 'en-GB', hour);
+  }
+
+  convertToDay(time: string): string {
+    return new Date(time).toLocaleString('en-US', { weekday: 'short' });
   }
 
   convertDate(time: string): string {

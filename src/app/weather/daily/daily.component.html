@@ -53,7 +53,7 @@
     >
       <div class="summary" (click)="toggle(i)">
         <div class="time-date" [title]="convertISOtoDate(record.time)">
-          <div class="time">{{ convertTime(record.time) }}</div>
+          <div class="time">{{ convertToDay(record.time) }}</div>
           <div class="date">{{ convertDate(record.time) }}</div>
         </div>
 
