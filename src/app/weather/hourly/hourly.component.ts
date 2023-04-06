@@ -45,21 +45,21 @@ export class HourlyComponent implements OnInit, OnDestroy {
   }
 
   toggle(idx: number) {
-    const forecast = this.document.querySelectorAll('.weather-forecast');
+    const forecast = this.document.querySelectorAll('.weather-forecast')[idx];
 
-    forecast.forEach((el, index) => {
-      if (idx == index) {
-        if (el.classList.contains('opened')) {
-          this.renderer.removeClass(el, 'opened');
-        } else {
-          this.renderer.addClass(el, 'opened');
-        }
-      } else {
-        // if (el.classList.contains('opened')) {
-        //   this.renderer.removeClass(el, 'opened');
-        // }
-      }
-    });
+    // forecast.forEach((el, index) => {
+    // if (idx == index) {
+    if (forecast.classList.contains('opened')) {
+      this.renderer.removeClass(forecast, 'opened');
+    } else {
+      this.renderer.addClass(forecast, 'opened');
+    }
+    // } else {
+    // if (el.classList.contains('opened')) {
+    //   this.renderer.removeClass(el, 'opened');
+    // }
+    // }
+    // });
   }
 
   getParams() {
