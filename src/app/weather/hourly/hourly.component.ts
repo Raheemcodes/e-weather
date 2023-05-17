@@ -3,7 +3,15 @@ import {
   RestructuredHourlyForecast,
 } from './../../shared/shared.model';
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { DataService } from 'src/app/shared/data.service';
@@ -95,7 +103,7 @@ export class HourlyComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error(err);
+          this.sharedService.weatherError$.next(err);
         },
       });
   }

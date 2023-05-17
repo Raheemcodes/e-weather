@@ -1,66 +1,71 @@
-<main>
-  <!-- side bar -->
+<ng-container *ngIf="!isError">
+  <main>
+    <!-- side bar -->
 
-  <app-side-bar></app-side-bar>
+    <app-side-bar></app-side-bar>
 
-  <section class="weather-forecast__container">
-    <header class="weather-forecast__header">
-      <h2 class="weather-forecast__desc">Overview</h2>
+    <section class="weather-forecast__container">
+      <header class="weather-forecast__header">
+        <h2 class="weather-forecast__desc">Overview</h2>
 
-      <button
-        #dropdown
-        class="weather-forecast__dropdown"
-        (click)="toggle(dropdown)"
-      >
-        <span class="weather-forecast__desc dropdown">Time Frame</span>
+        <button
+          #dropdown
+          class="weather-forecast__dropdown"
+          (click)="toggle(dropdown)"
+        >
+          <span class="weather-forecast__desc dropdown">Time Frame</span>
 
-        <div class="dropddown__icon">
-          <img
-            width="24"
-            height="24"
-            src="../../assets/icons/dropdown.svg"
-            alt
-          />
-        </div>
+          <div class="dropddown__icon">
+            <img
+              width="24"
+              height="24"
+              src="../../assets/icons/dropdown.svg"
+              alt
+            />
+          </div>
 
-        <ul class="dropdown-menu">
-          <li
-            class="dropdown-item"
-            routerLink="hourly"
-            routerLinkActive="active"
-            queryParamsHandling="merge"
-          >
-            <span>Hourly</span>
-            <span class="checkmark">
-              <img
-                width="8"
-                height="6"
-                src="../../assets/icons/checkmark.svg"
-                alt
-              />
-            </span>
-          </li>
+          <ul class="dropdown-menu">
+            <li
+              class="dropdown-item"
+              routerLink="hourly"
+              routerLinkActive="active"
+              queryParamsHandling="merge"
+            >
+              <span>Hourly</span>
+              <span class="checkmark">
+                <img
+                  width="8"
+                  height="6"
+                  src="../../assets/icons/checkmark.svg"
+                  alt
+                />
+              </span>
+            </li>
 
-          <li
-            class="dropdown-item"
-            routerLink="daily"
-            routerLinkActive="active"
-            queryParamsHandling="merge"
-          >
-            <span>Daily</span>
-            <div class="checkmark">
-              <img
-                width="8"
-                height="6"
-                src="../../assets/icons/checkmark.svg"
-                alt
-              />
-            </div>
-          </li>
-        </ul>
-      </button>
-    </header>
+            <li
+              class="dropdown-item"
+              routerLink="daily"
+              routerLinkActive="active"
+              queryParamsHandling="merge"
+            >
+              <span>Daily</span>
+              <div class="checkmark">
+                <img
+                  width="8"
+                  height="6"
+                  src="../../assets/icons/checkmark.svg"
+                  alt
+                />
+              </div>
+            </li>
+          </ul>
+        </button>
+      </header>
 
-    <router-outlet></router-outlet>
-  </section>
-</main>
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</ng-container>
+
+<app-error-handler *ngIf="isError" [type]="type" (retry)="onRetry($event)">
+</app-error-handler>

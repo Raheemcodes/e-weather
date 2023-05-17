@@ -1,10 +1,18 @@
 import { Subscription, timer } from 'rxjs';
 import { RestructuredDailyForecast } from './../../shared/shared.model';
 import { DOCUMENT } from '@angular/common';
-import { Component, Renderer2, Inject, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Renderer2,
+  Inject,
+  OnInit,
+  OnDestroy,
+  EventEmitter,
+} from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-daily',
@@ -76,7 +84,7 @@ export class DailyComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error(err);
+        this.sharedService.weatherError$.next(err);
       },
     });
   }

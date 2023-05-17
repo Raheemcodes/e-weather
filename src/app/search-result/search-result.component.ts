@@ -77,7 +77,6 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
       error: (err: HttpErrorResponse) => {
-        console.log('staus:', err.status);
         this.isLoading = false;
         this.type = this.sharedService.errorHandler(err.status);
 

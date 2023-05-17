@@ -1,5 +1,8 @@
 import { timer, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Error_Type } from '../shared/shared.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-weather',
@@ -9,10 +12,17 @@ import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 export class WeatherComponent implements OnInit, OnDestroy {
   isAnimating: boolean = false;
   subs: Subscription[] = [];
+  isError: boolean = false;
+  type!: Error_Type;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private renderer: Renderer2,
+    private sharedService: SharedService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onerror();
+  }
 
   toggle(el: HTMLElement) {
     this.subs.forEach((sub, idx) => {
@@ -37,6 +47,25 @@ export class WeatherComponent implements OnInit, OnDestroy {
         this.renderer.setStyle(arrow, 'transform', 'rotateZ(180deg)');
       });
     }
+  }
+
+  onerror() {
+    this.subs[2] = this.sharedService.weatherError$.subscribe((err) => {
+      this.type = this.sharedService.errorHandler(err.status);
+
+      this.subs[3] = timer(100).subscribe(() => {
+        this.isError = true;
+      });
+    });
+  }
+
+  onRetry(type: Error_Type) {
+    this.subs.forEach((sub) => {
+      if (sub) sub.unsubscribe();
+    });
+
+    this.onerror();
+    this.isError = false;
   }
 
   ngOnDestroy(): void {

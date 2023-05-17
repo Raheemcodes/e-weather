@@ -22,6 +22,7 @@ export class SharedService {
   fullSearchRes$ = new Subject<RestructureSearchRes[]>();
   isLoading$ = new Subject<boolean>();
   hourlyForecast!: RestructuredHourlyForecast[];
+  weatherError$ = new Subject<HttpErrorResponse>();
   subs: Subscription[] = [];
 
   constructor(private dataService: DataService) {

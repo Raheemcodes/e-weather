@@ -1,5 +1,9 @@
-import { RestructuredCurrentDailyWeatherRes } from './../../shared/shared.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  Error_Type,
+  RestructuredCurrentDailyWeatherRes,
+} from './../../shared/shared.model';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { interval, Subscription, timer } from 'rxjs';
 import { DataService } from 'src/app/shared/data.service';
@@ -62,7 +66,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error(err);
+          this.sharedService.weatherError$.next(err);
         },
       });
   }
