@@ -120,6 +120,7 @@ h3.title {
   font-weight: 700;
   line-height: toRem(24);
   color: #474343;
+  border-radius: toRem(4);
 
   @media screen and (min-width: $lg) {
     font-size: toRem(24);

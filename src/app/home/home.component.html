@@ -1,101 +1,156 @@
-<h1 class="title">Featured city</h1>
+<ng-container *ngIf="!isError">
+  <h1 class="title">Featured city</h1>
 
-<section class="featured-sect">
-  <div
-    class="featured-list__container"
-    slider
-    [pagination]="pagination"
-    [pad]="16"
-    [maxWidth]="768"
-  >
-    <ul class="featured-list">
-      <li class="featured">
-        <div class="featured-img__container">
-          <img ngSrc="../../assets/featured/lagos.png" fill alt />
-        </div>
-
-        <h3 class="title">Lagos</h3>
-      </li>
-
-      <li class="featured">
-        <div class="featured-img__container">
-          <img ngSrc="../../assets/featured/abuja.png" fill alt />
-        </div>
-
-        <h3 class="title">Abuja</h3>
-      </li>
-
-      <li class="featured">
-        <div class="featured-img__container">
-          <img ngSrc="../../assets/featured/akwa-ibom.png" fill alt />
-        </div>
-
-        <h3 class="title">Akwa ibom</h3>
-      </li>
-    </ul>
-  </div>
-
-  <ul class="pagination-list" #pagination></ul>
-</section>
-
-<section class="second-sect">
-  <div class="first-row">
-    <h1 class="location skeleton" *ngIf="isLoading">Manchester</h1>
-    <h1 class="location" *ngIf="!isLoading">{{ ip.city }}</h1>
-
-    <button class="more skeleton" *ngIf="isLoading">More details</button>
-    <button
-      class="more"
-      *ngIf="!isLoading"
-      routerLink="/weather/hourly"
-      [queryParams]="{
-        lat: ip.latitude,
-        lon: ip.longitude,
-        city: ip.city,
-        country: ip.country_name
-      }"
-    >
-      More details
-    </button>
-  </div>
-
-  <div class="second-row">
-    <ul class="forecast-list">
-      <ng-container *ngIf="isLoading">
+  <section class="featured-sect">
+    <div class="featured-list__container" *ngIf="isLoading">
+      <ul class="featured-list">
         <li
-          class="forecast skeleton"
-          *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8]"
+          class="featured"
+          routerLink="/weather/hourly"
+          [queryParams]="{
+            lat: '6.45407',
+            lon: '3.39467',
+            city: 'Lagos',
+            country: 'Nigeria'
+          }"
+          *ngFor="let list of [1, 2, 3]"
         >
-          <div class="degree">27°C</div>
-          <div class="weather-img__container">
-            <img
-              width="24"
-              height="24"
-              src="../../assets/icons/white/sunny.svg"
-              alt
-            />
+          <div class="featured-img__container skeleton">
+            <img ngSrc="../../assets/featured/lagos.png" fill alt />
           </div>
-          <div class="time">00:00</div>
-        </li>
-      </ng-container>
 
-      <ng-container *ngIf="!isLoading">
-        <li class="forecast" *ngFor="let item of hourlyData">
-          <div class="degree">{{ roundup(item.temperature_2m) }}</div>
-          <div class="weather-img__container">
-            <img
-              width="24"
-              height="24"
-              src="../../assets/icons/white/{{
-                convertWMOtoImage(item.weathercode, item.day)
-              }}.svg"
-              alt
-              [title]="convertWMOCodes(item.weathercode)"
-            />
-          </div>
-          <div class="time">{{ convertTime(item.time) }}</div>
+          <h3 class="title skeleton">Lagos</h3>
         </li>
-      </ng-container>
-    </ul>
-  </div>
-</section>
+      </ul>
+    </div>
+
+    <div
+      class="featured-list__container"
+      slider
+      [pagination]="pagination"
+      [pad]="16"
+      [maxWidth]="768"
+      *ngIf="!isLoading"
+    >
+      <ul class="featured-list">
+        <li
+          class="featured"
+          routerLink="/weather/hourly"
+          [queryParams]="{
+            lat: '6.45407',
+            lon: '3.39467',
+            city: 'Lagos',
+            country: 'Nigeria'
+          }"
+        >
+          <div class="featured-img__container">
+            <img ngSrc="../../assets/featured/lagos.png" fill alt />
+          </div>
+
+          <h3 class="title">Lagos</h3>
+        </li>
+
+        <li
+          class="featured"
+          routerLink="/weather/hourly"
+          [queryParams]="{
+            lat: '9.24703',
+            lon: '6.93135',
+            city: 'Abuja',
+            country: 'Nigeria'
+          }"
+        >
+          <div class="featured-img__container">
+            <img ngSrc="../../assets/featured/abuja.png" fill alt />
+          </div>
+
+          <h3 class="title">Abuja</h3>
+        </li>
+
+        <li
+          class="featured"
+          routerLink="/weather/hourly"
+          [queryParams]="{
+            lat: '4.87649',
+            lon: '8.08577',
+            city: 'Akwa Ibom',
+            country: 'Nigeria'
+          }"
+        >
+          <div class="featured-img__container">
+            <img ngSrc="../../assets/featured/akwa-ibom.png" fill alt />
+          </div>
+
+          <h3 class="title">Akwa ibom</h3>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="pagination-list" #pagination></ul>
+  </section>
+
+  <section class="second-sect">
+    <div class="first-row">
+      <h1 class="location skeleton" *ngIf="isLoading">Manchester</h1>
+      <h1 class="location" *ngIf="!isLoading">{{ ip.city }}</h1>
+
+      <button class="more skeleton" *ngIf="isLoading">More details</button>
+      <button
+        class="more"
+        *ngIf="!isLoading"
+        routerLink="/weather/hourly"
+        [queryParams]="{
+          lat: ip.latitude,
+          lon: ip.longitude,
+          city: ip.city,
+          country: ip.country_name
+        }"
+      >
+        More details
+      </button>
+    </div>
+
+    <div class="second-row">
+      <ul class="forecast-list">
+        <ng-container *ngIf="isLoading">
+          <li
+            class="forecast skeleton"
+            *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8]"
+          >
+            <div class="degree">27°C</div>
+            <div class="weather-img__container">
+              <img
+                width="24"
+                height="24"
+                src="../../assets/icons/white/sunny.svg"
+                alt
+              />
+            </div>
+            <div class="time">00:00</div>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoading">
+          <li class="forecast" *ngFor="let item of hourlyData">
+            <div class="degree">{{ roundup(item.temperature_2m) }}</div>
+            <div class="weather-img__container">
+              <img
+                width="24"
+                height="24"
+                src="../../assets/icons/white/{{
+                  convertWMOtoImage(item.weathercode, item.day)
+                }}.svg"
+                alt
+                [title]="convertWMOCodes(item.weathercode)"
+              />
+            </div>
+            <div class="time">{{ convertTime(item.time) }}</div>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </section>
+</ng-container>
+
+<app-error-handler *ngIf="isError" [type]="type" (retry)="onRetry($event)">
+</app-error-handler>

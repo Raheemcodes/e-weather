@@ -17,10 +17,13 @@
       </svg>
     </div>
 
-    <div class="location-degree skeleton" *ngIf="isLoading">NG | ° C</div>
-    <div class="location-degree" *ngIf="!isLoading">
+    <div class="location-degree skeleton" *ngIf="isLoading && !isError">
+      NG | ° C
+    </div>
+    <div class="location-degree" *ngIf="!isLoading && !isError">
       {{ country_code }} | ° C
     </div>
+    <div class="location-degree" *ngIf="isError">!Error</div>
   </div>
 </div>
 

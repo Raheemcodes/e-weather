@@ -22,6 +22,7 @@ import { SharedService } from '../shared/shared.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   display: boolean = false;
   _isLoading: boolean = false;
+  isError: boolean = false;
   country_code!: string;
   subs: Subscription[] = [];
 
@@ -60,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error(err);
+        this.isError = err;
       },
     });
   }

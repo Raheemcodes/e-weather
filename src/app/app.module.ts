@@ -16,6 +16,7 @@ import { WeatherComponent } from './weather/weather.component';
 import { SideBarComponent } from './weather/side-bar/side-bar.component';
 import { HourlyComponent } from './weather/hourly/hourly.component';
 import { DailyComponent } from './weather/daily/daily.component';
+import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DailyComponent } from './weather/daily/daily.component';
     SideBarComponent,
     HourlyComponent,
     DailyComponent,
+    ErrorHandlerComponent,
   ],
   imports: [
     BrowserModule,

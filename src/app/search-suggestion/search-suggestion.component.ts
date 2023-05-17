@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { RestructureSearchRes } from '../shared/shared.model';
+import { Error_Type, RestructureSearchRes } from '../shared/shared.model';
 import { SharedService } from '../shared/shared.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-search-suggestion',
@@ -11,7 +12,33 @@ import { SharedService } from '../shared/shared.service';
 export class SearchSuggestionComponent implements OnInit, OnDestroy {
   result!: RestructureSearchRes[];
   isLoading: boolean = true;
+  isError: boolean = false;
   subs: Subscription[] = [];
+
+  errors = {
+    no_result: {
+      title: 'No Results Found!',
+      desc: 'Try searching for a city, zip code or point of interest.',
+    },
+    server_error: {
+      title: 'Server Error!',
+      desc: 'Something wrong happened, please retry',
+    },
+    network_error: {
+      title: 'Request Failed',
+      desc: 'Please check your network and try again',
+    },
+    unknown_error: {
+      title: 'Unknown Error Occured',
+      desc: null,
+    },
+    invalid_params: {
+      title: 'Invalid Parameter',
+      desc: null,
+    },
+  };
+
+  error!: { title: string; desc: string | null };
 
   constructor(private sharedService: SharedService) {}
 
@@ -29,8 +56,9 @@ export class SearchSuggestionComponent implements OnInit, OnDestroy {
         this.result = res;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.isLoading = false;
+        this.handleErr(err);
       },
     });
   }
@@ -44,6 +72,12 @@ export class SearchSuggestionComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
     });
+  }
+
+  handleErr(err: HttpErrorResponse) {
+    const type: Error_Type = this.sharedService.errorHandler(err.status);
+    this.error = this.errors[type];
+    this.isError = true;
   }
 
   ngOnDestroy(): void {

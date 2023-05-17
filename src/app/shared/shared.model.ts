@@ -254,3 +254,16 @@ export interface RestructureSearchRes {
   location: SearchRes;
   current_weather: CurrentWeather;
 }
+
+export interface ErrorMsg {
+  title: string;
+  desc: string | null;
+  action: string;
+}
+
+export type Error_Type =
+  | 'no_result'
+  | 'server_error'
+  | 'network_error'
+  | 'unknown_error'
+  | 'invalid_params';

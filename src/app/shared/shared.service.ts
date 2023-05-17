@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject, tap, Subscription } from 'rxjs';
 import { DataService } from './data.service';
 import {
+  Error_Type,
   IPRes,
   RestructuredHourlyForecast,
   RestructureSearchRes,
   SearchRes,
 } from './shared.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -152,7 +154,7 @@ export class SharedService {
         break;
 
       case 95:
-        weatherCondition = 'Slight/Moderate Thunderstorm';
+        weatherCondition = 'Thunderstorm';
         break;
 
       case 96:
@@ -328,6 +330,7 @@ export class SharedService {
   fetchLocation(key: string, limit?: number): void {
     const field = limit ? 'searchRes' : 'fullSearchRes';
     this.subs.forEach((sub) => sub.unsubscribe());
+    this[field] = [];
 
     this.isLoading$.next(true);
     if (!key) return this.resetSearchRes(limit);
@@ -338,15 +341,34 @@ export class SharedService {
       .subscribe({
         next: (res) => {
           if (!res.length) return this.resetSearchRes(limit);
-          this[field] = [];
 
           res.forEach((val, idx) => {
             this.fetchCurrentWeather(val, idx, limit);
           });
         },
-        error: (err) => {
+        error: (err: HttpErrorResponse) => {
+          this[`${field}$`].error(err);
           console.error(err);
         },
       });
+  }
+
+  errorHandler(status: number): Error_Type {
+    let type: Error_Type = 'unknown_error';
+    switch (status) {
+      case 0:
+        type = 'network_error';
+        break;
+
+      case 400:
+        type = 'invalid_params';
+        break;
+
+      case 500:
+        type = 'server_error';
+        break;
+    }
+
+    return type;
   }
 }

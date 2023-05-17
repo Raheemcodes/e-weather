@@ -1,4 +1,7 @@
-<section class="main-container" *ngIf="isLoading || result.length">
+<section
+  class="main-container"
+  *ngIf="(isLoading || result.length) && !isError"
+>
   <h2 class="desc skeleton" *ngIf="isLoading">
     Showing <span>35</span> locations for <span>“lagos”</span>
   </h2>
@@ -85,21 +88,10 @@
   </ul>
 </section>
 
-<div class="no-result__container" *ngIf="!isLoading && !result.length">
-  <div class="no-result__img">
-    <img
-      width="265"
-      height="244"
-      ngSrc="../../assets/icons/no-result.svg"
-      alt
-    />
-  </div>
+<app-error-handler
+  *ngIf="!isLoading && !result.length && !isError"
+  (retry)="onRetry($event)"
+></app-error-handler>
 
-  <h3 class="no-result__title">No Results Found!</h3>
-
-  <p class="no-result__msg">
-    Try searching for a city, zip code or point of interest.
-  </p>
-
-  <button class="no-result__btn" (click)="goBack()">Go Back</button>
-</div>
+<app-error-handler *ngIf="isError" [type]="type" (retry)="onRetry($event)">
+</app-error-handler>

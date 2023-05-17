@@ -1,4 +1,4 @@
-import { IPRes } from './../shared/shared.model';
+import { Error_Type, IPRes } from './../shared/shared.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { RestructuredHourlyForecast } from '../shared/shared.model';
@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   hourlyData!: RestructuredHourlyForecast[];
   subs: Subscription[] = [];
   _isLoading: boolean = false;
+  isError: boolean = false;
+  type!: Error_Type;
 
   set isLoading(val: boolean) {
     if (val) this._isLoading = val;
@@ -68,6 +70,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.hourlyData = res;
           this.isLoading = false;
         },
+        error: (err) => {
+          this.isLoading = false;
+          this.type = this.sharedService.errorHandler(err.status);
+
+          this.subs[4] = timer(100).subscribe(() => {
+            this.isError = true;
+          });
+        },
       });
   }
 
@@ -85,6 +95,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   roundup(temperature: number): string {
     return Math.round(temperature) + '°C';
+  }
+
+  onRetry(type: Error_Type) {
+    this.subs.forEach((sub) => {
+      if (sub) sub.unsubscribe();
+    });
+
+    this.isError = false;
+
+    this.getIPData();
+    this.sharedService.fetchIPData();
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 <ul class="suggestion-list">
-  <ng-container *ngIf="result.length || isLoading">
+  <ng-container *ngIf="(result.length || isLoading) && !isError">
     <div class="suggestion-list__item title">Search results</div>
 
     <ng-container *ngIf="isLoading">
@@ -91,10 +91,17 @@
     </button>
   </ng-container>
 
-  <div class="no-result" *ngIf="!result.length && !isLoading">
+  <div class="no-result" *ngIf="!result.length && !isLoading && !isError">
     <h3 class="no-result__tile">No results found</h3>
     <p class="no-result__msg">
       Try entering at least three letters of a real city.
+    </p>
+  </div>
+
+  <div class="no-result" *ngIf="isError">
+    <h3 class="no-result__tile">{{ error.title }}</h3>
+    <p class="no-result__msg" *ngIf="error.desc">
+      {{ error.desc }}
     </p>
   </div>
 </ul>
