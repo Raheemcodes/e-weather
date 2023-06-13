@@ -71,13 +71,22 @@ describe('HomeComponent', () => {
     expect(title).withContext('title').toBeTruthy();
   });
 
-  it('should have .pagination-list of two children of class .pagination', () => {
+  it('should have .pagination-list of two children of class .pagination', fakeAsync(() => {
+    component.isLoading = false;
+    component.isError = false;
+    sharedServiceSpy.ip = ipDataMock;
+    sharedServiceSpy.ip$.next(ipDataMock);
+
+    tick(3000);
+
+    fixture.detectChanges();
+
     const pagination: DebugElement[] = de.queryAll(
       By.css('.pagination-list > .pagination')
     );
 
     expect(pagination.length).toBe(2);
-  });
+  }));
 
   it('should have .forecast children of same length with hourlyData property', fakeAsync(() => {
     component.ip = ipDataMock;
