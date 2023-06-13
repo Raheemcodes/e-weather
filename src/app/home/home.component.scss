@@ -65,6 +65,7 @@ h1.title {
   gap: toRem(8);
   width: calc(50% - 24px);
   flex-shrink: 0;
+  cursor: pointer;
 
   @media screen and (min-width: $md) {
     width: 100%;
