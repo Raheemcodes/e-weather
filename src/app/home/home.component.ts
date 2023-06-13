@@ -51,7 +51,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error(err);
+        this.type = this.sharedService.errorHandler(err.status);
+
+        this.subs[4] = timer(100).subscribe(() => {
+          this.isError = true;
+        });
       },
     });
   }

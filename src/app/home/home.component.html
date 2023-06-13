@@ -4,17 +4,7 @@
   <section class="featured-sect">
     <div class="featured-list__container" *ngIf="isLoading">
       <ul class="featured-list">
-        <li
-          class="featured"
-          routerLink="/weather/hourly"
-          [queryParams]="{
-            lat: '6.45407',
-            lon: '3.39467',
-            city: 'Lagos',
-            country: 'Nigeria'
-          }"
-          *ngFor="let list of [1, 2, 3]"
-        >
+        <li class="featured" *ngFor="let list of [1, 2, 3]">
           <div class="featured-img__container skeleton">
             <img ngSrc="../../assets/featured/lagos.png" fill alt />
           </div>

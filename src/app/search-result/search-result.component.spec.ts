@@ -16,6 +16,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { routes } from '../app-routing.module';
 import { DataService } from '../shared/data.service';
 import { SearchResultComponent } from './search-result.component';
+import { ErrorHandlerComponent } from '../error-handler/error-handler.component';
 
 describe('SearchResultComponent', () => {
   let component: SearchResultComponent;
@@ -30,7 +31,7 @@ describe('SearchResultComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(routes)],
-      declarations: [SearchResultComponent],
+      declarations: [SearchResultComponent, ErrorHandlerComponent],
       providers: [
         { provide: SharedService, useValue: sharedServiceSpy },
         { provide: 'Window', useValue: window },
