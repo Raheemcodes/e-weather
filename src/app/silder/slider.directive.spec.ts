@@ -1,9 +1,17 @@
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
+import { routes } from '../app-routing.module';
 import { HomeComponent } from '../home/home.component';
+import { DataService } from '../shared/data.service';
+import { httpClientMock, ipDataMock } from '../shared/shared.mock';
+import { SharedService } from '../shared/shared.service';
 import { SliderDirective } from './slider.directive';
 
 const mockMouse = {
@@ -19,15 +27,22 @@ const mockTouch = {
 } as any;
 
 describe('SliderDirective', () => {
+  let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let de: DebugElement;
   let pagination: DebugElement[];
+  let sharedServiceSpy: SharedService;
 
   beforeEach(() => {
+    sharedServiceSpy = new SharedService(new DataService(httpClientMock));
+
     fixture = TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes(routes)],
       declarations: [SliderDirective, HomeComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [{ provide: SharedService, useValue: sharedServiceSpy }],
     }).createComponent(HomeComponent);
+
+    component = fixture.componentInstance;
 
     fixture.detectChanges(); // initial binding
 
@@ -35,9 +50,22 @@ describe('SliderDirective', () => {
     pagination = fixture.debugElement.queryAll(By.css('.pagination'));
   });
 
-  it('should be attached to the .featured-list__container element', () => {
+  beforeEach(fakeAsync(() => {
+    component.isError = false;
+    component.isLoading = false;
+    sharedServiceSpy.ip = ipDataMock;
+    sharedServiceSpy.ip$.next(ipDataMock);
+    tick(3000);
+
+    fixture.detectChanges(); // initial binding
+
+    de = fixture.debugElement.query(By.directive(SliderDirective));
+    pagination = fixture.debugElement.queryAll(By.css('.pagination'));
+  }));
+
+  it('should be attached to the .featured-list__container element', fakeAsync(() => {
     expect(de.classes['featured-list__container']).toBeTrue();
-  });
+  }));
 
   it('should .featured children minimum of three', () => {
     expect(de.queryAll(By.css('.featured')).length).toBeGreaterThanOrEqual(3);
